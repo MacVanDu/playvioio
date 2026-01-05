@@ -1,39 +1,36 @@
 @extends('game.layouts.all')
 @section('heads')
-@include('game.head.index',['title' => 'Search Games - ApkgosuGame'])
+<title>{{ $names}} | Play on PlayVio</title>
+<meta name="description" content="Play hundreds of free online browser games instantly on PlayVio.io. No downloads required. Action, puzzle, adventure, and multiplayer games for all ages.">
+<link rel="canonical" href="https://playvio.io/">
 @endsection
 @section('body')
-    <div style="text-align: center;">
-      <h1>{{$thongBao}}</h1>
-    </div>
-    @if($length != 0)
-    @include('game.views.gamehome', ['datagames' => $data_games])
-    @else
-      <div style="font-size:18px;" class="a512">
-        <h2>No Results! 😥</h2>
+<div class="container">
+  <div class="game-container-archive">
+    <div class="content-wrapper">
+      @if($length != 0)
+      <h3 class="item-title">{{ $thongBao }}</h3>
+
+      <div class="game-container-category">
+        <div class="row">
+
+          @foreach($data_games as $i=>$game)
+          <div class="col-md-2 col-sm-3 col-6 item-grid">
+            <a href="{{ $game->slugGame() }}">
+              <div class="list-game">
+                <div class="list-thumbnail"><img
+                    src="{{ $game->linkImgGame() }}"
+                    class="small-thumb ls-is-cached lazyloaded" alt="{{ $game->nameGame() }}"></div>
+              </div>
+            </a>
+          </div>
+          @endforeach
+        </div>
       </div>
-    @endif
-    <div style="width: 100%;text-align: center;font-size:18px;">
-      <h2>Popular games</h2>
+      @else
+      <h3 class="item-title">No Results! 😥</h3>
+      @endif
     </div>
-    @include('game.views.gamehome', ['datagames' => $gameNgauNhien])
-@endsection
-
-
-@section('feedback')
-  @include('game.views.feedbackOverlay')
-  @include('game.views.feedbackModal')
-@endsection
-
-@section('lang')
- @foreach(config('locales.supported_text') as  $code => $name)
-    <div class="langue-option" data-url="/{{ $code }}/search?name={{ $names }}">{{ $name }}</div>
-    @endforeach
-@endsection
-@php
-    $langOptions = $__env->yieldContent('lang');
-@endphp
-
-@section('footer')
-        @include('game.views.footer',['langOptions' => $langOptions])
+  </div>
+</div>
 @endsection

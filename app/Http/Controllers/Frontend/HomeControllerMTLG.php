@@ -108,6 +108,31 @@ class HomeControllerMTLG extends Controller
         return view('game.pages.splash', 
         compact('detail'))->render();
     }
+    public function search(Request $request)
+    {
+        if (!$request->name) {
+            return $this->notFoundPage($request);
+        }
+        $datamd = $this->data_mac_dinh();
+
+        $names = $request->name;
+            $data_games = [];
+            if ($request->name) {
+                $data_games = $this->gameService->get_game_theo_tu_khoa($request->name);
+            }
+            $length = count($data_games);
+            $thongBao = 'Search results: ' . $request->name;
+
+
+            return view('game.pages.timkiem', compact(
+                'thongBao',
+                'length',
+                'names',
+                'datamd',
+                'data_games',
+            ))->render();
+        
+    }
     //---------------------------------------------------
     public function newgames(Request $request)
     {
@@ -154,52 +179,6 @@ class HomeControllerMTLG extends Controller
         return view('game.gameURL', compact(
             'gameURL'
         ))->render();
-    }
-    public function search(Request $request)
-    {
-        if (!$request->name) {
-            return $this->notFoundPage($request);
-        }
-        $datamd = $this->data_mac_dinh();
-
-        $names = $request->name;
-        if ($this->checkMobile($request)) {
-            $gameNgauNhien = $this->gameService->get_game_ngau_nhien(20);
-            $data_games = [];
-            if ($request->name) {
-                $data_games = $this->gameService->get_game_theo_tu_khoa($request->name, 20);
-            }
-            $length = count($data_games);
-            $thongBao = 'Search results: ' . $request->name;
-
-
-            return view('game.mobile.pages.timkiem', compact(
-                'length',
-                'thongBao',
-                'names',
-                'datamd',
-                'data_games',
-                'gameNgauNhien',
-            ))->render();
-        } else {
-            $gameNgauNhien = $this->gameService->get_game_ngau_nhien();
-            $data_games = [];
-            if ($request->name) {
-                $data_games = $this->gameService->get_game_theo_tu_khoa($request->name);
-            }
-            $length = count($data_games);
-            $thongBao = 'Search results: ' . $request->name;
-
-
-            return view('game.pages.timkiem', compact(
-                'length',
-                'thongBao',
-                'datamd',
-                'names',
-                'data_games',
-                'gameNgauNhien',
-            ))->render();
-        }
     }
     public function detail_lang($lang = '', $slug, Request $request)
     {

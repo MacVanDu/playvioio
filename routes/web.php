@@ -22,14 +22,14 @@ Route::controller(HomeControllerMTLG::class)->group(function () {
     Route::get('/c/{slug}/{page?}', 'category')
         ->where('page', '[0-9]+')
         ->name('home.category');
+    Route::get('/g/{slug}', 'detail')->name('home.detail');
+    Route::get('/splash/{slug}', 'splash')->name('home.splash');
+    Route::get('/search', 'search')->name('home.search');
 
     Route::get('/new-games', 'newgames')->name('home.newgames');
     Route::get('/recent', 'recent')->name('home.recent');
     Route::get('/hot', 'hot')->name('home.hot');
-    Route::get('/search', 'search')->name('home.search');
     Route::get('/iframe', 'iframe')->name('home.iframe');
-    Route::get('/g/{slug}', 'detail')->name('home.detail');
-    Route::get('/splash/{slug}', 'splash')->name('home.splash');
     Route::get('/tag/{tag}', 'tag')->name('home.tag');
 
 
