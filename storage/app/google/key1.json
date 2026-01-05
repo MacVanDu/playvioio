@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "epindexlaravel",
+  "private_key_id": "5e0a2791289581922e6eaf0721d3671b4f2567ca",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCyBAAV2osRJwSk\nFdB+Vsp1he4FW8Kctp91WtFMuZxb35W3Fyk1o296NUMIN09XVGCaj4iK1W2yMpGb\nfC4SOemx5cQ3S59zT8gweP06OjCezUWoq3ETxgQbqMZEaZ1cRBZGusmCHXphvBEU\nQhbqRg/Hg7bjy6N+kvcpJ3KoctbA4rJ5Km4RzG5RuaZW+ELHr47PBuYEFvATj1mT\nI1WFOt0drSIlhJD3zuaTKsryfSagpHZ48a5JiM3ZXu21rKkpr+RYxOCEHkzDr/Mn\nv1GLOp2I1YCR4Ng66Bxz4iZiXu16uQs9uEZZ283nvAHMozNYmmKgpz5PM+lXvW7h\njehYFvL/AgMBAAECggEAD36U+fylYXR8TUKaJ3+rFvhK/mu9Owy+QRBgQAW2hrH7\nAw5gsjWBN37j+xbCsNQ8UFexR9GfPwUdyA3SqMLNBNn97ojbiRrm+X5zyW9VL2Ko\nmdofo9v2xug1fFuWVyM/WSAFosNUFVEG9N9yb9PHUyizcOJsXvuwcwQ8UPh7RBs8\nmQOkXxuueYzl0fXPKLZ8gKFn0CQxgrbQ0vWhTCEPWuYjhpSMbI1Wp3VGy6aCnPJI\nLGFCycECxq84ORAl6FhJFFtVWKqCLbSk02FvNb80Cp93zXYpVb/TrMfS3hnTrTS3\nR0nf0+eSOOPSDNUhUKN7WkJ+peeA8gva+msgW6I/eQKBgQDsRbjvCu8uoAftHRKX\nRrTslC+K4zFTZ/lCAD2wGckE91XOfE7qpM5aSsPHDcOW2pCk0rUbcd0arV4vfX6A\n05QSoDtI0rdMZGKLUUb5JLqcJId+Z2GjX1/SIL+WHFoxjU1axVnOYFX/e73gSyG8\nRuklJgKLCsr2Znexg+IZuyLkVQKBgQDA4Q0dyXvG9iG1NV26h4/nXezVLC0PBiLC\nzx49r+mpicTa9155QxS/tRXhCpaayxQc3Yl1Epb8vamjgRc2D9nIzl/mK4Hj9Gzu\nXc+bWbibNkggEq7kJASwQrtrX0D0oxHhoGS7PfV8yGFE+abEZ5F/KZIBUoZZ1p+s\nqLAQygsuAwKBgGTEq8YPxMj+6cKAJsCsIFfSL6Ctmwj2jEFQ9v5XUPu0PT1umP3M\nQlISFwObZDK/jvctAp7s5h8Nl+DrRfvNwRZcjkxVymVjXwAKLxntR0V28u6/Ss4x\nzB1DaFKuTu1ZVYeEKfQx9Bude/LgOEgjeiYk2urQNJX4R85G8DSHMq9tAoGBAIbX\njyzo5CDXh/9AXNN/3Gn67wylAqdDOeAJnnGv3uJIz5fpYmHSNNpFhhM7LMjw+pGn\ni2aOZYIyMjt9jzWbZT0Oklq+xeMQyWrnqLFJy1avX0MU7LHQQHrdXFuXTzj4HBMp\n5+JDUbE4AVCQXDdo1H4bGNjV0dlSw3SYxeYm6iPzAoGANAGRR7YfYo3LQd7mM6Rm\ncLefhT+FdrXVaubr19P1ZSaLRPARclOv4NNxkzJd8QVjLzfZ94GVBEFRpKituKYQ\ngZM4sWJK5T5ak/3qCZQsHxj8sSvQ+tl9NlLX2dldSykCfSOGHNnZ415/WkSi5LPs\n4g/mFFwq8jdEmT6022zoY8s=\n-----END PRIVATE KEY-----\n",
+  "client_email": "epindex-dumv-1@epindexlaravel.iam.gserviceaccount.com",
+  "client_id": "115127307397403816886",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/epindex-dumv-1%40epindexlaravel.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

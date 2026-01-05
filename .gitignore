@@ -1,0 +1,8 @@
+/.editorconfig
+/.env
+/.env.example
+/node_modules
+
+# Ignore sitemap files
+/public/sitemap*.xml
+/storage/logs/
