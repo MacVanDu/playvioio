@@ -6,7 +6,6 @@
 						<img src="/images/site-logo.webp" alt="Playvio Logo" width="190" height="55">
 					</a>
 					<form class="position-relative mx-auto my-3 search-bar order-1 order-md-0 desk-search-bar" action="/search">
-						<input type="hidden" name="name" value="search">
 												<input type="text" class="form-control searchInput search" placeholder="Search game" name="name" minlength="2" required="">
 						<button class="btn end-0 position-absolute top-0" type="submit">
 							<img src="/images/search-icon.svg?v=1" width="18" height="18" alt="search icon ">

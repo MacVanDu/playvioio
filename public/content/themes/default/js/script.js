@@ -38,12 +38,12 @@ $(function() {
 	if (formSearch) {
 		formSearch.addEventListener("submit", function(event) {
 			event.preventDefault();
-			const input = formSearch.querySelector("input[name='slug']");
-			const sanitizedValue = input.value.replace(/ /g, "-");
-			input.value = sanitizedValue;
-			if (input.value.length >= 2) {
+			// const input = formSearch.querySelector("input[name='slug']");
+			// const sanitizedValue = input.value.replace(/ /g, "-");
+			// input.value = sanitizedValue;
+			// if (input.value.length >= 2) {
 				formSearch.submit();
-			}
+			// }
 		});
 	}
 	// Load more games
