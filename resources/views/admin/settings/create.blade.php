@@ -13,7 +13,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label text-white">Giá trị</label>
-                <input type="text" name="value" class="form-control bg-dark text-white border-0" placeholder="VD: 3">
+                <textarea type="text" name="value" class="form-control bg-dark text-white border-0" placeholder="VD: 3"  style="min-height: 200px;"></textarea>
             </div>
             <div class="mb-3">
                 <label class="form-label text-white">Chú thích</label>
