@@ -1,18 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Frontend\AndroidGameController;
 use App\Http\Controllers\Frontend\HomeControllerMTLG;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\FCMController;
 use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\Admin\GameAndroidController;
-use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\GameController;
-use \App\Http\Controllers\Admin\PostController;
-use \App\Http\Controllers\Admin\ScheduledCommandController;
-use \App\Http\Controllers\Admin\LogController;
+use \App\Http\Controllers\Admin\PagessController;
 use \App\Http\Controllers\Admin\SettingController;
 
 
@@ -38,6 +32,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('categories', CategoryController::class);
         Route::resource('games', GameController::class);
+        Route::resource('pages', PagessController::class);
         Route::resource('settings', SettingController::class);
         Route::post('/games/{id}/toggle-trend', [GameController::class, 'toggleTrend']);
     });

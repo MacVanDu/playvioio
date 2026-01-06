@@ -10,6 +10,10 @@ class Pages extends Model
 {
 
     protected $table = "pages"; 
-    protected $guarded = []; 
+    protected $guarded = [
+        'title',
+        'slug',
+        'contents'
+    ]; 
         public $timestamps = false; 
 }

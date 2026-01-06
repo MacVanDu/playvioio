@@ -302,6 +302,7 @@
         <a href="{{ route('admin.dashboard') }}" class="{{ request()->is('admin/dashboard') ? 'active' : '' }}">🏠 Tổng quan</a>
         <a href="{{ route('admin.games.index') }}" class="{{ request()->is('admin/games*') ? 'active' : '' }}">🎮 Quản lý Game</a>
         <a href="{{ route('admin.categories.index') }}" class="{{ request()->is('admin/categories*') ? 'active' : '' }}">🧩 Thể loại Game</a>
+        <a href="{{ route('admin.pages.index') }}" class="{{ request()->is('admin/pages*') ? 'active' : '' }}">📋 Pages</a>
         <a href="{{ route('admin.settings.index') }}" class="{{ request()->is('admin/settings*') ? 'active' : '' }}">⚙️ Cấu hình hệ thống</a>
 
     </div>
