@@ -50,16 +50,6 @@ $columns = [
                 ? "<img src='{$g->image}' width='70' height='70' style='object-fit:cover;border-radius:10px;border:2px solid #334155;'>"
                 : "<span class='text-muted'>—</span>"
     ],
-    [
-        'label' => 'Ảnh Seo',
-        'field' => null,
-        'sortable' => false,
-        'responsive' => '',
-        'render' => fn($g) =>
-            $g->imgseo
-                ? "<img src='{$g->imgseo}' width='70' height='70' style='object-fit:cover;border-radius:10px;border:2px solid #334155;'>"
-                : "<span class='text-muted'>—</span>"
-    ],
 
     [
         'label' => 'Thông Tin',
@@ -69,58 +59,7 @@ $columns = [
         'render' => fn($g) =>
             "<div class='fw-bold text-white'>{$g->name}</div>
              <div class='text-muted small'>{$g->slug}</div>
-             <div class='small badge bg-info text-dark'>{$g->category->name}</div>"
-    ],
-
-    [
-        'label' => 'YouTube',
-        'field' => 'video_y_id',
-        'sortable' => true,
-        'responsive' => 'd-none d-lg-table-cell',
-        'render' => fn($g) =>
-            "<div class='fw-bold text-white'>".($g->video_y_id ?: '—')."</div>
-            <div class='text-muted small'>".($g->duration ?: '—')."</div>"
-    ],
-
-    [
-        'label' => 'Video Ngắn',
-        'field' => 'video_short',
-        'sortable' => true,
-        'responsive' => 'd-none d-lg-table-cell',
-        'render' => fn($g) =>
-            $g->video_short
-                ? "<span class='badge bg-success'>Có</span>"
-                : "<span class='badge bg-secondary'>Không</span>"
-    ],
-
-    [
-        'label' => '👍',
-        'field' => 'vote_like',
-        'sortable' => true,
-        'responsive' => 'd-none d-lg-table-cell',
-        'render' => fn($g) =>
-            "<span class='badge bg-warning text-dark'>{$g->vote_like}</span>"
-    ],
-
-    [
-        'label' => '👎',
-        'field' => 'vote_dis_like',
-        'sortable' => true,
-        'responsive' => 'd-none d-lg-table-cell',
-        'render' => fn($g) =>
-            "<span class='badge'>{$g->vote_dis_like}</span>"
-    ],
-
-    [
-        'label' => 'Trend',
-        'field' => 'trend',
-        'sortable' => true,
-        'responsive' => 'd-none d-lg-table-cell',
-        'render' => fn($g) =>
-            "<label class='switch'>
-                <input type='checkbox' class='trend-toggle' data-id='{$g->id}' ".($g->trend ? 'checked' : '').">
-                <span class='slider round'></span>
-             </label>"
+             <div class='small badge bg-info text-dark'>{$g->category?->name}</div>"
     ],
 
     [

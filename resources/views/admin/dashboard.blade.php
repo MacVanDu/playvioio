@@ -31,65 +31,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Tổng số bài blog -->
-            <div class="col-md-3 mb-4">
-                <div class="card bg-gradient-info shadow text-white p-4 border-0">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-uppercase mb-1">Số Game Android</h6>
-                            <h2 class="fw-bold mb-0">{{ \App\Models\GameAndroid::count() }}</h2>
-                        </div>
-                        <i class="fas fa-newspaper fa-3x opacity-75"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tổng số thể loại blog -->
-            <div class="col-md-3 mb-4">
-                <div class="card bg-gradient-warning shadow text-white p-4 border-0">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-uppercase mb-1">Số Thể loại Android</h6>
-                            <h2 class="fw-bold mb-0">{{ \App\Models\CategoryAndroid::count() }}</h2>
-                        </div>
-                        <i class="fas fa-folder-open fa-3x opacity-75"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Hàng 2: Game Links + Commands -->
-        <div class="row">
-            <!-- Game Links chưa có -->
-            <div class="col-md-3 mb-4">
-                <div class="card bg-dark text-white shadow p-4 border-0">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-uppercase text-secondary mb-1">Số Feeback Android</h6>
-                            <h2 class="fw-bold mb-0 text-warning">
-                                {{ \App\Models\Feedbackff::count() }}
-                            </h2>
-                        </div>
-                        <i class="fas fa-hourglass-half fa-3x opacity-75 text-warning"></i>
-                    </div>
-                </div>
-            </div>
-            <!-- Command đang chạy -->
-            <div class="col-md-3 mb-4">
-                <div class="card bg-gradient-danger shadow text-white p-4 border-0">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-uppercase mb-1">Command đang bật</h6>
-                            <h2 class="fw-bold mb-0">{{ \App\Models\ScheduledCommand::where('enabled', 1)->count() }}</h2>
-                        </div>
-                        <i class="fas fa-terminal fa-3x opacity-75"></i>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
     </div>
 
     <style>

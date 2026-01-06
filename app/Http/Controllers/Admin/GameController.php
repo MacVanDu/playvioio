@@ -36,7 +36,7 @@ class GameController extends Controller
         }
 
         // --- Các cột được phép sắp xếp ---
-        $sortable = ['id', 'name', 'created_at', 'video_y_id', 'blog_count', 'video_short','vote_like','vote_dis_like'];
+        $sortable = ['id', 'name', 'created_at'];
 
         // Lấy cột và chiều sắp xếp từ query string (?sort_by=&sort_order=)
         $sortBy = $request->input('sort_by');
@@ -76,10 +76,7 @@ public function store(Request $request)
         'name' => 'required|string|max:255',
         'slug' => 'nullable|string|max:255',
         'image' => 'nullable|string|max:255',
-        'imgseo' => 'nullable|string|max:255',
         'link' => 'nullable|string',
-        'video_short' => 'nullable|string',
-        'tags' => 'nullable|string|max:200',
         'category_id' => 'required|integer',
         'description' => 'nullable|string',
     ]);
@@ -103,19 +100,7 @@ public function update(Request $request, Game $game)
     $request->validate([
         'name' => 'required|string|max:255',
         'image' => 'nullable|string|max:255',
-        'imgseo' => 'nullable|string|max:255',
         'link' => 'nullable|string',
-        'video_short' => 'nullable|string',
-        'video_y_id' => 'nullable|string',
-        'duration' => 'nullable|string|max:200',
-        'tags' => 'nullable|string|max:200',
-        'trend' => 'nullable|integer',
-        'vote_like' => 'nullable|integer',
-        'vote_dis_like' => 'nullable|integer',
-        'imgstatus' => 'nullable|integer',
-        'status' => 'nullable|integer',
-        'status_index' => 'nullable|integer',
-        'blog_count' => 'nullable|integer',
         'category_id' => 'required|integer',
         'description' => 'nullable|string',
     ]);

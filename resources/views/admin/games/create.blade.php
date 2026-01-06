@@ -24,24 +24,10 @@
                 'label' => 'Ảnh (URL)',
                 'name' => 'image'
             ])
-            @include('admin.components.input', [
-                'label' => 'Ảnh SEO',
-                'name' => 'imgseo'
-            ])
 
             @include('admin.components.input', [
                 'label' => 'Link game (URL/iframe)',
                 'name' => 'link'
-            ])
-
-            @include('admin.components.input', [
-                'label' => 'Video ngắn (URL)',
-                'name' => 'video_short'
-            ])
-
-            @include('admin.components.input', [
-                'label' => 'Tags (phân cách bởi dấu ,)',
-                'name' => 'tags'
             ])
 
             <!-- select category -->

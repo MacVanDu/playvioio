@@ -32,7 +32,6 @@
                         <th>Tên thể loại</th>
                         <th class="d-none d-md-table-cell">Slug</th>
                         <th class="d-none d-md-table-cell text-center">Ảnh SVG</th>
-                        <th class="d-none d-lg-table-cell">Mô tả ngắn</th>
                         <th class="text-center">Hành động</th>
                     </tr>
                 </thead>
@@ -45,16 +44,13 @@
                             </td>
                             <td class="d-none d-md-table-cell text-secondary small">{{ $item->slug }}</td>
                             <td class="d-none d-md-table-cell text-center">
-                                <img src="{{ $item->imgCategory() }}" alt="icon" width="32" height="32"
+                                <img src="{{ $item->img() }}" alt="icon" width="32" height="32"
                                      style="object-fit:contain;" />
-                            </td>
-                            <td class="d-none d-lg-table-cell text-secondary small">
-                                {{ Str::limit($item->mo_ta_ngan, 60) }}
                             </td>
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2 flex-wrap">
                                     <!-- Xem -->
-                                    <a href="{{ $item->slugk() }}" target="_blank"
+                                    <a href="{{ $item->slug() }}" target="_blank"
                                        class="btn-action view" title="Xem trên web">
                                         <i class="fas fa-eye"></i>
                                     </a>

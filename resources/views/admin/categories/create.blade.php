@@ -54,46 +54,6 @@
                 @endif
             </div>
 
-            <!-- Ảnh SEO -->
-            <div class="mb-3">
-                <label class="form-label text-white">Ảnh SEO (URL hoặc đường dẫn)</label>
-                <input type="text" name="imgseo" value="{{ old('imgseo') }}"
-                    class="form-control bg-dark text-white border-0 @error('imgseo') is-invalid @enderror"
-                    placeholder="https://example.com/seo-image.jpg">
-                @error('imgseo')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-
-                @if(old('imgseo'))
-                    <div class="mt-2">
-                        <img src="{{ old('imgseo') }}" alt="Preview SEO" width="100" height="60"
-                             style="object-fit:cover;border-radius:6px;">
-                    </div>
-                @endif
-            </div>
-
-            <!-- Mô tả ngắn -->
-            <div class="mb-3">
-                <label class="form-label text-white">Mô tả ngắn</label>
-                <textarea name="mo_ta_ngan" rows="2"
-                    class="form-control bg-dark text-white border-0 @error('mo_ta_ngan') is-invalid @enderror"
-                    placeholder="Nhập mô tả ngắn">{{ old('mo_ta_ngan') }}</textarea>
-                @error('mo_ta_ngan')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <!-- Mô tả chi tiết -->
-            <div class="mb-4">
-                <label class="form-label text-white">Mô tả chi tiết</label>
-                <textarea name="mo_ta" rows="4"
-                    class="form-control bg-dark text-white border-0 @error('mo_ta') is-invalid @enderror"
-                    placeholder="Nhập mô tả chi tiết">{{ old('mo_ta') }}</textarea>
-                @error('mo_ta')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-            </div>
-
             <!-- Nút -->
             <div class="d-flex justify-content-end gap-2">
                 <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary px-4">

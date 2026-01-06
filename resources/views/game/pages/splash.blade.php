@@ -2,7 +2,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Stickman Parkour 3</title>
+  <title></title>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <meta name="description" content="">
   <link rel="stylesheet" type="text/css" href="/content/themes/default/css/style.css">

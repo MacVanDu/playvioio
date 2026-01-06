@@ -4,12 +4,6 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Http\Request;
-use App\Http\Services\HeadService;
-use App\Http\Services\GameService;
-use App\Models\Game;
-use App\Models\Pages;
 use App\Models\Category;
 
 class Handler extends ExceptionHandler

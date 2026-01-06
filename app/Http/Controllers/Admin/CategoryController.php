@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 { public function index()
     {
-        $categories = Category::orderBy('imgseo', 'DESC')->get();
+        $categories = Category::orderBy('id', 'DESC')->get();
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -24,20 +24,14 @@ class CategoryController extends Controller
             'name'        => 'required|string|max:255|unique:categories,name',
             'slug'        => 'nullable|string|max:255|unique:categories,slug',
             'imagesvg'    => 'nullable|string|max:200',
-            'imgseo'      => 'nullable|string|max:200',
-            'mo_ta_ngan'  => 'nullable|string|max:300',
-            'mo_ta'       => 'nullable|string',
         ]);
 
-        $slug = $request->slug ?? Str::slug($request->name);
+        $slug = $request->slug;
 
         Category::create([
             'name'        => $request->name,
             'slug'        => $slug,
             'imagesvg'    => $request->imagesvg,
-            'imgseo'      => $request->imgseo,
-            'mo_ta_ngan'  => $request->mo_ta_ngan,
-            'mo_ta'       => $request->mo_ta,
         ]);
 
         return redirect()->route('admin.categories.index')->with('success', 'Thêm thể loại thành công!');
@@ -54,20 +48,14 @@ class CategoryController extends Controller
             'name'        => 'required|string|max:255|unique:categories,name,' . $category->id,
             'slug'        => 'nullable|string|max:255|unique:categories,slug,' . $category->id,
             'imagesvg'    => 'nullable|string|max:200',
-            'imgseo'      => 'nullable|string|max:200',
-            'mo_ta_ngan'  => 'nullable|string|max:300',
-            'mo_ta'       => 'nullable|string',
         ]);
 
-        $slug = $request->slug ?? Str::slug($request->name);
+        $slug = $request->slug;
 
         $category->update([
             'name'        => $request->name,
             'slug'        => $slug,
             'imagesvg'    => $request->imagesvg,
-            'imgseo'      => $request->imgseo,
-            'mo_ta_ngan'  => $request->mo_ta_ngan,
-            'mo_ta'       => $request->mo_ta,
         ]);
 
         return redirect()->route('admin.categories.index')->with('success', 'Cập nhật thể loại thành công!');

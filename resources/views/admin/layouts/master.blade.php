@@ -302,11 +302,7 @@
         <a href="{{ route('admin.dashboard') }}" class="{{ request()->is('admin/dashboard') ? 'active' : '' }}">🏠 Tổng quan</a>
         <a href="{{ route('admin.games.index') }}" class="{{ request()->is('admin/games*') ? 'active' : '' }}">🎮 Quản lý Game</a>
         <a href="{{ route('admin.categories.index') }}" class="{{ request()->is('admin/categories*') ? 'active' : '' }}">🧩 Thể loại Game</a>
-        <a href="{{ route('admin.scheduled-commands.index') }}" class="{{ request()->is('admin/scheduled-commands*') ? 'active' : '' }}">💻 Commands</a>
-        <a href="{{ route('admin.logs.index') }}" class="{{ request()->is('admin/logs*') ? 'active' : '' }}">📜 Quản lý Log</a>
         <a href="{{ route('admin.settings.index') }}" class="{{ request()->is('admin/settings*') ? 'active' : '' }}">⚙️ Cấu hình hệ thống</a>
-        <a href="{{ route('admin.game-android.index') }}" class="{{ request()->is('admin/game-android*') ? 'active' : '' }}">⚙️ Game Android</a>
-        <a href="{{ route('admin.feedback.index') }}" class="{{ request()->is('admin/feedback*') ? 'active' : '' }}">🧱 Feedback</a>
 
     </div>
 
