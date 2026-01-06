@@ -23,8 +23,9 @@ class HomeControllerMTLG extends Controller
         $datamd = $this->data_mac_dinh();
         $games = $this->gameService->get_game_xuat_hien_trang_chu();
         $container_home = Setting::getValue('container_home', '', false);
+        $ma_head_trang_chu = Setting::getValue('ma_head_trang_chu', '', false);
         return view('game.pages.index', 
-        array_merge(compact('datamd','container_home',), $games))->render();
+        array_merge(compact('datamd','container_home','ma_head_trang_chu',), $games))->render();
     }
     public function pages($slug, Request $request)
     {
