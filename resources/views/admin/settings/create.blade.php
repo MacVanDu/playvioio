@@ -2,28 +2,89 @@
 
 @section('content')
 <div class="content-wrapper p-4" style="background:#0f172a;min-height:100vh;">
-    <div class="card p-4 shadow-lg" style="background:#1e293b;border:none;border-radius:16px;max-width:600px;margin:auto;">
-        <h3 class="text-white fw-bold mb-3"><i class="fas fa-plus-circle me-2"></i>Thêm cấu hình mới</h3>
+    <div class="card p-4 shadow-lg"
+         style="background:#1e293b;border:none;border-radius:16px;margin:auto;">
+
+        <h3 class="text-white fw-bold mb-3">
+            <i class="fas fa-plus-circle me-2"></i>Thêm cấu hình mới
+        </h3>
 
         <form method="POST" action="{{ route('admin.settings.store') }}">
             @csrf
+
+            {{-- KEY --}}
             <div class="mb-3">
                 <label class="form-label text-white">Key</label>
-                <input type="text" name="key" class="form-control bg-dark text-white border-0" placeholder="VD: num-game" required>
+                <input
+                    type="text"
+                    name="key"
+                    class="form-control bg-dark text-white border-0"
+                    placeholder="VD: num-game"
+                    value="{{ old('key') }}"
+                    required
+                >
             </div>
+
+            {{-- VALUE (TinyMCE) --}}
             <div class="mb-3">
                 <label class="form-label text-white">Giá trị</label>
-                <input type="text" name="value" class="form-control bg-dark text-white border-0" placeholder="VD: 3">
+                <textarea
+                    id="value_editor"
+                    name="value"
+                    class="form-control bg-dark text-white border-0"
+                    rows="6"
+                    placeholder="Nhập nội dung hoặc HTML"
+                >{{ old('value') }}</textarea>
             </div>
+
+            {{-- NOTE --}}
             <div class="mb-3">
                 <label class="form-label text-white">Chú thích</label>
-                <textarea name="note" class="form-control bg-dark text-white border-0" placeholder="VD: Số lượng game hiển thị trên trang chủ"></textarea>
+                <textarea
+                    name="note"
+                    class="form-control bg-dark text-white border-0"
+                    placeholder="VD: Số lượng game hiển thị trên trang chủ"
+                >{{ old('note') }}</textarea>
             </div>
+
             <div class="d-flex justify-content-end gap-2">
-                <a href="{{ route('admin.settings.index') }}" class="btn btn-secondary">Hủy</a>
-                <button type="submit" class="btn btn-gradient"><i class="fas fa-save"></i> Lưu</button>
+                <a href="{{ route('admin.settings.index') }}" class="btn btn-secondary">
+                    Hủy
+                </a>
+                <button type="submit" class="btn btn-gradient">
+                    <i class="fas fa-save"></i> Lưu
+                </button>
             </div>
         </form>
     </div>
 </div>
+
+{{-- ================= TinyMCE 6 – FREE (NO API KEY) ================= --}}
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"></script>
+
+<script>
+tinymce.init({
+    selector: '#value_editor',
+ height: 420,
+    menubar: true,
+    plugins: [
+        'advlist autolink lists link image charmap preview anchor',
+        'searchreplace visualblocks code fullscreen',
+        'insertdatetime media table help wordcount'
+    ],
+    toolbar:
+        'undo redo | bold italic underline | ' +
+        'alignleft aligncenter alignright alignjustify | ' +
+        'bullist numlist outdent indent | ' +
+        'link image table | code fullscreen',
+    branding: false,
+    promotion: false,
+    content_style: `
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+    `
+});
+</script>
 @endsection
