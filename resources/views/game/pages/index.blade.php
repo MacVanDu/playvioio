@@ -2,7 +2,7 @@
 @section('heads')
 <title>PlayVio.io | Free Online Browser Game</title>
 <meta name="description" content="Play hundreds of free online browser games instantly on PlayVio.io. No downloads required. Action, puzzle, adventure, and multiplayer games for all ages.">
-<link rel="canonical" href="https://playvio.io/">
+sad
   {!! $ma_head_trang_chu !!}
 @endsection
 @section('body')
