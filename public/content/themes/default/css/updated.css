@@ -124,7 +124,15 @@ img.small-thumb {
     padding: 0
 }
 
+.list-thumbnail img{
+    object-fit: cover;
+    height: 100%;
+}
+.list-thumbnail{
+    height: 100%;
+}
 .list-game {
+    height: 100%;
     margin-bottom: 20px;
     box-shadow: 0 1px 6px 0 rgb(50 50 50 / .25);
     border-radius: 5px;

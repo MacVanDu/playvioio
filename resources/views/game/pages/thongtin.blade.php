@@ -1,7 +1,7 @@
 @extends('game.layouts.all')
 @section('heads')
 <title>{{ $detail->nameGame()  }} | Play on PlayVio</title>
-<meta name="description" content="Play hundreds of free online browser games instantly on PlayVio.io. No downloads required. Action, puzzle, adventure, and multiplayer games for all ages.">
+<meta name="description" content="{{  $detail->description_h() }}">
 <link rel="canonical" href="/">
 @endsection
 @section('body')

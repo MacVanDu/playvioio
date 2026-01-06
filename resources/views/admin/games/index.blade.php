@@ -52,6 +52,18 @@ $columns = [
     ],
 
     [
+        'label' => 'Trend',
+        'field' => 'trend',
+        'sortable' => true,
+        'responsive' => 'd-none d-lg-table-cell',
+        'render' => fn($g) =>
+            "<label class='switch'>
+                <input type='checkbox' class='trend-toggle' data-id='{$g->id}' ".($g->trend ? 'checked' : '').">
+                <span class='slider round'></span>
+             </label>"
+    ],
+
+    [
         'label' => 'Thông Tin',
         'field' => 'name',
         'sortable' => true,

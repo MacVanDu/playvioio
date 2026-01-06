@@ -75,5 +75,21 @@ class Game extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+    function description_h()
+    {
+        $rawHtml = $this->description ?? '';
+
+    // 1. Decode HTML entities (&nbsp; &aacute; ...)
+    $decoded = html_entity_decode($rawHtml, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+    // 2. Bỏ toàn bộ thẻ HTML
+    $plainText = trim(strip_tags($decoded));
+
+    // 3. Chuẩn hoá khoảng trắng
+    $plainText = preg_replace('/\s+/u', ' ', $plainText);
+
+    // 4. Giới hạn ký tự (SEO ~150–160)
+    return Str::limit($plainText, 160, '...');
+    }
 }
    

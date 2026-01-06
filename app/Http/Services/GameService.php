@@ -56,7 +56,7 @@ class GameService
     public function get_game_xuat_hien_trang_chu(): array
     {
         $game_dau = $this->get_game_table()
-            ->orderBy('id', 'DESC')
+            ->orderBy('trend', 'DESC')
             ->limit(15)
             ->get();
         $excludeIds = $game_dau->pluck('id')->toArray();

@@ -24,10 +24,8 @@ class GameController extends Controller
     }
     public function index(Request $request)
     {
-        // --- Tạo query cơ bản kèm load thể loại ---
         $query = Game::query()->with('category');
 
-        // --- Tìm kiếm theo tên hoặc slug ---
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
@@ -35,8 +33,7 @@ class GameController extends Controller
             });
         }
 
-        // --- Các cột được phép sắp xếp ---
-        $sortable = ['id', 'name', 'created_at'];
+        $sortable = ['id', 'name', 'created_at','trend'];
 
         // Lấy cột và chiều sắp xếp từ query string (?sort_by=&sort_order=)
         $sortBy = $request->input('sort_by');

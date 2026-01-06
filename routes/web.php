@@ -39,5 +39,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('categories', CategoryController::class);
         Route::resource('games', GameController::class);
         Route::resource('settings', SettingController::class);
+        Route::post('/games/{id}/toggle-trend', [GameController::class, 'toggleTrend']);
     });
 });

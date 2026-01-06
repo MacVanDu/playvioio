@@ -5,32 +5,54 @@
     <h2 class="fw-bold mb-4">Sửa Game</h2>
 
     <form method="POST" action="{{ route('admin.games.update', $game) }}">
-        @csrf @method('PUT')
+        @csrf
+        @method('PUT')
 
         <div class="row">
 
             <!-- NAME -->
             <div class="col-md-6 mb-3">
                 <label>Tên Game</label>
-                <input type="text" name="name" class="form-control" value="{{ $game->name }}" required>
+                <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    value="{{ old('name', $game->name) }}"
+                    required
+                >
             </div>
 
-            <!-- SLUG -->
+            <!-- SLUG (không cho sửa) -->
             <div class="col-md-6 mb-3">
                 <label>Slug</label>
-                <input type="text" name="slug" class="form-control" value="{{ $game->slug }}" disabled>
+                <input
+                    type="text"
+                    class="form-control"
+                    value="{{ $game->slug }}"
+                    disabled
+                >
             </div>
 
             <!-- IMAGE -->
             <div class="col-md-6 mb-3">
                 <label>Ảnh (URL)</label>
-                <input type="text" name="image" class="form-control" value="{{ $game->image }}">
+                <input
+                    type="text"
+                    name="image"
+                    class="form-control"
+                    value="{{ old('image', $game->image) }}"
+                >
             </div>
 
             <!-- LINK -->
             <div class="col-md-6 mb-3">
                 <label>Link Game</label>
-                <input type="text" name="link" class="form-control" value="{{ $game->link }}">
+                <input
+                    type="text"
+                    name="link"
+                    class="form-control"
+                    value="{{ old('link', $game->link) }}"
+                >
             </div>
 
             <!-- CATEGORY -->
@@ -39,17 +61,23 @@
                 <select name="category_id" class="form-select" required>
                     <option value="">-- Chọn thể loại --</option>
                     @foreach($categories as $cat)
-                        <option value="{{ $cat->id }}" {{ $game->category_id == $cat->id ? 'selected' : '' }}>
+                        <option value="{{ $cat->id }}"
+                            {{ old('category_id', $game->category_id) == $cat->id ? 'selected' : '' }}>
                             {{ $cat->name }}
                         </option>
                     @endforeach
                 </select>
             </div>
 
-            <!-- DESCRIPTION -->
+            <!-- DESCRIPTION (TinyMCE) -->
             <div class="col-12 mb-3">
                 <label>Mô tả</label>
-                <textarea name="description" rows="6" class="form-control">{{ $game->description }}</textarea>
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="6"
+                    class="form-control"
+                >{{ old('description', $game->description) }}</textarea>
             </div>
 
         </div>
@@ -58,6 +86,35 @@
         <a href="{{ route('admin.games.index') }}" class="btn btn-secondary">Quay lại</a>
     </form>
 </div>
+
+{{-- ================= TINYMCE 6 – FREE (NO API KEY) ================= --}}
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"></script>
+
+<script>
+tinymce.init({
+    selector: '#description',
+    height: 420,
+    menubar: true,
+    plugins: [
+        'advlist autolink lists link image charmap preview anchor',
+        'searchreplace visualblocks code fullscreen',
+        'insertdatetime media table help wordcount'
+    ],
+    toolbar:
+        'undo redo | bold italic underline | ' +
+        'alignleft aligncenter alignright alignjustify | ' +
+        'bullist numlist outdent indent | ' +
+        'link image table | code fullscreen',
+    branding: false,
+    promotion: false,
+    content_style: `
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+    `
+});
+</script>
 
 <style>
 body { background-color: #0f172a !important; }
