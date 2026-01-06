@@ -13,7 +13,7 @@ class HomeControllerMTLG extends Controller
 {
     private $gameService;
 
-    public function __construct( GameService $gameService)
+    public function __construct(GameService $gameService)
     {
         $this->gameService = $gameService;
     }
@@ -23,9 +23,17 @@ class HomeControllerMTLG extends Controller
         $datamd = $this->data_mac_dinh();
         $games = $this->gameService->get_game_xuat_hien_trang_chu();
         $container_home = Setting::getValue('container_home', '', false);
+        $tile_trang_chu = Setting::getValue('tile_trang_chu', '', false);
+        $description_trang_chu = Setting::getValue('description_trang_chu', '', false);
         $ma_head_trang_chu = Setting::getValue('ma_head_trang_chu', '', false);
-        return view('game.pages.index', 
-        array_merge(compact('datamd','container_home','ma_head_trang_chu',), $games))->render();
+        return view(
+            'game.pages.index',
+            array_merge(compact('datamd', 'container_home', 
+            'tile_trang_chu',
+            'description_trang_chu',
+            'ma_head_trang_chu',
+            ), $games)
+        )->render();
     }
     public function pages($slug, Request $request)
     {
@@ -50,20 +58,20 @@ class HomeControllerMTLG extends Controller
 
         $perPage = 30;
 
-      
+
 
         $gamesQuery = $this->gameService->get_game_table_p()->where('category_id', $category->id)
             ->orderBy('id', 'DESC');
 
         $data_games = $gamesQuery->paginate($perPage, ['*'], 'page', $page);
 
-       
-            return view('game.pages.theloai', compact(
-                'data_games',
-                'category',
-                'datamd',
-                'slug',   
-            ));
+
+        return view('game.pages.theloai', compact(
+            'data_games',
+            'category',
+            'datamd',
+            'slug',
+        ));
     }
     public function detail($slug, Request $request)
     {
@@ -75,8 +83,10 @@ class HomeControllerMTLG extends Controller
 
         $datamd = $this->data_mac_dinh();
         $games = $this->gameService->get_game_trang_choi($detail->category_id);
-        return view('game.pages.thongtin', 
-        array_merge(compact('datamd','detail'), $games))->render();
+        return view(
+            'game.pages.thongtin',
+            array_merge(compact('datamd', 'detail'), $games)
+        )->render();
     }
     public function splash($slug, Request $request)
     {
@@ -86,8 +96,10 @@ class HomeControllerMTLG extends Controller
             return $this->notFoundPage($request);
         }
 
-        return view('game.pages.splash', 
-        compact('detail'))->render();
+        return view(
+            'game.pages.splash',
+            compact('detail')
+        )->render();
     }
     public function search(Request $request)
     {
@@ -97,22 +109,21 @@ class HomeControllerMTLG extends Controller
         $datamd = $this->data_mac_dinh();
 
         $names = $request->name;
-            $data_games = [];
-            if ($request->name) {
-                $data_games = $this->gameService->get_game_theo_tu_khoa($request->name);
-            }
-            $length = count($data_games);
-            $thongBao = 'Search results: ' . $request->name;
+        $data_games = [];
+        if ($request->name) {
+            $data_games = $this->gameService->get_game_theo_tu_khoa($request->name);
+        }
+        $length = count($data_games);
+        $thongBao = 'Search results: ' . $request->name;
 
 
-            return view('game.pages.timkiem', compact(
-                'thongBao',
-                'length',
-                'names',
-                'datamd',
-                'data_games',
-            ))->render();
-        
+        return view('game.pages.timkiem', compact(
+            'thongBao',
+            'length',
+            'names',
+            'datamd',
+            'data_games',
+        ))->render();
     }
     public function notFoundPage($request)
     {

@@ -1,7 +1,7 @@
 @extends('game.layouts.all')
 @section('heads')
-<title>PlayVio.io | Free Online Browser Game</title>
-<meta name="description" content="Play hundreds of free online browser games instantly on PlayVio.io. No downloads required. Action, puzzle, adventure, and multiplayer games for all ages.">
+<title>{{ $tile_trang_chu }}</title>
+<meta name="description" content="{{ $description_trang_chu }}">
   {!! $ma_head_trang_chu !!}
 @endsection
 @section('body')
