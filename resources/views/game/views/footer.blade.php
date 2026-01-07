@@ -1,7 +1,7 @@
 <footer>
 		<div class="col-12 bg-black p-4 rounded-top d-sm-flex justify-content-between align-items-center">
             <div class="col-12 col-sm-5 col-xl-8 mb-2">
-                <a class="navbar-brand" href="/"><img src="/images/site-logo.webp" width="190" height="55" alt="playvio.io Logo">
+                <a class="navbar-brand" href="/"><img src="/images/site-logo.webp" width="190" height="55" alt="Marios.games Logo">
                 </a>
             </div>
             <div class="col-12 col-sm-4 col-xl-2 mb-2">

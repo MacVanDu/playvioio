@@ -1,8 +1,8 @@
 @extends('game.layouts.all')
 @section('heads')
-<title>{{ $names}} | Play on PlayVio</title>
-<meta name="description" content="Play hundreds of free online browser games instantly on PlayVio.io. No downloads required. Action, puzzle, adventure, and multiplayer games for all ages.">
-<link rel="canonical" href="https://playvio.io/">
+<title>{{ $names}} | Play on Marios.games</title>
+<meta name="description" content="{{ $description_trang_chu }}">
+<link rel="canonical" href="https://marios.games/">
 @endsection
 @section('body')
 <div class="container">

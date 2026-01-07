@@ -7,7 +7,7 @@
 			</div>
 			<div class="slider single-line">
 				<ul class="slider__track py-1 mb-0">
-					@foreach($data->games10() as $i => $game)
+					@foreach($data->games10($datamd['device'] ) as $i => $game)
 					<li>
 						<div class="slide">
 							<a href="{{  $game->slugGame() }}">

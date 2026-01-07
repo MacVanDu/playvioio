@@ -35,5 +35,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('pages', PagessController::class);
         Route::resource('settings', SettingController::class);
         Route::post('/games/{id}/toggle-trend', [GameController::class, 'toggleTrend']);
+        Route::post('/games/{id}/mobile', [GameController::class, 'mobile']);
     });
 });

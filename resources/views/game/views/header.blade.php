@@ -3,7 +3,7 @@
 				<div class="side-header" style="display: block;"></div>
 				<div class="container-fluid">
 					<a class="navbar-brand logo-center site-logo" href="/">
-						<img src="/images/site-logo.webp" alt="Playvio Logo" width="190" height="55">
+						<img src="/images/site-logo.webp" alt="Marios.games Logo" width="190" height="55">
 					</a>
 					<form class="position-relative mx-auto my-3 search-bar order-1 order-md-0 desk-search-bar" action="/search">
 												<input type="text" class="form-control searchInput search" placeholder="Search game" name="name" minlength="2" required="">

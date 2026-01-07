@@ -20,8 +20,8 @@ class HomeControllerMTLG extends Controller
 
     public function index(Request $request)
     {
-        $datamd = $this->data_mac_dinh();
-        $games = $this->gameService->get_game_xuat_hien_trang_chu();
+        $datamd = $this->data_mac_dinh($request);
+        $games = $this->gameService->get_game_xuat_hien_trang_chu($request);
         $container_home = Setting::getValue('container_home', '', false);
         $tile_trang_chu = Setting::getValue('tile_trang_chu', '', false);
         $description_trang_chu = Setting::getValue('description_trang_chu', '', false);
@@ -41,7 +41,7 @@ class HomeControllerMTLG extends Controller
         if (!$detail) {
             return $this->notFoundPage($request);
         }
-        $datamd = $this->data_mac_dinh();
+        $datamd = $this->data_mac_dinh($request);
         return view('game.pages.pages', compact(
             'datamd',
             'detail',
@@ -49,7 +49,7 @@ class HomeControllerMTLG extends Controller
     }
     public function category(Request $request, $slug, $page = 1)
     {
-        $datamd = $this->data_mac_dinh();
+        $datamd = $this->data_mac_dinh($request);
 
         $category = Category::where('slug', $slug)->first();
         if (!$category) {
@@ -60,7 +60,7 @@ class HomeControllerMTLG extends Controller
 
 
 
-        $gamesQuery = $this->gameService->get_game_table_p()->where('category_id', $category->id)
+        $gamesQuery = $this->gameService->get_game_table_p($request)->where('category_id', $category->id)
             ->orderBy('id', 'DESC');
 
         $data_games = $gamesQuery->paginate($perPage, ['*'], 'page', $page);
@@ -76,13 +76,13 @@ class HomeControllerMTLG extends Controller
     public function detail($slug, Request $request)
     {
 
-        $detail = $this->gameService->get_infor_game($slug);
+        $detail = $this->gameService->get_infor_game($request,$slug);
         if (!$detail) {
             return $this->notFoundPage($request);
         }
 
-        $datamd = $this->data_mac_dinh();
-        $games = $this->gameService->get_game_trang_choi($detail->category_id);
+        $datamd = $this->data_mac_dinh($request);
+        $games = $this->gameService->get_game_trang_choi($request,$detail->category_id);
         return view(
             'game.pages.thongtin',
             array_merge(compact('datamd', 'detail'), $games)
@@ -91,7 +91,7 @@ class HomeControllerMTLG extends Controller
     public function splash($slug, Request $request)
     {
 
-        $detail = $this->gameService->get_infor_game($slug);
+        $detail = $this->gameService->get_infor_game($request,$slug);
         if (!$detail) {
             return $this->notFoundPage($request);
         }
@@ -106,12 +106,12 @@ class HomeControllerMTLG extends Controller
         if (!$request->name) {
             return $this->notFoundPage($request);
         }
-        $datamd = $this->data_mac_dinh();
+        $datamd = $this->data_mac_dinh($request);
 
         $names = $request->name;
         $data_games = [];
         if ($request->name) {
-            $data_games = $this->gameService->get_game_theo_tu_khoa($request->name);
+            $data_games = $this->gameService->get_game_theo_tu_khoa($request,$request->name);
         }
         $length = count($data_games);
         $thongBao = 'Search results: ' . $request->name;
@@ -127,17 +127,59 @@ class HomeControllerMTLG extends Controller
     }
     public function notFoundPage($request)
     {
-        $datamd = $this->data_mac_dinh();
+        $datamd = $this->data_mac_dinh($request);
         return view('game.pages.404', compact(
             'datamd',
         ))->render();
     }
-    public function data_mac_dinh()
+    public function data_mac_dinh(Request $request)
     {
+        $device = $this->detectDevice($request);
         return [
+            'device'=>$device,
             'category' => Category::orderBy('id', 'DESC')
                 ->limit(10)
                 ->get(),
         ];
+    }
+
+    //=======================
+    
+    public function checkMobile(Request $request): bool
+    {
+        $device = $this->detectDevice($request);
+        if ($device === 'MB') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+        public function detectDevice(Request $request): string
+    {
+        $userAgent = $request->header('User-Agent');
+
+        // iPad
+        if (preg_match('/ipad/i', $userAgent)) {
+            return 'TL';
+        }
+
+        // Android Tablet (có Android nhưng KHÔNG có Mobile)
+        if (preg_match('/android/i', $userAgent) && !preg_match('/mobile/i', $userAgent)) {
+            return 'TL'; // Tablet
+        }
+
+        // Các loại tablet khác (generic)
+        if (preg_match('/tablet/i', $userAgent)) {
+            return 'TL';
+        }
+
+
+        // iPhone / Android / iPod
+        if (preg_match('/mobile|android|iphone|ipod/i', $userAgent)) {
+            return 'MB'; // Mobile
+        }
+
+        // Desktop
+        return 'PC';
     }
 }

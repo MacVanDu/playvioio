@@ -4,7 +4,7 @@
 			<a class="navbar-brand logo-center" href="/">
 				<picture>
 					<source srcset="/images/site-logo.webp" media="(max-width: 768px)">
-					<img src="/images/site-logo.webp" alt="Playvio Logo" width="190" height="55">
+					<img src="/images/site-logo.webp" alt="Marios.games Logo" width="190" height="55">
 				</picture>
 			</a>
 		</h5>
@@ -29,7 +29,7 @@
 					<li><a href="/page/developer" class="text-error">Developer</a></li>
 					<li><a href="/page/privacy" class="text-error">Privacy</a></li>
 					<li><a href="/" class="text-error">All games</a></li>
-					<p class="text-white">© 2026 playvio.io</p>
+					<p class="text-white">© 2026 Marios.games</p>
 				</ul>
 			</div>
 			<hr>

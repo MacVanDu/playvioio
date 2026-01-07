@@ -4,45 +4,89 @@ namespace App\Http\Services;
 
 use App\Models\Game;
 use App\Models\Category;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
 
 class GameService
 {
-    private function get_game_table()
+    //=======================
+
+    public function checkMobile(Request $request): bool
     {
-        return Game::query();
+        $device = $this->detectDevice($request);
+        if ($device === 'MB') {
+            return true;
+        } else {
+            return false;
+        }
     }
-    public function get_game_table_p()
+    public function detectDevice(Request $request): string
     {
-        return $this->get_game_table();
+        $userAgent = $request->header('User-Agent');
+
+        // iPad
+        if (preg_match('/ipad/i', $userAgent)) {
+            return 'TL';
+        }
+
+        // Android Tablet (có Android nhưng KHÔNG có Mobile)
+        if (preg_match('/android/i', $userAgent) && !preg_match('/mobile/i', $userAgent)) {
+            return 'TL'; // Tablet
+        }
+
+        // Các loại tablet khác (generic)
+        if (preg_match('/tablet/i', $userAgent)) {
+            return 'TL';
+        }
+
+
+        // iPhone / Android / iPod
+        if (preg_match('/mobile|android|iphone|ipod/i', $userAgent)) {
+            return 'MB'; // Mobile
+        }
+
+        // Desktop
+        return 'PC';
     }
-    public function get_game_theo_tu_khoa($q, $limit = 50)
+    private function get_game_table(Request $request)
     {
-        return $this->get_game_table()->where('description', 'like', '%' . $q . '%')
+
+        if ($this->checkMobile($request)) {
+            return Game::where('mobile',1);
+        } else {
+            return Game::query();
+        }
+    }
+    public function get_game_table_p(Request $request)
+    {
+        return $this->get_game_table($request);
+    }
+    public function get_game_theo_tu_khoa(Request $request,$q, $limit = 50)
+    {
+        return $this->get_game_table($request)->where('description', 'like', '%' . $q . '%')
             ->orWhere('name', 'like', '%' . $q . '%')
             ->limit($limit)
             ->get();
     }
-    public function get_infor_game($slug)
+    public function get_infor_game(Request $request,$slug)
     {
-        return $this->get_game_table()
+        return $this->get_game_table($request)
             ->where('slug', $slug)->first();
     }
-    public function get_game_trang_choi($id): array
+    public function get_game_trang_choi(Request $request,$id): array
     {
 
         $similar_games =    Game::where('category_id', $id)->orderBy('id', 'DESC')->limit(12)->get();
 
         $excludeIds = $similar_games->pluck('id')->toArray();
 
-        $you_may_like_games = $this->get_game_table()
+        $you_may_like_games = $this->get_game_table($request)
             ->orderBy('id', 'DESC')
             ->whereNotIn('id', $excludeIds)
             ->limit(12)
             ->get();
 
         $excludeIds = array_merge($excludeIds, $you_may_like_games->pluck('id')->toArray());
-        $popular_games = $this->get_game_table()
+        $popular_games = $this->get_game_table($request)
             ->orderBy('id', 'DESC')
             ->whereNotIn('id', $excludeIds)
             ->limit(12)
@@ -53,15 +97,15 @@ class GameService
             'popular_games' => $popular_games,
         ];
     }
-    public function get_game_xuat_hien_trang_chu(): array
+    public function get_game_xuat_hien_trang_chu(Request $request): array
     {
-        $game_dau = $this->get_game_table()
+        $game_dau = $this->get_game_table( $request)
             ->orderBy('trend', 'DESC')
             ->limit(15)
             ->get();
         $excludeIds = $game_dau->pluck('id')->toArray();
 
-        $game_new = $this->get_game_table()
+        $game_new = $this->get_game_table( $request)
             ->whereNotIn('id', $excludeIds)
             ->limit(10)
             ->get();

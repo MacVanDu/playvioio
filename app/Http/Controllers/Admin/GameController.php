@@ -33,7 +33,7 @@ class GameController extends Controller
             });
         }
 
-        $sortable = ['id', 'name', 'created_at','trend'];
+        $sortable = ['id', 'name', 'created_at','trend','mobile'];
 
         // Lấy cột và chiều sắp xếp từ query string (?sort_by=&sort_order=)
         $sortBy = $request->input('sort_by');
@@ -69,11 +69,18 @@ class GameController extends Controller
 
 public function store(Request $request)
 {
+    $request->merge([
+    'trend' => (int) $request->input('trend', 0),
+    'mobile' => (int) $request->input('mobile', 0),
+]);
+
     $request->validate([
         'name' => 'required|string|max:255',
         'slug' => 'nullable|string|max:255',
         'image' => 'nullable|string|max:255',
         'link' => 'nullable|string',
+        'trend' => 'integer|in:0,1',
+        'mobile' => 'integer|in:0,1',
         'category_id' => 'required|integer',
         'description' => 'nullable|string',
     ]);
@@ -94,10 +101,16 @@ public function store(Request $request)
     }
 public function update(Request $request, Game $game)
 {
+    $request->merge([
+    'trend' => (int) $request->input('trend', 0),
+    'mobile' => (int) $request->input('mobile', 0),
+]);
     $request->validate([
         'name' => 'required|string|max:255',
         'image' => 'nullable|string|max:255',
         'link' => 'nullable|string',
+        'trend' => 'integer|in:0,1',
+        'mobile' => 'integer|in:0,1',
         'category_id' => 'required|integer',
         'description' => 'nullable|string',
     ]);
@@ -122,6 +135,14 @@ $data = $request->except('slug');
     {
         $game = Game::findOrFail($id);
         $game->trend = $request->trend;
+        $game->save();
+
+        return response()->json(['success' => true]);
+    }
+    public function mobile($id, Request $request)
+    {
+        $game = Game::findOrFail($id);
+        $game->mobile = $request->mobile;
         $game->save();
 
         return response()->json(['success' => true]);

@@ -55,6 +55,20 @@
                 >
             </div>
 
+                <div class="col-md-6 mb-3">
+                    <label>Trend</label>
+                    <label class='switch'>
+                        <input type="hidden" name="trend" value="0">
+                        <input type="checkbox" name="trend" value="1"
+                            {{ old('trend', $game->trend ?? 0) == 1 ? 'checked' : '' }}>
+                    </label>
+                    <label>mobile</label>
+                    <label class='switch'>
+                        <input type="hidden" name="mobile" value="0">
+                        <input type="checkbox" name="mobile" value="1"
+                            {{ old('mobile', $game->mobile ?? 0) == 1 ? 'checked' : '' }}>
+                    </label>
+                </div>
             <!-- CATEGORY -->
             <div class="col-md-6 mb-3">
                 <label>Thể loại</label>

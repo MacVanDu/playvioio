@@ -62,6 +62,17 @@ $columns = [
                 <span class='slider round'></span>
              </label>"
     ],
+    [
+        'label' => 'Mobile',
+        'field' => 'mobile',
+        'sortable' => true,
+        'responsive' => 'd-none d-lg-table-cell',
+        'render' => fn($g) =>
+            "<label class='switch'>
+                <input type='checkbox' class='mobile-toggle' data-id='{$g->id}' ".($g->mobile ? 'checked' : '').">
+                <span class='slider round'></span>
+             </label>"
+    ],
 
     [
         'label' => 'Thông Tin',
@@ -198,7 +209,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.mobile-toggle').forEach(toggle => {
+        toggle.addEventListener('change', function () {
+            const id = this.dataset.id;
+            const value = this.checked ? 1 : 0;
 
+            fetch(`/admin/games/${id}/mobile`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ mobile: value })
+            });
+        });
+    });
+});
+</script>
 <style>
 .switch{position:relative;display:inline-block;width:48px;height:24px;}
 .switch input{display:none;}

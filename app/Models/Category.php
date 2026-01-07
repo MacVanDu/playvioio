@@ -36,8 +36,12 @@ class Category extends Model
     {
         return $this->hasMany(Game::class, 'category_id');
     }
-    public function games10()
+    public function games10($device)
     {
+        if ($device === 'MB') {
+        return Game::where('category_id', $this->id)->where('mobile','1')->orderBy('id', 'DESC')->limit(10)->get();;
+        } else {
         return Game::where('category_id', $this->id)->orderBy('id', 'DESC')->limit(10)->get();
+        }
     }
 }

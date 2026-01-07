@@ -130,7 +130,7 @@
 <body>
   <div class="splash" id="splash">
     <div class="glow-background" style="{{ $detail->linkImgGameBG() }}"></div>
-    <div class="brand-logo"><img src="/images/brand-logo.webp" width="382" height="110" alt="Playvio.io Logo" class="img-fluid"></div>
+    <div class="brand-logo"><img src="/images/brand-logo.webp" width="382" height="110" alt="Marios.games Logo" class="img-fluid"></div>
     <div class="splash-content">
       <div class="splash-thumbnail">
         <img src="{{$detail->linkImgGame()}}">
