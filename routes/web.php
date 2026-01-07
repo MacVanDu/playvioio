@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\GameController;
+use App\Http\Controllers\Admin\GameChatController;
 use \App\Http\Controllers\Admin\PagessController;
 use \App\Http\Controllers\Admin\SettingController;
 
@@ -32,9 +33,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('categories', CategoryController::class);
         Route::resource('games', GameController::class);
+        Route::resource('chats', GameChatController::class);
         Route::resource('pages', PagessController::class);
         Route::resource('settings', SettingController::class);
         Route::post('/games/{id}/toggle-trend', [GameController::class, 'toggleTrend']);
         Route::post('/games/{id}/mobile', [GameController::class, 'mobile']);
+
+        Route::post('chats/{id}/approve', [GameChatController::class, 'approve']);
+        Route::post('chats/{id}/hide', [GameChatController::class, 'hide']);
+        Route::delete('chats/{id}', [GameChatController::class, 'destroy']);
     });
 });

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Services\GameService;
 use App\Models\Pages;
+use App\Models\GameChat;
 use App\Models\Category;
 use App\Models\Setting;
 
@@ -28,10 +29,12 @@ class HomeControllerMTLG extends Controller
         $ma_head_trang_chu = Setting::getValue('ma_head_trang_chu', '', false);
         return view(
             'game.pages.index',
-            array_merge(compact('datamd', 'container_home', 
-            'tile_trang_chu',
-            'description_trang_chu',
-            'ma_head_trang_chu',
+            array_merge(compact(
+                'datamd',
+                'container_home',
+                'tile_trang_chu',
+                'description_trang_chu',
+                'ma_head_trang_chu',
             ), $games)
         )->render();
     }
@@ -76,22 +79,33 @@ class HomeControllerMTLG extends Controller
     public function detail($slug, Request $request)
     {
 
-        $detail = $this->gameService->get_infor_game($request,$slug);
+        $detail = $this->gameService->get_infor_game($request, $slug);
         if (!$detail) {
             return $this->notFoundPage($request);
         }
 
         $datamd = $this->data_mac_dinh($request);
-        $games = $this->gameService->get_game_trang_choi($request,$detail->category_id);
+        $games = $this->gameService->get_game_trang_choi($request, $detail->category_id);
+        $chats = GameChat::byGame($detail->id)
+            ->active()
+            ->orderBy('id', 'desc')
+            ->limit(30)
+            ->get()
+            ->reverse()
+            ->values();
+
         return view(
             'game.pages.thongtin',
-            array_merge(compact('datamd', 'detail'), $games)
-        )->render();
+            array_merge(
+                compact('datamd', 'detail', 'chats'),
+                $games
+            )
+        );
     }
     public function splash($slug, Request $request)
     {
 
-        $detail = $this->gameService->get_infor_game($request,$slug);
+        $detail = $this->gameService->get_infor_game($request, $slug);
         if (!$detail) {
             return $this->notFoundPage($request);
         }
@@ -111,7 +125,7 @@ class HomeControllerMTLG extends Controller
         $names = $request->name;
         $data_games = [];
         if ($request->name) {
-            $data_games = $this->gameService->get_game_theo_tu_khoa($request,$request->name);
+            $data_games = $this->gameService->get_game_theo_tu_khoa($request, $request->name);
         }
         $length = count($data_games);
         $thongBao = 'Search results: ' . $request->name;
@@ -136,7 +150,7 @@ class HomeControllerMTLG extends Controller
     {
         $device = $this->detectDevice($request);
         return [
-            'device'=>$device,
+            'device' => $device,
             'category' => Category::orderBy('id', 'DESC')
                 ->limit(10)
                 ->get(),
@@ -144,7 +158,7 @@ class HomeControllerMTLG extends Controller
     }
 
     //=======================
-    
+
     public function checkMobile(Request $request): bool
     {
         $device = $this->detectDevice($request);
@@ -154,7 +168,7 @@ class HomeControllerMTLG extends Controller
             return false;
         }
     }
-        public function detectDevice(Request $request): string
+    public function detectDevice(Request $request): string
     {
         $userAgent = $request->header('User-Agent');
 

@@ -304,6 +304,7 @@
         <a href="{{ route('admin.categories.index') }}" class="{{ request()->is('admin/categories*') ? 'active' : '' }}">🧩 Thể loại Game</a>
         <a href="{{ route('admin.pages.index') }}" class="{{ request()->is('admin/pages*') ? 'active' : '' }}">📋 Pages</a>
         <a href="{{ route('admin.settings.index') }}" class="{{ request()->is('admin/settings*') ? 'active' : '' }}">⚙️ Cấu hình hệ thống</a>
+        <a href="{{ route('admin.chats.index') }}" class="{{ request()->is('admin/chats*') ? 'active' : '' }}">⚙️ Chats</a>
 
     </div>
 
