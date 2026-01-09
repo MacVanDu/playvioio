@@ -47,7 +47,7 @@ class CategoryController extends Controller
 
             $file->storeAs('public/categories', $filename);
 
-            $imagePath = 'storage/categories/' . $filename;
+            $imagePath = '/storage/categories/' . $filename;
         } else {
             // imagesvg là link
             $imagePath = $request->imagesvg;
