@@ -37,6 +37,7 @@
                 <label>Title</label>
                 <input
                     type="text"
+                    name="title"
                     class="form-control"
                     value="{{ $game->title }}"
                 >
