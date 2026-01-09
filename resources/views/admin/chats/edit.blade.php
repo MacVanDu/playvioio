@@ -4,7 +4,9 @@
 <div class="container mt-4 text-white">
     <h2 class="fw-bold mb-4">Sửa Game</h2>
 
-    <form method="POST" action="{{ route('admin.games.update', $game) }}">
+    <form method="POST"
+          action="{{ route('admin.games.update', $game) }}"
+          enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -22,7 +24,7 @@
                 >
             </div>
 
-            <!-- SLUG (không cho sửa) -->
+            <!-- SLUG -->
             <div class="col-md-6 mb-3">
                 <label>Slug</label>
                 <input
@@ -33,15 +35,29 @@
                 >
             </div>
 
-            <!-- IMAGE -->
+            <!-- IMAGE PREVIEW -->
             <div class="col-md-6 mb-3">
-                <label>Ảnh (URL)</label>
+                <label>Ảnh hiện tại</label><br>
+                @if($game->image)
+                    <img src="{{ $game->image }}"
+                         style="max-width:200px;border-radius:8px;margin-bottom:10px">
+                @else
+                    <div class="text-muted">Chưa có ảnh</div>
+                @endif
+            </div>
+
+            <!-- IMAGE UPLOAD -->
+            <div class="col-md-6 mb-3">
+                <label>Đổi ảnh (upload)</label>
                 <input
-                    type="text"
-                    name="image"
+                    type="file"
+                    name="image_file"
                     class="form-control"
-                    value="{{ old('image', $game->image) }}"
+                    accept="image/*"
                 >
+                <small class="text-muted">
+                    Giữ nguyên tên file gốc. Nếu không chọn → giữ ảnh cũ.
+                </small>
             </div>
 
             <!-- LINK -->
@@ -55,20 +71,23 @@
                 >
             </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Trend</label>
-                    <label class='switch'>
-                        <input type="hidden" name="trend" value="0">
-                        <input type="checkbox" name="trend" value="1"
-                            {{ old('trend', $game->trend ?? 0) == 1 ? 'checked' : '' }}>
-                    </label>
-                    <label>mobile</label>
-                    <label class='switch'>
-                        <input type="hidden" name="mobile" value="0">
-                        <input type="checkbox" name="mobile" value="1"
-                            {{ old('mobile', $game->mobile ?? 0) == 1 ? 'checked' : '' }}>
-                    </label>
-                </div>
+            <!-- FLAGS -->
+            <div class="col-md-6 mb-3">
+                <label>Trend</label>
+                <label class="switch">
+                    <input type="hidden" name="trend" value="0">
+                    <input type="checkbox" name="trend" value="1"
+                        {{ old('trend', $game->trend ?? 0) == 1 ? 'checked' : '' }}>
+                </label>
+
+                <label class="ms-4">Mobile</label>
+                <label class="switch">
+                    <input type="hidden" name="mobile" value="0">
+                    <input type="checkbox" name="mobile" value="1"
+                        {{ old('mobile', $game->mobile ?? 0) == 1 ? 'checked' : '' }}>
+                </label>
+            </div>
+
             <!-- CATEGORY -->
             <div class="col-md-6 mb-3">
                 <label>Thể loại</label>
@@ -83,7 +102,7 @@
                 </select>
             </div>
 
-            <!-- DESCRIPTION (TinyMCE) -->
+            <!-- DESCRIPTION -->
             <div class="col-12 mb-3">
                 <label>Mô tả</label>
                 <textarea
@@ -101,9 +120,8 @@
     </form>
 </div>
 
-{{-- ================= TINYMCE 6 – FREE (NO API KEY) ================= --}}
+{{-- ================= TINYMCE ================= --}}
 <script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"></script>
-
 <script>
 tinymce.init({
     selector: '#description',
@@ -120,13 +138,7 @@ tinymce.init({
         'bullist numlist outdent indent | ' +
         'link image table | code fullscreen',
     branding: false,
-    promotion: false,
-    content_style: `
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-        }
-    `
+    promotion: false
 });
 </script>
 
@@ -136,48 +148,10 @@ body { background-color: #0f172a !important; }
     background-color: #1e293b;
     border-radius: 12px;
     padding: 30px;
-    box-shadow: 0 0 25px rgba(0,0,0,0.3);
 }
-label { color: #cbd5e1; font-weight: 500; }
-.form-control, .form-select, textarea {
-    background-color: #f8fafc !important;
-    border: 1px solid #94a3b8 !important;
-    color: #0f172a !important;
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 15px;
-    transition: all 0.2s ease;
-}
-.form-control:focus, .form-select:focus, textarea:focus {
-    background-color: #ffffff !important;
-    border-color: #6366f1 !important;
-    box-shadow: 0 0 10px rgba(99,102,241,0.4) !important;
-}
-.btn-success {
-    background: linear-gradient(90deg, #4f46e5, #22d3ee);
-    border: none;
-    color: #fff;
-    font-weight: 600;
-    padding: 10px 20px;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-.btn-success:hover {
-    background: linear-gradient(90deg, #4338ca, #0ea5e9);
-    transform: translateY(-2px);
-}
-.btn-secondary {
-    background: #475569;
-    border: none;
-    color: #fff;
-    font-weight: 500;
-    padding: 10px 20px;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-.btn-secondary:hover {
-    background: #334155;
-    transform: translateY(-2px);
+label { color: #cbd5e1; }
+.form-control, .form-select {
+    background:#f8fafc !important;
 }
 </style>
 @endsection
