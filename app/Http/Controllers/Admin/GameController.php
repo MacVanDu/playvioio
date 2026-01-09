@@ -76,6 +76,8 @@ public function store(Request $request)
 
     $request->validate([
         'name' => 'required|string|max:255',
+        'title' => 'required|string|max:255',
+        'description_seo' => 'nullable|string',
         'slug' => 'nullable|string|max:255',
         'image' => 'nullable|string|max:255',
         'link' => 'nullable|string',
@@ -108,6 +110,8 @@ public function update(Request $request, Game $game)
     $request->validate([
         'name' => 'required|string|max:255',
         'image' => 'nullable|string|max:255',
+        'title' => 'required|string|max:255',
+        'description_seo' => 'nullable|string',
         'link' => 'nullable|string',
         'trend' => 'integer|in:0,1',
         'mobile' => 'integer|in:0,1',

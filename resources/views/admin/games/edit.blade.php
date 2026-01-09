@@ -24,6 +24,28 @@
 
             <!-- SLUG (không cho sửa) -->
             <div class="col-md-6 mb-3">
+                <label>Title</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    value="{{ $game->title }}"
+                    disabled
+                >
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Description</label>
+                <input
+                    type="text"
+                    name="description_seo"
+                    class="form-control"
+                    value="{{ $game->description_seo }}"
+                    required
+                >
+            </div>
+
+            <!-- SLUG (không cho sửa) -->
+            <div class="col-md-6 mb-3">
                 <label>Slug</label>
                 <input
                     type="text"

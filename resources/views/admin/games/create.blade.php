@@ -21,6 +21,16 @@
                     'name' => 'slug',
                     'value' => old('slug'),
                 ])
+                @include('admin.components.input', [
+                    'label' => 'Title',
+                    'name' => 'title',
+                    'value' => old('title'),
+                ])
+                @include('admin.components.input', [
+                    'label' => 'Description',
+                    'name' => 'description_seo',
+                    'value' => old('description_seo'),
+                ])
 
                 @include('admin.components.input', [
                     'label' => 'Ảnh (URL)',

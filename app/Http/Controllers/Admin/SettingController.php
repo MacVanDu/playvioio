@@ -38,7 +38,7 @@ class SettingController extends Controller
         }
 
         // TYPE = FILE
-        if ($setting->type == 2 && $request->hasFile('file')) {
+        if ($request->type == 2 && $request->hasFile('file')) {
          
 
           //=======================
@@ -55,7 +55,7 @@ class SettingController extends Controller
         $file->move($path, $filename);
 
 
-            $value = '/imgs/c/' . $filename;
+            $value = '/imgs/st/' . $filename;
           //=======================
         }
 
