@@ -53,25 +53,10 @@
                     Upload ảnh (SVG / PNG / JPG)
                 </label>
                 <input type="file"
-                       name="imagesvg_file"
+                       name="imagesvg"
                        accept=".svg,.png,.jpg,.jpeg"
-                       class="form-control bg-dark text-white border-0 @error('imagesvg_file') is-invalid @enderror">
-                @error('imagesvg_file')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <!-- Hoặc nhập link -->
-            <div class="mb-3">
-                <label class="form-label text-white">
-                    Hoặc nhập link ảnh
-                </label>
-                <input type="text"
-                       name="imagesvg_link"
-                       value="{{ old('imagesvg_link') }}"
-                       class="form-control bg-dark text-white border-0 @error('imagesvg_link') is-invalid @enderror"
-                       placeholder="https://example.com/icon.svg">
-                @error('imagesvg_link')
+                       class="form-control bg-dark text-white border-0 @error('imagesvg') is-invalid @enderror">
+                @error('imagesvg')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
@@ -125,7 +110,7 @@ document.querySelector('input[name="imagesvg_link"]').addEventListener('input', 
 });
 
 /* Preview file */
-document.querySelector('input[name="imagesvg_file"]').addEventListener('change', function () {
+document.querySelector('input[name="imagesvg"]').addEventListener('change', function () {
     if (!this.files || !this.files[0]) return;
     const reader = new FileReader();
     reader.onload = e => {
