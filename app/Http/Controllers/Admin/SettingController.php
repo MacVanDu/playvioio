@@ -63,7 +63,6 @@ class SettingController extends Controller
     public function update(Request $request, Setting $setting)
     {
         $request->validate([
-            'type'  => 'required|in:1,2',
             'value' => 'nullable|string',
             'file'  => 'nullable|file|max:10240',
             'note'  => 'nullable|string|max:255'
