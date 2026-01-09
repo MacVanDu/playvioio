@@ -71,12 +71,12 @@ class SettingController extends Controller
         $value = $setting->value;
 
         // TYPE = TEXT
-        if ($request->type == 1) {
+        if ($setting->type == 1) {
             $value = $request->value;
         }
 
         // TYPE = FILE
-        if ($request->type == 2 && $request->hasFile('file')) {
+        if ($setting->type == 2 && $request->hasFile('file')) {
 
             // Xóa file cũ nếu có
             if ($setting->value && str_starts_with($setting->value, '/storage/')) {
