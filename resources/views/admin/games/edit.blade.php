@@ -39,7 +39,6 @@
                     type="text"
                     class="form-control"
                     value="{{ $game->title }}"
-                    disabled
                 >
             </div>
 
@@ -50,7 +49,6 @@
                     name="description_seo"
                     class="form-control"
                     value="{{ $game->description_seo }}"
-                    required
                 >
             </div>
 
