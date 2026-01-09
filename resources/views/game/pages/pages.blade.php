@@ -1,7 +1,6 @@
 @extends('game.layouts.all')
 @section('heads')
 <title>{{ $detail->title }} | Play on Marios.games</title>
-<meta name="description" content="{{ $description_trang_chu }}">
 <link rel="canonical" href="https://marios.games/">
 @endsection
 @section('body')
