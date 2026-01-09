@@ -23,20 +23,20 @@ class PagessController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'title'    => 'required|string|max:200',
-            'slug'     => 'nullable|string|max:100|unique:pages,slug',
-            'contents' => 'nullable|string',
-        ]);
+    $data = $request->validate([
+        'title'    => 'required|string|max:200',
+        'slug'     => 'nullable|string|max:100|unique:pages,slug',
+        'contents' => 'nullable|string',
+    ]);
 
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
-        }
+    if (empty($data['slug'])) {
+        $data['slug'] = Str::slug($data['title']);
+    }
+// dd($data);
+    Pages::create($data);
 
-        Pages::create($data);
-
-        return redirect()->route('admin.pages.index')
-            ->with('success', 'Đã thêm trang');
+    return redirect()->route('admin.pages.index')
+        ->with('success', 'Đã thêm trang');
     }
 
     public function edit(Pages $page)
