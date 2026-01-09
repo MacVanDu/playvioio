@@ -75,7 +75,7 @@ class GameService
     public function get_game_trang_choi(Request $request,$id): array
     {
 
-        $similar_games =    Game::where('category_id', $id)->orderBy('id', 'DESC')->limit(12)->get();
+        $similar_games =    Game::where('category_id', $id)->orderBy('id', 'DESC')->limit(24)->get();
 
         $excludeIds = $similar_games->pluck('id')->toArray();
 
