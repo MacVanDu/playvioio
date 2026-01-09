@@ -1,26 +1,24 @@
 <IfModule mod_rewrite.c>
-<IfModule mod_negotiation.c>
-    Options -MultiViews
-</IfModule>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
 
-RewriteEngine On
-# Ép https + bỏ www
-RewriteCond %{HTTPS} !=on [OR]
-RewriteCond %{HTTP_HOST} ^www\.marios\.games$ [NC]
-RewriteRule ^(.*)$ https://marios.games/$1 [L,R=301]
+    RewriteEngine On
 
-# Handle Authorization Header
-RewriteCond %{HTTP:Authorization} .
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    # Ép https + bỏ www
+    RewriteCond %{HTTPS} !=on [OR]
+    RewriteCond %{HTTP_HOST} ^www\.marios\.games$ [NC]
+    RewriteRule ^(.*)$ https://marios.games/$1 [L,R=301]
 
-RewriteCond %{REQUEST_FILENAME} -d [OR]
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^ ^$1 [N]
+    # Authorization header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-RewriteCond %{REQUEST_URI} (\.\w+$) [NC]
-RewriteRule ^(.*)$ public/$1
+    # ⛔ KHÔNG rewrite file & folder thật
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
 
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ public/$1
+    # Laravel front controller
+    RewriteRule ^ index.php [L]
 </IfModule>
