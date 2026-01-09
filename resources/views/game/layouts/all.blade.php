@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 
 <head>
-    @php($ver = '1.0.9')
+    @php($ver = '1.0.11')
     @yield('heads')
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
