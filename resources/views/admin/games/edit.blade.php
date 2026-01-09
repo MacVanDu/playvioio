@@ -21,6 +21,16 @@
                     required
                 >
             </div>
+            <!-- SLUG (không cho sửa) -->
+            <div class="col-md-6 mb-3">
+                <label>Slug</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    value="{{ $game->slug }}"
+                    disabled
+                >
+            </div>
 
             <!-- SLUG (không cho sửa) -->
             <div class="col-md-6 mb-3">
@@ -44,16 +54,6 @@
                 >
             </div>
 
-            <!-- SLUG (không cho sửa) -->
-            <div class="col-md-6 mb-3">
-                <label>Slug</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    value="{{ $game->slug }}"
-                    disabled
-                >
-            </div>
 
             <!-- IMAGE -->
             <div class="col-md-6 mb-3">
