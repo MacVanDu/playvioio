@@ -38,8 +38,18 @@ class SettingController extends Controller
         }
 
         // TYPE = FILE
-        if ($request->type == 2 && $request->hasFile('file')) {
-            $path  = $request->file('file')->store('settings', 'public');
+        if ($setting->type == 2 && $request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Giữ nguyên tên + đuôi
+            $originalName = $file->getClientOriginalName();
+
+            $path = $file->storeAs(
+                'settings',
+                $originalName,
+                'public'
+            );
+
             $value = '/storage/' . $path;
         }
 
@@ -78,13 +88,25 @@ class SettingController extends Controller
         // TYPE = FILE
         if ($setting->type == 2 && $request->hasFile('file')) {
 
-            // Xóa file cũ nếu có
+            // 🔴 Xóa file cũ nếu có
             if ($setting->value && str_starts_with($setting->value, '/storage/')) {
                 $oldPath = str_replace('/storage/', '', $setting->value);
                 Storage::disk('public')->delete($oldPath);
             }
 
-            $path  = $request->file('file')->store('settings', 'public');
+            $file = $request->file('file');
+
+            // ✅ Giữ nguyên tên + đuôi file
+            $originalName = $file->getClientOriginalName();
+
+            // Lưu vào storage/app/public/settings
+            $path = $file->storeAs(
+                'settings',
+                $originalName,
+                'public'
+            );
+
+            // URL public
             $value = '/storage/' . $path;
         }
 
