@@ -4,6 +4,12 @@
 <meta name="description" content="{{ $description_trang_chu }}">
   {!! $ma_head_trang_chu !!}
 @endsection
+@section('bobys')
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TL7PC8FC"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+@endsection
 @section('body')
 <div class="container" role="main">
 	<div class="game-container" id="home-game-container">

@@ -30,6 +30,7 @@
 </head>
 
 <body id="page-top">
+    @yield('bobys')
     @include('game.views.header')
     @include('game.views.offcanvasSearch')
     @include('game.views.offcanvasmenu')

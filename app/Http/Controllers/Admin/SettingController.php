@@ -39,18 +39,24 @@ class SettingController extends Controller
 
         // TYPE = FILE
         if ($setting->type == 2 && $request->hasFile('file')) {
+         
+
+          //=======================
+            $path = public_path('imgs/st');
+
+        if (!file_exists($path)) {
+            mkdir($path, 0755, true);
+        }
+
             $file = $request->file('file');
 
-            // Giữ nguyên tên + đuôi
-            $originalName = $file->getClientOriginalName();
+            // GIỮ NGUYÊN TÊN FILE
+            $filename = $file->getClientOriginalName();
+        $file->move($path, $filename);
 
-            $path = $file->storeAs(
-                'settings',
-                $originalName,
-                'public'
-            );
 
-            $value = '/storage/' . $path;
+            $value = '/imgs/c/' . $filename;
+          //=======================
         }
 
         Setting::create([
