@@ -113,7 +113,7 @@
             <h3 class="my-3 fw-bold"><i class="fa fa-thumbs-up" aria-hidden="true"></i>Similar Games</h3>
             <div class="row" id="section-similar-games">
                 @foreach ($similar_games as $i => $game)
-                    <div class="col-md-2 col-sm-3 col-4 item-grid">
+                    <div class="col-md-1 col-sm-3 col-4 item-grid">
                         <a href="{{ $game->slugGame() }}">
                             <div class="list-game">
                                 <div class="list-thumbnail"><img src="{{ $game->linkImgGame() }}"
