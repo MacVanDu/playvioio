@@ -4,6 +4,10 @@
 </IfModule>
 
 RewriteEngine On
+# Ép https + bỏ www
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\.marios\.games$ [NC]
+RewriteRule ^(.*)$ https://marios.games/$1 [L,R=301]
 
 # Handle Authorization Header
 RewriteCond %{HTTP:Authorization} .
