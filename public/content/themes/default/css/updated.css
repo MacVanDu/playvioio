@@ -5,7 +5,12 @@ body {
     font-weight: 400;
     line-height: 1.5;
     color: #2c3e50;
-    text-align: left
+    text-align: left;  
+     background-image: url("../../../../images/bg.png");
+    background-repeat: no-repeat;      /* không lặp ảnh */
+    background-position: center center;/* căn giữa */
+    background-size: cover;             /* phủ toàn màn hình */
+    background-attachment: fixed; 
 }
 
 *,::before,::after {
