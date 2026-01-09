@@ -89,7 +89,6 @@ class SettingController extends Controller
         }
 
         $setting->update([
-            'type'  => $request->type,
             'value' => $value,
             'note'  => $request->note,
         ]);
