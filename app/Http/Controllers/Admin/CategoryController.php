@@ -40,14 +40,22 @@ class CategoryController extends Controller
          * - Nếu là STRING → coi là link
          */
         if ($request->hasFile('imagesvg')) {
+
+
+        $path = public_path('imgs/c');
+
+        if (!file_exists($path)) {
+            mkdir($path, 0755, true);
+        }
+
             $file = $request->file('imagesvg');
 
             // GIỮ NGUYÊN TÊN FILE
             $filename = $file->getClientOriginalName();
+        $file->move($path, $filename);
 
-            $file->storeAs('public/categories', $filename);
 
-            $imagePath = '/storage/categories/' . $filename;
+            $imagePath = '/imgs/c/' . $filename;
         } else {
             // imagesvg là link
             $imagePath = $request->imagesvg;
