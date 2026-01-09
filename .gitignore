@@ -6,3 +6,4 @@
 # Ignore sitemap files
 /public/sitemap*.xml
 /storage/logs/
+/.htaccess
