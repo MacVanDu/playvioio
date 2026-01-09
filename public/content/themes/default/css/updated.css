@@ -131,10 +131,10 @@ img.small-thumb {
 
 .list-thumbnail img{
     object-fit: cover;
-    height: 100%;
+    /* height: 100%; */
 }
 .list-thumbnail{
-    height: 100%;
+    /* height: 100%; */
 }
 .list-game {
     height: 100%;
