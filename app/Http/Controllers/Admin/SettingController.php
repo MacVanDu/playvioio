@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
@@ -22,13 +23,36 @@ class SettingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'key' => 'required|string|max:100|unique:settings,key',
+            'key'   => 'required|string|max:100|unique:settings,key',
+            'type'  => 'required|in:1,2',
             'value' => 'nullable|string',
-            'note' => 'nullable|string|max:255'
+            'file'  => 'nullable|file|max:10240',
+            'note'  => 'nullable|string|max:255'
         ]);
 
-        Setting::create($request->only(['key', 'value', 'note']));
-        return redirect()->route('admin.settings.index')->with('success', 'Thêm cấu hình thành công!');
+        $value = null;
+
+        // TYPE = TEXT
+        if ($request->type == 1) {
+            $value = $request->value;
+        }
+
+        // TYPE = FILE
+        if ($request->type == 2 && $request->hasFile('file')) {
+            $path  = $request->file('file')->store('settings', 'public');
+            $value = '/storage/' . $path;
+        }
+
+        Setting::create([
+            'key'   => $request->key,
+            'type'  => $request->type,
+            'value' => $value,
+            'note'  => $request->note,
+        ]);
+
+        return redirect()
+            ->route('admin.settings.index')
+            ->with('success', 'Thêm cấu hình thành công!');
     }
 
     public function edit(Setting $setting)
@@ -39,17 +63,55 @@ class SettingController extends Controller
     public function update(Request $request, Setting $setting)
     {
         $request->validate([
+            'type'  => 'required|in:1,2',
             'value' => 'nullable|string',
-            'note' => 'nullable|string|max:255'
+            'file'  => 'nullable|file|max:10240',
+            'note'  => 'nullable|string|max:255'
         ]);
 
-        $setting->update($request->only(['value', 'note']));
-        return redirect()->route('admin.settings.index')->with('success', 'Cập nhật thành công!');
+        $value = $setting->value;
+
+        // TYPE = TEXT
+        if ($request->type == 1) {
+            $value = $request->value;
+        }
+
+        // TYPE = FILE
+        if ($request->type == 2 && $request->hasFile('file')) {
+
+            // Xóa file cũ nếu có
+            if ($setting->value && str_starts_with($setting->value, '/storage/')) {
+                $oldPath = str_replace('/storage/', '', $setting->value);
+                Storage::disk('public')->delete($oldPath);
+            }
+
+            $path  = $request->file('file')->store('settings', 'public');
+            $value = '/storage/' . $path;
+        }
+
+        $setting->update([
+            'type'  => $request->type,
+            'value' => $value,
+            'note'  => $request->note,
+        ]);
+
+        return redirect()
+            ->route('admin.settings.index')
+            ->with('success', 'Cập nhật thành công!');
     }
 
     public function destroy(Setting $setting)
     {
+        // Xóa file nếu là type file
+        if ($setting->type == 2 && $setting->value && str_starts_with($setting->value, '/storage/')) {
+            $path = str_replace('/storage/', '', $setting->value);
+            Storage::disk('public')->delete($path);
+        }
+
         $setting->delete();
-        return redirect()->route('admin.settings.index')->with('success', 'Đã xóa cấu hình!');
+
+        return redirect()
+            ->route('admin.settings.index')
+            ->with('success', 'Đã xóa cấu hình!');
     }
 }
