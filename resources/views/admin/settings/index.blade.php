@@ -30,38 +30,69 @@
                 <tbody>
                     @forelse($settings as $setting)
                         <tr style="background:#1e293b; border-bottom:1px solid #273449;">
-                            <td><code class="text-info">{{ $setting->key }}</code></td>
-                            <td class="text-white small">{{ Str::limit($setting->value, 50) }}</td>
-                            <td class="d-none d-sm-table-cell text-muted small">{{ Str::limit($setting->note, 60) ?: '—' }}</td>
+                            
+                            <!-- KEY -->
+                            <td>
+                                <code class="text-info">{{ $setting->key }}</code>
+                            </td>
+
+                            <!-- VALUE -->
+                            <td class="text-white small">
+                                @if($setting->type == 2 && $setting->value)
+                                    {{-- IMAGE --}}
+                                        <img 
+                                            src="{{ $setting->value }}"
+                                            alt="{{ $setting->key }}"
+                                            style="max-height:60px;max-width:120px;border-radius:8px;object-fit:cover;"
+                                        >
+                                @else
+                                    {{-- TEXT --}}
+                                    {{ Str::limit($setting->value, 50) ?: '—' }}
+                                @endif
+                            </td>
+
+                            <!-- NOTE -->
+                            <td class="d-none d-sm-table-cell text-muted small">
+                                {{ Str::limit($setting->note, 60) ?: '—' }}
+                            </td>
+
+                            <!-- ACTION -->
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2 flex-wrap">
-                                    <!-- Sửa -->
+                                    
+                                    <!-- Edit -->
                                     <a href="{{ route('admin.settings.edit', $setting) }}" 
                                        class="btn-action edit" title="Sửa cấu hình">
                                         <i class="fas fa-pen"></i>
                                     </a>
 
-                                    <!-- Xóa -->
-                                    <form action="{{ route('admin.settings.destroy', $setting) }}" method="POST" 
-                                          onsubmit="return confirm('Xóa cấu hình này?')" class="d-inline">
-                                        @csrf @method('DELETE')
+                                    <!-- Delete -->
+                                    <form action="{{ route('admin.settings.destroy', $setting) }}" 
+                                          method="POST" 
+                                          onsubmit="return confirm('Xóa cấu hình này?')" 
+                                          class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
                                         <button type="submit" class="btn-action delete" title="Xóa cấu hình">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
                                 </div>
                             </td>
+
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center text-muted py-4">Chưa có cấu hình nào.</td>
+                            <td colspan="4" class="text-center text-muted py-4">
+                                Chưa có cấu hình nào.
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        <!-- Phân trang -->
+        <!-- Pagination -->
         <div class="mt-4 d-flex flex-wrap justify-content-between align-items-center gap-2">
             <small class="text-secondary">
                 {{ __('Hiển thị :from–:to / :total cấu hình', [
@@ -115,6 +146,7 @@ tr:hover {
     border-radius: 8px;
     transition: all 0.25s ease;
 }
+
 .btn-gradient:hover {
     background: linear-gradient(90deg,#4f46e5,#0ea5e9);
     transform: translateY(-2px);

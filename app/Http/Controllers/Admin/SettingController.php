@@ -40,23 +40,8 @@ class SettingController extends Controller
         // TYPE = FILE
         if ($request->type == 2 && $request->hasFile('file')) {
          
+        $value = $this->uploadPublicFile($request, 'file', 'imgs/st');
 
-          //=======================
-            $path = public_path('imgs/st');
-
-        if (!file_exists($path)) {
-            mkdir($path, 0755, true);
-        }
-
-            $file = $request->file('file');
-
-            // GIỮ NGUYÊN TÊN FILE
-            $filename = $file->getClientOriginalName();
-        $file->move($path, $filename);
-
-
-            $value = '/imgs/st/' . $filename;
-          //=======================
         }
 
         Setting::create([

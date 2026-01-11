@@ -49,7 +49,20 @@
                 <label class="form-label text-white">Upload file</label>
                 <input type="file"
                        name="file"
+                       id="file-input"
+                       accept="image/*"
                        class="form-control bg-dark text-white border-0">
+
+                {{-- PREVIEW --}}
+                <div id="image-preview" class="mt-3 d-none">
+                    <label class="form-label text-white">Xem trước</label>
+                    <div style="background:#020617;padding:12px;border-radius:12px;">
+                        <img id="preview-img"
+                             src=""
+                             alt="Preview"
+                             style="max-height:180px;max-width:100%;border-radius:8px;object-fit:contain;">
+                    </div>
+                </div>
             </div>
 
             {{-- NOTE --}}
@@ -72,10 +85,41 @@
 </div>
 
 <script>
-document.getElementById('setting-type').addEventListener('change', function () {
+const typeSelect = document.getElementById('setting-type');
+const valueText  = document.getElementById('value-text');
+const valueFile  = document.getElementById('value-file');
+const fileInput  = document.getElementById('file-input');
+const previewBox = document.getElementById('image-preview');
+const previewImg = document.getElementById('preview-img');
+
+// Toggle input theo type
+typeSelect.addEventListener('change', function () {
     const isFile = this.value === '2';
-    document.getElementById('value-text').classList.toggle('d-none', isFile);
-    document.getElementById('value-file').classList.toggle('d-none', !isFile);
+
+    valueText.classList.toggle('d-none', isFile);
+    valueFile.classList.toggle('d-none', !isFile);
+
+    if (!isFile) {
+        previewBox.classList.add('d-none');
+        previewImg.src = '';
+        fileInput.value = '';
+    }
+});
+
+// Preview ảnh
+fileInput.addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file || !file.type.startsWith('image/')) {
+        previewBox.classList.add('d-none');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        previewImg.src = e.target.result;
+        previewBox.classList.remove('d-none');
+    };
+    reader.readAsDataURL(file);
 });
 </script>
 @endsection

@@ -148,11 +148,13 @@ class HomeControllerMTLG extends Controller
     }
     public function data_mac_dinh(Request $request)
     {
+        $anh_nen = Setting::getValue('anh_nen', '/images/bg2.png', false);
         $fb_link = Setting::getValue('fb_link', '#', false);
         $x_link = Setting::getValue('x_link', '#', false);
         $r_link = Setting::getValue('r_link', '#', false);
         $device = $this->detectDevice($request);
         return [
+            'anh_nen' => $anh_nen,
             'r_link' => $r_link,
             'x_link' => $x_link,
             'fb_link' => $fb_link,

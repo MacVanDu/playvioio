@@ -74,7 +74,7 @@
     </style>
 </head>
 
-<body id="page-top">
+<body id="page-top" style='background-image: url("{{  $datamd['anh_nen']  }}");'>
     @yield('bobys')
     @include('game.views.header')
     @include('game.views.offcanvasSearch')
