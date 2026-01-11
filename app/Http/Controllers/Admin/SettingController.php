@@ -93,27 +93,7 @@ class SettingController extends Controller
 
         // TYPE = FILE
         if ($setting->type == 2 && $request->hasFile('file')) {
-
-            // 🔴 Xóa file cũ nếu có
-            if ($setting->value && str_starts_with($setting->value, '/storage/')) {
-                $oldPath = str_replace('/storage/', '', $setting->value);
-                Storage::disk('public')->delete($oldPath);
-            }
-
-            $file = $request->file('file');
-
-            // ✅ Giữ nguyên tên + đuôi file
-            $originalName = $file->getClientOriginalName();
-
-            // Lưu vào storage/app/public/settings
-            $path = $file->storeAs(
-                'settings',
-                $originalName,
-                'public'
-            );
-
-            // URL public
-            $value = '/storage/' . $path;
+        $value = $this->uploadPublicFile($request, 'file', 'imgs/st');
         }
 
         $setting->update([
@@ -139,5 +119,25 @@ class SettingController extends Controller
         return redirect()
             ->route('admin.settings.index')
             ->with('success', 'Đã xóa cấu hình!');
+    }
+
+        private function uploadPublicFile($request, $inputName, $folder)
+    {
+        if (!$request->hasFile($inputName)) {
+            return null;
+        }
+
+        $path = public_path($folder);
+
+        if (!file_exists($path)) {
+            mkdir($path, 0755, true);
+        }
+
+        $file = $request->file($inputName);
+        $filename = time() . '_' . $file->getClientOriginalName();
+
+        $file->move($path, $filename);
+
+        return '/' . trim($folder, '/') . '/' . $filename;
     }
 }

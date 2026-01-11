@@ -93,4 +93,26 @@ public function index(Request $request)
             ->route('admin.chats.index')
             ->with('success', 'Đã xoá comment');
     }
+    public function bulk(Request $request)
+{
+    $request->validate([
+        'ids' => 'required|array',
+        'action' => 'required|string',
+    ]);
+
+    switch ($request->action) {
+        case 'approve':
+            GameChat::whereIn('id', $request->ids)->update(['status' => 1]);
+            break;
+        case 'hide':
+            GameChat::whereIn('id', $request->ids)->update(['status' => 2]);
+            break;
+        case 'delete':
+            GameChat::whereIn('id', $request->ids)->delete();
+            break;
+    }
+
+    return back()->with('success', 'Đã xử lý '.count($request->ids).' comment');
+}
+
 }

@@ -4,93 +4,116 @@
 <div class="container mt-4 text-white">
     <h2 class="fw-bold mb-4">Sửa Game</h2>
 
-    <form method="POST" action="{{ route('admin.games.update', $game) }}">
+    <form method="POST"
+          action="{{ route('admin.games.update', $game) }}"
+          enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
         <div class="row">
 
-            <!-- NAME -->
+            {{-- NAME --}}
             <div class="col-md-6 mb-3">
                 <label>Tên Game</label>
-                <input
-                    type="text"
-                    name="name"
-                    class="form-control"
-                    value="{{ old('name', $game->name) }}"
-                    required
-                >
+                <input type="text"
+                       name="name"
+                       class="form-control"
+                       value="{{ old('name', $game->name) }}"
+                       required>
             </div>
-            <!-- SLUG (không cho sửa) -->
+
+            {{-- SLUG (readonly) --}}
             <div class="col-md-6 mb-3">
                 <label>Slug</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    value="{{ $game->slug }}"
-                    disabled
-                >
+                <input type="text"
+                       class="form-control"
+                       value="{{ $game->slug }}"
+                       readonly>
             </div>
 
-            <!-- SLUG (không cho sửa) -->
+            {{-- TITLE --}}
             <div class="col-md-6 mb-3">
                 <label>Title</label>
-                <input
-                    type="text"
-                    name="title"
-                    class="form-control"
-                    value="{{ $game->title }}"
-                >
+                <input type="text"
+                       name="title"
+                       class="form-control"
+                       value="{{ old('title', $game->title) }}">
             </div>
 
+            {{-- DESCRIPTION SEO --}}
             <div class="col-md-6 mb-3">
-                <label>Description</label>
-                <input
-                    type="text"
-                    name="description_seo"
-                    class="form-control"
-                    value="{{ $game->description_seo }}"
-                >
+                <label>Description (SEO)</label>
+                <input type="text"
+                       name="description_seo"
+                       class="form-control"
+                       value="{{ old('description_seo', $game->description_seo) }}">
             </div>
 
-
-            <!-- IMAGE -->
+            {{-- IMAGE UPLOAD --}}
             <div class="col-md-6 mb-3">
-                <label>Ảnh (URL)</label>
-                <input
-                    type="text"
-                    name="image"
-                    class="form-control"
-                    value="{{ old('image', $game->image) }}"
-                >
+                <label>Ảnh Game (SVG / PNG / JPG)</label>
+                <input type="file"
+                       id="image_file"
+                       name="image_file"
+                       accept=".svg,.png,.jpg,.jpeg"
+                       class="form-control">
+                
+                {{-- Ảnh hiện tại --}}
+                @if($game->image)
+                    <div id="oldImage" class="mt-2">
+                        <small class="text-muted">Ảnh hiện tại</small><br>
+                        <img src="{{ asset($game->image) }}"
+                             width="120"
+                             height="120"
+                             style="object-fit:contain;
+                                    background:#020617;
+                                    padding:8px;
+                                    border-radius:8px;
+                                    border:1px solid #334155;">
+                    </div>
+                @endif
             </div>
 
-            <!-- LINK -->
+            {{-- PREVIEW ẢNH MỚI --}}
+            <div class="col-md-6 mb-3 d-none" id="imagePreview">
+                <label>Ảnh mới</label><br>
+                <img id="previewImg"
+                     width="120"
+                     height="120"
+                     style="object-fit:contain;
+                            background:#020617;
+                            padding:8px;
+                            border-radius:8px;
+                            border:1px solid #22c55e;">
+            </div>
+
+            {{-- LINK --}}
             <div class="col-md-6 mb-3">
                 <label>Link Game</label>
-                <input
-                    type="text"
-                    name="link"
-                    class="form-control"
-                    value="{{ old('link', $game->link) }}"
-                >
+                <input type="text"
+                       name="link"
+                       class="form-control"
+                       value="{{ old('link', $game->link) }}">
             </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Trend</label>
-                    <label class='switch'>
-                        <input type="hidden" name="trend" value="0">
-                        <input type="checkbox" name="trend" value="1"
-                            {{ old('trend', $game->trend ?? 0) == 1 ? 'checked' : '' }}>
-                    </label>
-                    <label>mobile</label>
-                    <label class='switch'>
-                        <input type="hidden" name="mobile" value="0">
-                        <input type="checkbox" name="mobile" value="1"
-                            {{ old('mobile', $game->mobile ?? 0) == 1 ? 'checked' : '' }}>
-                    </label>
-                </div>
-            <!-- CATEGORY -->
+            {{-- TREND / MOBILE --}}
+            <div class="col-md-6 mb-3">
+                <label>Trend</label>
+                <label class="switch">
+                    <input type="hidden" name="trend" value="0">
+                    <input type="checkbox" name="trend" value="1"
+                        {{ old('trend', $game->trend) == 1 ? 'checked' : '' }}>
+                </label>
+
+                <label class="ms-3">Mobile</label>
+                <label class="switch">
+                    <input type="hidden" name="mobile" value="0">
+                    <input type="checkbox" name="mobile" value="1"
+                        {{ old('mobile', $game->mobile) == 1 ? 'checked' : '' }}>
+                </label>
+            </div>
+
+            {{-- CATEGORY --}}
             <div class="col-md-6 mb-3">
                 <label>Thể loại</label>
                 <select name="category_id" class="form-select" required>
@@ -104,15 +127,13 @@
                 </select>
             </div>
 
-            <!-- DESCRIPTION (TinyMCE) -->
+            {{-- DESCRIPTION --}}
             <div class="col-12 mb-3">
                 <label>Mô tả</label>
-                <textarea
-                    id="description"
-                    name="description"
-                    rows="6"
-                    class="form-control"
-                >{{ old('description', $game->description) }}</textarea>
+                <textarea id="description"
+                          name="description"
+                          rows="6"
+                          class="form-control">{{ old('description', $game->description) }}</textarea>
             </div>
 
         </div>
@@ -122,9 +143,33 @@
     </form>
 </div>
 
-{{-- ================= TINYMCE 6 – FREE (NO API KEY) ================= --}}
-<script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"></script>
+{{-- ================= PREVIEW ẢNH ================= --}}
+<script>
+document.getElementById('image_file').addEventListener('change', function () {
+    if (!this.files || !this.files[0]) return;
 
+    const file = this.files[0];
+
+    if (!file.type.startsWith('image/')) {
+        alert('Vui lòng chọn file ảnh hợp lệ');
+        this.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        document.getElementById('previewImg').src = e.target.result;
+        document.getElementById('imagePreview').classList.remove('d-none');
+
+        const oldImage = document.getElementById('oldImage');
+        if (oldImage) oldImage.style.opacity = '0.3';
+    };
+    reader.readAsDataURL(file);
+});
+</script>
+
+{{-- ================= TinyMCE 6 – FREE ================= --}}
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"></script>
 <script>
 tinymce.init({
     selector: '#description',
@@ -141,13 +186,7 @@ tinymce.init({
         'bullist numlist outdent indent | ' +
         'link image table | code fullscreen',
     branding: false,
-    promotion: false,
-    content_style: `
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-        }
-    `
+    promotion: false
 });
 </script>
 
@@ -167,38 +206,6 @@ label { color: #cbd5e1; font-weight: 500; }
     border-radius: 8px;
     padding: 10px 14px;
     font-size: 15px;
-    transition: all 0.2s ease;
-}
-.form-control:focus, .form-select:focus, textarea:focus {
-    background-color: #ffffff !important;
-    border-color: #6366f1 !important;
-    box-shadow: 0 0 10px rgba(99,102,241,0.4) !important;
-}
-.btn-success {
-    background: linear-gradient(90deg, #4f46e5, #22d3ee);
-    border: none;
-    color: #fff;
-    font-weight: 600;
-    padding: 10px 20px;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-.btn-success:hover {
-    background: linear-gradient(90deg, #4338ca, #0ea5e9);
-    transform: translateY(-2px);
-}
-.btn-secondary {
-    background: #475569;
-    border: none;
-    color: #fff;
-    font-weight: 500;
-    padding: 10px 20px;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-.btn-secondary:hover {
-    background: #334155;
-    transform: translateY(-2px);
 }
 </style>
 @endsection

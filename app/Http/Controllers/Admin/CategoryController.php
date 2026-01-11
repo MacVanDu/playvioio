@@ -28,21 +28,17 @@ class CategoryController extends Controller
         $request->validate([
             'name'     => 'required|string|max:255|unique:categories,name',
             'slug'     => 'nullable|string|max:255|unique:categories,slug',
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'description_seo' => 'nullable|string',
             'imagesvg' => 'nullable', // CÓ THỂ LÀ LINK HOẶC FILE
         ]);
 
         $slug = $request->slug ?: Str::slug($request->name);
         $imagePath = null;
-
-        /**
-         * TRƯỜNG imagesvg:
-         * - Nếu là FILE → upload & lấy link
-         * - Nếu là STRING → coi là link
-         */
+        $path_save = 'imgs/c';
         if ($request->hasFile('imagesvg')) {
-
-
-        $path = public_path('imgs/c');
+        $path = public_path($path_save);
 
         if (!file_exists($path)) {
             mkdir($path, 0755, true);
@@ -55,13 +51,13 @@ class CategoryController extends Controller
         $file->move($path, $filename);
 
 
-            $imagePath = '/imgs/c/' . $filename;
-        } else {
-            // imagesvg là link
-            $imagePath = $request->imagesvg;
-        }
+            $imagePath = '/'.$path_save.'/' . $filename;
+        } 
 
         Category::create([
+            'title'     => $request->title,
+            'description'     => $request->description,
+            'description_seo'     => $request->description_seo,
             'name'     => $request->name,
             'slug'     => $slug,
             'imagesvg' => $imagePath,
@@ -83,28 +79,50 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'name'     => 'required|string|max:255|unique:categories,name,' . $category->id,
-            'slug'     => 'nullable|string|max:255|unique:categories,slug,' . $category->id,
-            'imagesvg' => 'nullable',
+            'title'     => 'nullable',
+            'description'     => 'nullable',
+            'description_seo'     => 'nullable',
+            'image' => 'nullable',
         ]);
 
         $slug = $request->slug ?: Str::slug($request->name);
 
         // MẶC ĐỊNH GIỮ LINK CŨ
-        $imagePath = $category->imagesvg;
+        $imagePath = $category->image;
+     if ($request->hasFile('image')) {
 
-        if ($request->hasFile('imagesvg')) {
-            $file = $request->file('imagesvg');
-            $filename = $file->getClientOriginalName();
 
-            $file->storeAs('public/categories', $filename);
-            $imagePath = 'storage/categories/' . $filename;
-        } elseif ($request->filled('imagesvg')) {
-            // User nhập link mới
-            $imagePath = $request->imagesvg;
+        $path = public_path('imgs/c');
+
+        if (!file_exists($path)) {
+            mkdir($path, 0755, true);
         }
 
+            $file = $request->file('image');
+
+            // GIỮ NGUYÊN TÊN FILE
+            $filename = $file->getClientOriginalName();
+        $file->move($path, $filename);
+
+
+            $imagePath = '/imgs/c/' . $filename;
+        } 
+
+        // if ($request->hasFile('imagesvg')) {
+        //     $file = $request->file('imagesvg');
+        //     $filename = $file->getClientOriginalName();
+
+        //     $file->storeAs('public/categories', $filename);
+        //     $imagePath = 'storage/categories/' . $filename;
+        // } elseif ($request->filled('imagesvg')) {
+        //     // User nhập link mới
+        //     $imagePath = $request->imagesvg;
+        // }
+
         $category->update([
+            'title'     => $request->title,
+            'description'     => $request->description,
+            'description_seo'     => $request->description_seo,
             'name'     => $request->name,
             'slug'     => $slug,
             'imagesvg' => $imagePath,

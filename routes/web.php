@@ -42,5 +42,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('chats/{id}/approve', [GameChatController::class, 'approve']);
         Route::post('chats/{id}/hide', [GameChatController::class, 'hide']);
         Route::delete('chats/{id}', [GameChatController::class, 'destroy']);
+        Route::post('chats/bulk', [GameChatController::class, 'bulk'])
+            ->name('chats.bulk');
     });
 });

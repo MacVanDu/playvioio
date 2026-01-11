@@ -78,11 +78,9 @@ $columns = [
 <div class="content-wrapper px-2 py-2 px-md-4 py-md-4" style="background:#0f172a; min-height:100vh;">
     <div class="card shadow-lg border-0 p-3 p-md-4" style="background:#1e293b; border-radius:16px;">
 
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
-            <h2 class="fw-bold text-white mb-0">
-                <i class="fas fa-comments me-2"></i>Quản lý Comment
-            </h2>
-        </div>
+        <h2 class="fw-bold text-white mb-4">
+            <i class="fas fa-comments me-2"></i>Quản lý Comment
+        </h2>
 
         <!-- Filter -->
         <form method="GET" class="mb-4 d-flex flex-wrap gap-2">
@@ -103,69 +101,99 @@ $columns = [
             </button>
         </form>
 
-        <!-- Table -->
-        <div class="table-responsive">
-            <table class="table table-borderless align-middle mb-0">
-                <thead style="color:#94a3b8; font-size:13px; text-transform:uppercase;">
-                <tr>
-                    @foreach($columns as $c)
-                        <th class="{{ $c['responsive'] }}">
-                            {!! $c['sortable'] && $c['field'] ? sortLink($c['field'], $c['label']) : $c['label'] !!}
-                        </th>
-                    @endforeach
-                    <th class="text-center">Hành động</th>
-                </tr>
-                </thead>
+        {{-- ================= BULK FORM ================= --}}
+        <form method="POST" action="{{ route('admin.chats.bulk') }}">
+            @csrf
 
-                <tbody>
-                @forelse($chats as $chat)
-                    <tr style="background:#1e293b;border-bottom:1px solid #273449;">
-                        @foreach($columns as $c)
-                            <td class="{{ $c['responsive'] }}">{!! $c['render']($chat) !!}</td>
-                        @endforeach
+            <div class="d-flex gap-2 mb-3">
+                <select name="action" class="form-select w-auto" required>
+                    <option value="">-- Hành động --</option>
+                    <option value="approve">Duyệt</option>
+                    <option value="hide">Ẩn</option>
+                    <option value="delete">Xoá</option>
+                </select>
 
-                        <td class="text-center">
-                            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                <button type="submit"
+                        class="btn btn-warning"
+                        onclick="return confirm('Áp dụng hành động cho các comment đã chọn?')">
+                    Áp dụng
+                </button>
+            </div>
 
-                                @if($chat->status != 1)
-                                <form method="POST" action="/admin/chats/{{ $chat->id }}/approve">
-                                    @csrf
-                                    <button class="btn-action edit" title="Duyệt">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                </form>
-                                @endif
-
-                                @if($chat->status != 2)
-                                <form method="POST" action="/admin/chats/{{ $chat->id }}/hide">
-                                    @csrf
-                                    <button class="btn-action view" title="Ẩn">
-                                        <i class="fas fa-eye-slash"></i>
-                                    </button>
-                                </form>
-                                @endif
-
-                                <form method="POST" action="/admin/chats/{{ $chat->id }}"
-                                      onsubmit="return confirm('Xoá comment này?')">
-                                    @csrf @method('DELETE')
-                                    <button class="btn-action delete">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
-
-                            </div>
-                        </td>
-                    </tr>
-                @empty
+            <!-- Table -->
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle mb-0">
+                    <thead style="color:#94a3b8; font-size:13px; text-transform:uppercase;">
                     <tr>
-                        <td colspan="20" class="text-center text-muted py-4">
-                            Không có comment nào.
-                        </td>
+                        <th width="30">
+                            <input type="checkbox" id="checkAll">
+                        </th>
+                        @foreach($columns as $c)
+                            <th class="{{ $c['responsive'] }}">
+                                {!! $c['sortable'] && $c['field'] ? sortLink($c['field'], $c['label']) : $c['label'] !!}
+                            </th>
+                        @endforeach
+                        <th class="text-center">Hành động</th>
                     </tr>
-                @endforelse
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+
+                    <tbody>
+                    @forelse($chats as $chat)
+                        <tr style="background:#1e293b;border-bottom:1px solid #273449;">
+                            <td>
+                                <input type="checkbox"
+                                       class="row-check"
+                                       name="ids[]"
+                                       value="{{ $chat->id }}">
+                            </td>
+
+                            @foreach($columns as $c)
+                                <td class="{{ $c['responsive'] }}">{!! $c['render']($chat) !!}</td>
+                            @endforeach
+
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+                                    @if($chat->status != 1)
+                                    <form method="POST" action="/admin/chats/{{ $chat->id }}/approve">
+                                        @csrf
+                                        <button class="btn-action edit" title="Duyệt">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </form>
+                                    @endif
+
+                                    @if($chat->status != 2)
+                                    <form method="POST" action="/admin/chats/{{ $chat->id }}/hide">
+                                        @csrf
+                                        <button class="btn-action view" title="Ẩn">
+                                            <i class="fas fa-eye-slash"></i>
+                                        </button>
+                                    </form>
+                                    @endif
+
+                                    <form method="POST" action="/admin/chats/{{ $chat->id }}"
+                                          onsubmit="return confirm('Xoá comment này?')">
+                                        @csrf @method('DELETE')
+                                        <button class="btn-action delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="20" class="text-center text-muted py-4">
+                                Không có comment nào.
+                            </td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </form>
 
         <div class="mt-4 d-flex justify-content-between align-items-center">
             <small class="text-secondary">
@@ -176,4 +204,13 @@ $columns = [
 
     </div>
 </div>
+
+{{-- ================= CHECK ALL SCRIPT ================= --}}
+<script>
+document.getElementById('checkAll')?.addEventListener('change', function () {
+    document.querySelectorAll('.row-check').forEach(cb => {
+        cb.checked = this.checked;
+    });
+});
+</script>
 @endsection

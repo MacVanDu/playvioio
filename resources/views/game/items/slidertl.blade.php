@@ -10,7 +10,7 @@
 					@foreach($data->games10($datamd['device'] ) as $i => $game)
 					<li>
 						<div class="slide">
-							<a href="{{  $game->slugGame() }}">
+							<a href="{{  $game->slugGame() }}" data-title="{{ $game->nameGame() }}">
 								<img src="{{ $game->linkImgGame() }}"
 									alt="{{ $game->nameGame() }}" class="img-fluid small-thumb thumbnail-img m-1" width="160" height="160"></a>
 						</div>

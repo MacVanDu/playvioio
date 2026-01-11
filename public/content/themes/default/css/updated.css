@@ -138,7 +138,7 @@ img.small-thumb {
 }
 .list-game {
     /* height: 100%; */
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     box-shadow: 0 1px 6px 0 rgb(50 50 50 / .25);
     border-radius: 5px;
     padding: 5px
@@ -230,7 +230,7 @@ h1.singlepage-title {
 }
 
 .page-content,.game-content {
-    margin-bottom: 30px
+    margin-bottom: 0px
 }
 
 .site-logo {
@@ -4894,7 +4894,7 @@ label[for=nav-footer-toggle] {
     }
 
     .page-content,.game-content {
-        margin-bottom: 10px
+        margin-bottom: 0px
     }
 
     .single-info-container {

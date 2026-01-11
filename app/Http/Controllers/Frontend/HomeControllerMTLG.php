@@ -59,7 +59,7 @@ class HomeControllerMTLG extends Controller
             return $this->notFoundPage($request);
         }
 
-        $perPage = 30;
+        $perPage = 20;
 
 
 
@@ -148,8 +148,14 @@ class HomeControllerMTLG extends Controller
     }
     public function data_mac_dinh(Request $request)
     {
+        $fb_link = Setting::getValue('fb_link', '#', false);
+        $x_link = Setting::getValue('x_link', '#', false);
+        $r_link = Setting::getValue('r_link', '#', false);
         $device = $this->detectDevice($request);
         return [
+            'r_link' => $r_link,
+            'x_link' => $x_link,
+            'fb_link' => $fb_link,
             'device' => $device,
             'category' => Category::orderBy('id', 'DESC')
                 ->limit(10)

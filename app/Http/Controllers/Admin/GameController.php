@@ -34,7 +34,7 @@ class GameController extends Controller
             });
         }
 
-        $sortable = ['id', 'name', 'created_at','trend','mobile'];
+        $sortable = ['id', 'name', 'created_at', 'trend', 'mobile'];
 
         // Lấy cột và chiều sắp xếp từ query string (?sort_by=&sort_order=)
         $sortBy = $request->input('sort_by');
@@ -68,74 +68,89 @@ class GameController extends Controller
         return view('admin.games.create', compact('categories'));
     }
 
-public function store(Request $request)
-{
-    $request->merge([
-    'trend' => (int) $request->input('trend', 0),
-    'mobile' => (int) $request->input('mobile', 0),
-]);
+    public function store(Request $request)
+    {
 
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'title' => 'required|string|max:255',
-        'description_seo' => 'nullable|string',
-        'slug' => 'nullable|string|max:255',
-        'image' => 'nullable|string|max:255',
-        'link' => 'nullable|string',
-        'trend' => 'integer|in:0,1',
-        'mobile' => 'integer|in:0,1',
-        'category_id' => 'required|integer',
-        'description' => 'nullable|string',
-    ]);
+        $request->merge([
+            'trend' => (int) $request->input('trend', 0),
+            'mobile' => (int) $request->input('mobile', 0),
+        ]);
 
-    Game::create($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255',
+            'description_seo' => 'nullable|string',
+            'link' => 'nullable|string',
+            'trend' => 'integer|in:0,1',
+            'mobile' => 'integer|in:0,1',
+            'category_id' => 'required|integer',
+            'description' => 'nullable|string',
+            'image_file' => 'nullable',
+        ]);
 
-    Cache::forget("homepage_games_d_7d");
-    Cache::forget("homepage_games_mb");
-    return redirect()
-        ->route('admin.games.index')
-        ->with('success', 'Thêm game thành công!');
-}
+        $imagePath = $this->uploadPublicFile($request, 'image_file', 'imgs/g');
+
+        if ($imagePath) {
+            $request->merge(['image' => $imagePath]);
+        }
+
+        Game::create($request->except('image_file'));
+
+        Cache::forget("homepage_games_d_7d");
+        Cache::forget("homepage_games_mb");
+
+        return redirect()
+            ->route('admin.games.index')
+            ->with('success', 'Thêm game thành công!');
+    }
 
     public function edit(Game $game)
     {
         $categories = Category::all();
         return view('admin.games.edit', compact('game', 'categories'));
     }
-public function update(Request $request, Game $game)
-{
-    $request->merge([
-    'trend' => (int) $request->input('trend', 0),
-    'mobile' => (int) $request->input('mobile', 0),
-]);
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'image' => 'nullable|string|max:255',
-        'title' => 'required|string|max:255',
-        'description_seo' => 'nullable|string',
-        'link' => 'nullable|string',
-        'trend' => 'integer|in:0,1',
-        'mobile' => 'integer|in:0,1',
-        'category_id' => 'required|integer',
-        'description' => 'nullable|string',
-    ]);
-$data = $request->except('slug');
-    // Cập nhật tất cả fields
-    $game->update($data);
+    public function update(Request $request, Game $game)
+    {
+        $request->merge([
+            'trend' => (int) $request->input('trend', 0),
+            'mobile' => (int) $request->input('mobile', 0),
+        ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'description_seo' => 'nullable|string',
+            'link' => 'nullable|string',
+            'trend' => 'integer|in:0,1',
+            'mobile' => 'integer|in:0,1',
+            'category_id' => 'required|integer',
+            'description' => 'nullable|string',
+        ]);
 
-    Cache::forget("page_game_tt_3_h3_{$game->slug}_10");
-    Cache::forget("page_game_tt_3_h3_{$game->slug}_36");
-    return redirect()
-        ->route('admin.games.index')
-        ->with('success', 'Cập nhật game thành công!');
-}
+
+        $imagePath = $this->uploadPublicFile($request, 'image_file', 'imgs/g');
+
+        if ($imagePath) {
+            $request->merge(['image' => $imagePath]);
+        }
+$data = $request->except(['slug', 'image_file']);
+
+        // Cập nhật tất cả fields
+        $game->update($data);
+
+        Cache::forget("page_game_tt_3_h3_{$game->slug}_10");
+        Cache::forget("page_game_tt_3_h3_{$game->slug}_36");
+        return redirect()
+            ->route('admin.games.index')
+            ->with('success', 'Cập nhật game thành công!');
+    }
 
     public function destroy(Game $game)
     {
         $game->delete();
         return redirect()->route('admin.games.index')->with('success', 'Đã xoá game!');
     }
-    
+
     public function toggleTrend($id, Request $request)
     {
         $game = Game::findOrFail($id);
@@ -151,5 +166,24 @@ $data = $request->except('slug');
         $game->save();
 
         return response()->json(['success' => true]);
+    }
+    private function uploadPublicFile($request, $inputName, $folder)
+    {
+        if (!$request->hasFile($inputName)) {
+            return null;
+        }
+
+        $path = public_path($folder);
+
+        if (!file_exists($path)) {
+            mkdir($path, 0755, true);
+        }
+
+        $file = $request->file($inputName);
+        $filename = time() . '_' . $file->getClientOriginalName();
+
+        $file->move($path, $filename);
+
+        return '/' . trim($folder, '/') . '/' . $filename;
     }
 }

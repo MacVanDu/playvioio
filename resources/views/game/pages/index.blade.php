@@ -24,7 +24,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 					@if($i % 6 == 0)
 					<li class="d-flex flex-column">
 						<div class="slide">
-							<a href="{{  $game->slugGame() }}">
+							<a href="{{  $game->slugGame() }}" data-title="{{ $game->nameGame() }}">
 								<img
 									src="{{ $game->linkImgGame() }}"
 									alt="{{ $game->nameGame() }}"
@@ -43,7 +43,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 						@if($i % 6 >= 1 && $i % 6 <= 4)
 							<div class="slide mb-1">
-							<a href="{{  $game->slugGame() }}">
+							<a href="{{  $game->slugGame() }}" data-title="{{ $game->nameGame() }}">
 								<img
 									src="{{ $game->linkImgGame() }}"
 									alt="{{ $game->nameGame() }}"
@@ -125,9 +125,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<h2 class="my-3 fw-bold">Recommended this <span class="text-success">week</span></h2>
 		@include('game.items.slider', ['datagames' => $game_new])
 	</div>
-	<div class="col-12 mb-4">
-		{!! $container_home!!}
-	</div>
+	    @include('game.items.container_home')
 </div>
 <div class="mb-4 mt-4 hp-bottom-container">
 </div>

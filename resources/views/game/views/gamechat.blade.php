@@ -1,11 +1,12 @@
 <style>
 /* ===== CHAT CONTAINER ===== */
+
 .game-chat {
     background: rgba(15, 23, 42, 0.95);
     border-radius: 14px;
     padding: 12px;
     width: 100%;
-    max-width: 340px;
+    height: 100%;
     color: #e5e7eb;
     box-shadow: 0 10px 30px rgba(0,0,0,.4);
     font-size: 14px;
@@ -23,7 +24,7 @@
     background: #020617;
     border-radius: 10px;
     padding: 8px;
-    height: 220px;
+    height: calc(100% - 80px);
     overflow-y: auto;
     margin-bottom: 10px;
 }
@@ -65,7 +66,11 @@
     font-size: 13px;
     min-width: 0;
 }
-
+@media only screen and (max-width: 992px) {
+.game-chat {
+    height: 300px;
+}
+}
 .chat-input input::placeholder {
     color: #64748b;
 }
@@ -81,6 +86,7 @@
     white-space: nowrap;
 }
 </style>
+                            <div class="col-md-4">
 <div class="game-chat" id="game-chat" data-game-id="{{ $detail->id }}">
 
     <div class="chat-header">💬 Chat</div>
@@ -92,15 +98,16 @@
                 <span>{{ $chat->message }}</span>
             </div>
         @empty
-            <div class="chat-empty">Chưa có tin nhắn</div>
+            <div class="chat-empty">No message received.</div>
         @endforelse
     </div>
 
     <div class="chat-input">
-        <input id="chat-username" placeholder="Tên của bạn">
-        <input id="chat-text" placeholder="Nhập nội dung...">
-        <button id="chat-send">Gửi</button>
+        <input id="chat-username" placeholder="Your name">
+        <input id="chat-text" placeholder="Enter content...">
+        <button id="chat-send">Send</button>
     </div>
+</div>
 </div>
 <script>
 const gameChat = document.getElementById('game-chat');
@@ -149,7 +156,7 @@ sendBtn.onclick = function () {
         notice.style.fontSize = '13px';
         notice.style.color = '#22c55e';
         notice.style.marginTop = '6px';
-        notice.innerText = '✔ Bình luận của bạn đang chờ duyệt';
+        notice.innerText = '✔ Your comment is awaiting approval';
         gameChat.appendChild(notice);
     });
 };

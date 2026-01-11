@@ -26,7 +26,7 @@
 			<div id="nav-footer-content">
 				<ul class="list-unstyled text-start ms-3">
 					<li><a href="/page/about" class="text-error">About</a></li>
-					<li><a href="/page/developer" class="text-error">Developer</a></li>
+					<li><a href="/page/terms-of-Service" class="text-error">Terms of Service</a></li>
 					<li><a href="/page/privacy" class="text-error">Privacy</a></li>
 					<li><a href="/" class="text-error">All games</a></li>
 					<p class="text-white">© 2026 Marios.games</p>
