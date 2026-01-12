@@ -4918,7 +4918,7 @@ label[for=nav-footer-toggle] {
 
     .pg-game {
         flex: 0 0 auto;
-        width: 120px
+        /* width: 120px */
     }
 
     .offcanvas-logo {
