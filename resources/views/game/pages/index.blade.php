@@ -121,12 +121,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 </style>
 	<div class="col-12 mb-4 my-4 p-3">
-		<div class="bg-body-secondary rounded-4 p-3 px-xl-5">
-			<h2 class="mb-1 fw-bold text-center mb-3">Play what you <span class="text-success">LOVE</span>❤️</h2>
-			      <div class="row px-3 pg-game-row">
+		<div class="bg-body-secondary rounded-4 p-1 px-xl-5">
+			<h2 class="mb-1 fw-bold text-center mb-3">Explore other games </h2>
+			      <div class="row px-3">
 					
 						@foreach($datamd['category'] as $i => $c)
+						
+						
+        @if($datamd['device']=="MB")
+                                    <div class="col-6 col-lg-3 mb-2 rightside-img-col pg-game ">
+          @else
                                     <div class="col-3 col-lg-3 mb-2 rightside-img-col pg-game ">
+        @endif
 										<a
 									class="bg-third rounded-2 d-flex align-items-center p-3 fw-medium item-link"
 									href="{{ $c->slug()}}">
