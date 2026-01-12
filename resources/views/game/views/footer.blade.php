@@ -12,8 +12,11 @@
             <!-- Footer links -->
             <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
                 <a href="/page/about" class="footer-link">About</a>
+                <span>.</span>
                 <a href="/page/terms-of-Service" class="footer-link">Terms of Service</a>
+                <span>.</span>
                 <a href="/page/privacy" class="footer-link">Privacy</a>
+                <span>.</span>
                 <a href="/page/contact" class="footer-link">Contact us</a>
             </div>
 
