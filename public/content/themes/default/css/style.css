@@ -1138,7 +1138,9 @@ label[for=nav-footer-toggle] {
   .pg-game-col{margin-top:1rem;margin-bottom:1rem;}    
   .scroll-wrapper{overflow-x: auto;white-space: nowrap;}
   .pg-game-row {display: inline-flex;flex-wrap: nowrap;}
-  .pg-game {flex: 0 0 auto;width: 120px;}
+  .pg-game {flex: 0 0 auto;
+    /* width: 120px; */
+  }
   .offcanvas-logo{height:35px;width:171px;}
 }
 @media only screen and (max-width: 768px) {
