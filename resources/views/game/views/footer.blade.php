@@ -1,15 +1,39 @@
-<footer>
-		<div class="col-12 bg-black p-4 rounded-top d-sm-flex justify-content-between align-items-center">
-            <div class="col-12 col-sm-5 col-xl-8 mb-2">
-                <a class="navbar-brand" href="/"><img src="/images/site-logo.webp" width="190" height="55" alt="Marios.games Logo">
+<footer class="bg-black mt-4">
+    <div class="container">
+        <div class="row align-items-center py-4">
+
+            <!-- Logo -->
+            <div class="col-12 col-md-4 text-center text-md-start mb-3 mb-md-0">
+                   <a class="navbar-brand" href="/">
+                    <img src="/images/site-logo.webp" width="190" height="55" alt="Marios.games Logo">
                 </a>
             </div>
-            <div class="col-12 col-sm-4 col-xl-2 mb-2">
-                <div class="d-flex footer-social">
-                <a href="{{ $datamd['fb_link']   }}" target="_blank"><img src="/images/fb-footer.png" width="36" height="36" alt="Facebook" class="me-2 ms-2"></a>
-				<a href="{{ $datamd['x_link']   }}" target="_blank"><img src="/images/x-footer.png" width="36" height="36" alt="Twitter" class="me-2"></a>
-				<a href="{{ $datamd['r_link']   }}"><img src="/images/redit-footer.png" width="36" height="36" alt="redit" class="me-2"></a>
-                </div>
+
+            <!-- Footer links -->
+            <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
+                <a href="/page/about" class="footer-link">About</a>
+                <a href="/page/terms-of-Service" class="footer-link">Terms of Service</a>
+                <a href="/page/privacy" class="footer-link">Privacy</a>
+                <a href="/page/contact" class="footer-link">Contact us</a>
             </div>
-		</div>
-	</footer>
+
+            <!-- Social -->
+            <div class="col-12 col-md-4 text-center text-md-end">
+                <a href="{{ $datamd['fb_link']   }}" class="me-2">
+                    <img src="/images/fb-footer.png" width="32">
+                </a>
+                <a href="{{ $datamd['x_link']   }}" class="me-2">
+                    <img src="/images/x-footer.png" width="32">
+                </a>
+                <a href="{{ $datamd['r_link']   }}">
+                    <img src="/images/redit-footer.png" width="32">
+                </a>
+            </div>
+
+        </div>
+
+        <div class="text-center text-secondary small pb-3">
+            © 2026 Marios.games. All rights reserved.
+        </div>
+    </div>
+</footer>
