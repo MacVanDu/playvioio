@@ -27,7 +27,30 @@ a:hover {
     color: orange;
     text-decoration: underline
 }
+/* 1. Reset hoàn toàn hành vi link */
+a.item-link,
+a.item-link:link,
+a.item-link:visited,
+a.item-link:active {
+    text-decoration: none !important;
+    color: inherit !important;
+}
 
+/* 2. Reset text bên trong */
+a.item-link .item-text {
+    text-decoration: none !important;
+    color: #F9FAFF !important; /* màu mặc định */
+}
+
+/* 3. CHỈ khi hover vào card thì span mới underline */
+a.item-link:hover .item-text {
+    text-decoration: underline !important;
+}
+
+/* (tuỳ chọn) hover đổi màu card */
+a.item-link:hover {
+    filter: brightness(1.05);
+}
 #mainNav {
     padding: 0;
     transition: padding-top 0.3s,padding-bottom 0.3s;

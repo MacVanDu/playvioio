@@ -82,42 +82,67 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	
 		@include('game.items.slidertl', ['data' => $c_home])
 	@endforeach
+<style>
+	.item-vertical {
+    min-height: 80px;
+    width: 100%;
+    display: flex;
+    flex-direction: column; /* xếp từ trên xuống */
+    align-items: flex-start;
+}
 
+/* reset link */
+.item-link {
+    text-decoration: none !important;
+    color: inherit;
+}
+
+/* text mặc định không gạch */
+.item-link .item-text {
+    text-decoration: none !important;
+    border-bottom: none !important; 
+}
+
+/* CHỈ khi hover card thì text mới gạch */
+.item-link:hover .item-text {
+    text-decoration: underline !important;
+}
+
+.item-link .item-text::after {
+    content: none !important;         /* nếu theme dùng pseudo */
+}
+/* layout dọc */
+.item-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+</style>
 	<div class="col-12 mb-4 my-4 p-3">
 		<div class="bg-body-secondary rounded-4 p-3 px-xl-5">
 			<h2 class="mb-1 fw-bold text-center mb-3">Play what you <span class="text-success">LOVE</span>❤️</h2>
-			<div class="table-responsive">
-				<table class="w-100" style="min-width: 700px;">
-					<tbody>
+			      <div class="row px-3 pg-game-row">
+					
 						@foreach($datamd['category'] as $i => $c)
-						@if($i % 3 == 0)
-						<tr>
-							@endif
-
-							<td class="p-2">
-								<a
-									class="bg-third rounded-2 d-flex align-items-center p-3 fw-medium"
+                                    <div class="col-3 col-lg-3 mb-2 rightside-img-col pg-game ">
+										<a
+									class="bg-third rounded-2 d-flex align-items-center p-3 fw-medium item-link"
 									href="{{ $c->slug()}}">
+									<div class="item-vertical">
 									<img
 										src="{{ $c->img()}}"
-										width="30"
-										height="30"
+										width="50"
+										height="50"
 										alt="{{ $c->name()}}"
 										class="me-1">
-									<span>{{ $c->name()}}</span>
+									<span class="item-text">{{ $c->name()}}</span>
+									</div>
 								</a>
-							</td>
-							@if($i % 3 == 2)
-						</tr>
-						@endif
+									</div>
 						@endforeach
-						@if(count($datamd['category']) % 3 != 0)
-						</tr>
-						@endif
-
-					</tbody>
-				</table>
-			</div>
+				  </div>
 		</div>
 	</div>
 
