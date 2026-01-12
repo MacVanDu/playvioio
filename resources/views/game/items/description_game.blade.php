@@ -50,7 +50,6 @@
 }
 
  </style>
- <div class="col-md-8 game-content">
     <div class="info-the-game">
 
         <div class="game-desc-preview" id="gameDesc">
@@ -70,7 +69,6 @@
         </button>
 
     </div>
-</div>
 <script>
 const desc = document.getElementById('gameDesc');
 const btn  = document.getElementById('gameDescBtn');

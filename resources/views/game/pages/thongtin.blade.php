@@ -5,55 +5,53 @@
     <link rel="canonical" href="/">
 @endsection
 @section('body')
-<style>
-/* khung chứa ảnh */
-.pg-game a {
-    position: relative;
-    display: inline-block;
-    border-radius: 16px;
-    overflow: hidden; /* BẮT BUỘC */
-}
+    <style>
+        /* khung chứa ảnh */
+        .pg-game a {
+            position: relative;
+            display: inline-block;
+            border-radius: 16px;
+            overflow: hidden;
+            /* BẮT BUỘC */
+        }
 
-/* ảnh */
-.pg-game img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
+        /* ảnh */
+        .pg-game img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
 
-/* overlay tên game */
-.pg-game a::after {
-    content: attr(data-title);
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
+        /* overlay tên game */
+        .pg-game a::after {
+            content: attr(data-title);
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
 
-    background: linear-gradient(
-        to top,
-        rgba(0,0,0,0.85),
-        rgba(0,0,0,0.15)
-    );
+            background: linear-gradient(to top,
+                    rgba(0, 0, 0, 0.85),
+                    rgba(0, 0, 0, 0.15));
 
-    color: #fff;
-    font-size: 13px;
-    font-weight: 600;
-    text-align: center;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
 
-    padding: 8px 6px;
-    opacity: 0;
-    transform: translateY(100%);
-    transition: all 0.25s ease;
-    z-index: 2;
-}
+            padding: 8px 6px;
+            opacity: 0;
+            transform: translateY(100%);
+            transition: all 0.25s ease;
+            z-index: 2;
+        }
 
-/* hover */
-.pg-game a:hover::after {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-</style>
+        /* hover */
+        .pg-game a:hover::after {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
     <div class="container-fluid">
 
         <div class="game-container">
@@ -66,8 +64,9 @@
                             <div class="row px-3 pg-game-row">
                                 @foreach ($you_may_like_games as $i => $game)
                                     <div class="col-4 col-lg-6 mb-2 rightside-img-col pg-game">
-                                        <a href="{{ $game->slugGame() }}" data-title="{{ $game->nameGame() }}"><img src="{{ $game->linkImgGame() }}"
-                                                width="auto" height="auto" alt="{{ $game->nameGame() }}"
+                                        <a href="{{ $game->slugGame() }}" data-title="{{ $game->nameGame() }}"><img
+                                                src="{{ $game->linkImgGame() }}" width="auto" height="auto"
+                                                alt="{{ $game->nameGame() }}"
                                                 class="img-fluid rightside-img mx-auto d-block thumbnail-img">
                                         </a>
                                     </div>
@@ -76,7 +75,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-8 game-content order-1">
+                    <div class="col-lg-7 game-content order-1">
                         <div class="game-iframe-container">
                             <iframe class="game-iframe" id="game-area" src="{{ $detail->slugsplashPlay() }}" width="720"
                                 height="1080" frameborder="0" allowfullscreen=""></iframe>
@@ -111,35 +110,34 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="game-iframe-container" style="min-height: 400px !important;">
+                              @include('game.items.description_game')
+                                </div>
                     </div>
 
-                    <div class="col-lg-2 order-3 pg-game-col">
+                    <div class="col-lg-3 order-3 pg-game-col">
                         <div class="bg-body-secondary rounded-2 p-3 px-0 scroll-wrapper">
                             <h2 class="mb-3 fw-semibold px-3 h4">Popular <span class="text-success">Games</span></h2>
                             <div class="row px-3 pg-game-row">
 
                                 @foreach ($popular_games as $i => $game)
-                                    <div class="col-4 col-lg-6 mb-2 rightside-img-col pg-game">
-                                        <a href="{{ $game->slugGame() }}" data-title="{{ $game->nameGame() }}"><img src="{{ $game->linkImgGame() }}"
-                                                width="auto" height="auto" alt="{{ $game->nameGame() }}"
-                                                class="img-fluid rightside-img mx-auto d-block thumbnail-img">
-                                        </a>
-                                    </div>
+                                    @if ($i < 6)
+                                        <div class="col-4 col-lg-6 mb-2 rightside-img-col pg-game">
+                                            <a href="{{ $game->slugGame() }}" data-title="{{ $game->nameGame() }}"><img
+                                                    src="{{ $game->linkImgGame() }}" width="auto" height="auto"
+                                                    alt="{{ $game->nameGame() }}"
+                                                    class="img-fluid rightside-img mx-auto d-block thumbnail-img">
+                                            </a>
+                                        </div>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
-                    </div>
-
-                </div>
-                <div class="row">
-
-                    <div class="col-md-12 game-content">
-                        <div class="row">
-                            @include('game.items.description_game')
+                        <div class=" rounded-2 p-3 px-0 scroll-wrapper">
                                 @include('game.views.gamechat')
-                           
-                        </div>
+                                 </div>
                     </div>
+
                 </div>
             </div>
         </div>

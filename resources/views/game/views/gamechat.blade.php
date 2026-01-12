@@ -6,7 +6,8 @@
     border-radius: 14px;
     padding: 12px;
     width: 100%;
-    height: 100%;
+    height: 400px;
+        min-height: 400px;
     color: #e5e7eb;
     box-shadow: 0 10px 30px rgba(0,0,0,.4);
     font-size: 14px;
@@ -86,7 +87,7 @@
     white-space: nowrap;
 }
 </style>
-                            <div class="col-md-4">
+                  
 <div class="game-chat" id="game-chat" data-game-id="{{ $detail->id }}">
 
     <div class="chat-header">💬 Chat</div>
@@ -107,7 +108,6 @@
         <input id="chat-text" placeholder="Enter content...">
         <button id="chat-send">Send</button>
     </div>
-</div>
 </div>
 <script>
 const gameChat = document.getElementById('game-chat');
