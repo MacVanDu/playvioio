@@ -1,320 +1,214 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="vi">
 <head>
-  <meta charset="utf-8">
-  <title></title>
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-  <meta name="description" content="">
-  <link rel="stylesheet" type="text/css" href="/content/themes/default/css/style.css">
-  <style type="text/css">
-    @font-face {
-      font-family: 'Readex Pro';
-      src: url('/content/themes/default/fonts/ReadexPro-Regular.woff2') format('woff2'), url('/content/themes/default/fonts/ReadexPro-Regular.woff') format('woff');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
+    <meta charset="utf-8">
+    <title>Stickman Parkour 3</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <style>
+        @font-face {
+            font-family: 'Readex Pro';
+            src: url('/content/themes/default/fonts/ReadexPro-Regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
 
-    body {
-      color: #eee;
-      position: inherit;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      height: 100%;
-      background: #000
-    }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            font-family: 'Readex Pro', sans-serif;
+            overflow: hidden;
+            color: #fff;
+        }
 
-    #splash-game-content {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      overflow: hidden;
-      max-width: 100%;
-      max-height: 100%;
-      min-width: 100%;
-      min-height: 100%;
-      box-sizing: border-box
-    }
+        /* Container chính */
+        .splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Tập trung vào giữa */
+            gap: 25px; /* Khoảng cách giữa các thành phần */
+            z-index: 10;
+            box-sizing: border-box;
+            transition: opacity 0.4s ease;
+        }
 
-    .splash {
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      z-index: 1
-    }
+        /* Background mờ */
+        .glow-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(20px) brightness(0.5);
+            opacity: 0.8;
+            z-index: -1;
+            transform: scale(1.1);
+        }
 
-    .splash-content {
-      position: absolute;
-      top: 42%;
-      left: 50%;
-      z-index: 2;
-      transform: translate(-50%, -50%)
-    }
+        /* Logo thương hiệu phía trên cùng */
+        .brand-logo {
+            position: absolute;
+            top: 5%;
+            width: 100%;
+            text-align: center;
+        }
+        .brand-logo img {
+            max-width: 180px;
+            height: auto;
+        }
 
-    .splash-content img {
-      width: 180px;
-      height: auto;
-      border: 2px solid #fff;
-      border-radius: 8px
-    }
+        /* Thumbnail Game */
+        .splash-thumbnail {
+            width: 140px;
+            height: 140px;
+            border: 3px solid rgba(255,255,255,0.8);
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            overflow: hidden;
+        }
+        .splash-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-    /* .btn-play {
-      position: absolute;
-      top: 75%;
-      left: 50%;
-      width: 184px;
-      height: 60px;
-      font-size: 25px;
-      font-weight: bold;
-      background: orange;
-      border: 0;
-      border-radius: 40px;
-      transform: translate(-50%, -50%);
-      color: #fff
-    } */
+        /* Tiêu đề Game */
+        .splash-game-title {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
 
-      .play-btn {
-         position: absolute;
-      top: 75%;
-      left: calc(50% - 114px);
-            padding: 15px 60px;
-            font-size: 40px;
+        /* Nút Play đã được thu gọn & tinh tế hơn */
+        .play-btn {
+            position: relative;
+            padding: 10px 45px; /* Nhỏ gọn hơn */
+            font-size: 24px;   /* Giảm kích thước chữ */
             border: none;
             cursor: pointer;
-            outline: none;
-            
-            /* 2. Hình dáng */
-            border-radius: 50px; /* Bo tròn hình viên thuốc */
-            border: 5px solid #ffffff; /* Viền trắng dày */
-
-            /* 3. Màu sắc và hiệu ứng 3D của nút */
-            background: linear-gradient(180deg, #9dfa48 0%, #68d81b 50%, #46c412 100%);
-            
-            /* Đổ bóng phức tạp để tạo độ sâu */
+            border-radius: 30px;
+            background: linear-gradient(180deg, #9dfa48 0%, #46c412 100%);
             box-shadow: 
-                /* Bóng đổ bên ngoài nút (để tách biệt với nền) */
-                0px 6px 5px rgba(0, 0, 0, 0.2),
-                /* Bóng đổ khối cứng bên dưới (tạo độ dày 3D) */
-                0px 4px 0px #3a960e,
-                /* Hiệu ứng bóng kính (Inner glow) - màu trắng mờ ở trên */
-                inset 0px 8px 10px rgba(255, 255, 255, 0.6),
-                /* Bóng tối bên trong ở dưới đáy */
-                inset 0px -5px 10px rgba(0, 0, 0, 0.1);
-            
-            transition: transform 0.1s;
+                0px 4px 0px #2d7d0a, /* Độ dày nút mỏng hơn */
+                0px 8px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.1s;
+            outline: none;
         }
 
-        /* 4. Xử lý chữ "Play" */
         .play-btn span {
-            font-family: 'Fredoka', sans-serif; /* Font chữ tròn */
-            color: #ffffff;
+            color: #fff;
             font-weight: 800;
-            letter-spacing: 1px;
-            
-            /* Tạo viền đen dày xung quanh chữ bằng text-shadow */
-            text-shadow: 
-                3px 3px 0 #000,
-               -1px -1px 0 #000,  
-                1px -1px 0 #000,
-               -1px 1px 0 #000,
-                1px 1px 0 #000;
-            
-            /* Để chữ nổi lên trên các hiệu ứng khác */
-            position: relative;
-            z-index: 2;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
         }
 
-        /* 5. Tạo điểm sáng (đốm trắng) góc trái trên để giống nút thạch */
-        .play-btn::after {
+        /* Hiệu ứng bóng sáng trên nút */
+        .play-btn::before {
             content: '';
             position: absolute;
-            top: 5px;
-            left: 15px;
+            top: 4px;
+            left: 15%;
             width: 25px;
-            height: 15px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.7);
-            filter: blur(2px);
-            transform: rotate(-20deg);
+            height: 8px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            filter: blur(1px);
         }
 
-        /* Hiệu ứng khi nhấn chuột */
         .play-btn:active {
-            transform: translateY(4px); /* Nút lún xuống */
-            box-shadow: 
-                0px 2px 3px rgba(0, 0, 0, 0.2),
-                inset 0px 8px 10px rgba(255, 255, 255, 0.6); /* Giữ nguyên hiệu ứng bóng kính */
+            transform: translateY(3px);
+            box-shadow: 0px 1px 0px #2d7d0a;
         }
-      .btn-play {
-      position: absolute;
-      top: 75%;
-      left: 38%;
-      width: 184px;
-      height: 60px;
-      font-size: 25px;
-      font-weight: bold;
-    border: none;
-    background: #ffffff;
-    padding: 8px;
-    border-radius: 999px;
-    cursor: pointer;
-}
 
-/* Mặt nút */
-.btn-play span {
-    position: relative;
-    display: block;
-    padding: 16px 60px;
-    border-radius: 999px;
+        /* Iframe game */
+        #game-iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: none;
+        }
 
-    background: linear-gradient(
-        to bottom,
-        #7DFF2F 0%,
-        #4EEB1F 45%,
-        #28C418 100%
-    );
+        .loading-text {
+            color: #9dfa48;
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
+        }
 
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 32px;
-    font-weight: 900;
-    color: #ffffff;
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
 
-    /* Viền chữ đen giống ảnh */
-    -webkit-text-stroke: 3px #000;
-    text-shadow:
-        0 3px 0 rgba(0,0,0,0.25);
-
-    /* Độ nổi */
-    box-shadow:
-        inset 0 4px 0 rgba(255,255,255,0.5),
-        inset 0 -6px 0 rgba(0,0,0,0.25),
-        0 6px 0 #1b8e12;
-}
-
-/* Highlight bóng góc trái */
-.btn-play span::before {
-    content: "";
-    position: absolute;
-    top: 8px;
-    left: 14px;
-    width: 60px;
-    height: 28px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.55);
-}
-
-/* Nhấn */
-.btn-play:active span {
-    transform: translateY(4px);
-    box-shadow:
-        inset 0 4px 0 rgba(255,255,255,0.4),
-        inset 0 -3px 0 rgba(0,0,0,0.25),
-        0 2px 0 #1b8e12;
-}
-
-
-    .btn-play:hover {
-      cursor: pointer
-    }
-
-    .splash-game-title {
-      position: absolute;
-      top: 63%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 20px
-    }
-
-    .glow-background {
-      background-repeat: no-repeat;
-      position: absolute;
-      background-size: cover;
-      background-position: 50%;
-      filter: blur(5px);
-      opacity: .7;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1
-    }
-
-    .brand-logo {
-      text-align: center;
-      position: absolute;
-      top: 15%;
-      left: 50%;
-      z-index: 2;
-      transform: translate(-50%, -50%)
-    }
-
-    .splash-game-title {
-      position: absolute;
-      top: 64%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 30px;
-      font-family: "Readex Pro";
-      font-weight: 800
-    }
-  </style>
+        /* Mobile tối ưu */
+        @media (max-width: 480px) {
+            .splash-thumbnail { width: 120px; height: 120px; }
+            .splash-game-title { font-size: 18px; }
+            .play-btn { padding: 8px 40px; font-size: 20px; }
+        }
+    </style>
 </head>
-
 <body>
-  <div class="splash" id="splash">
-    <div class="glow-background" style="{{ $detail->linkImgGameBG() }}"></div>
-    <div class="brand-logo"><img src="/images/brand-logo.webp" width="382" height="110" alt="Marios.games Logo" class="img-fluid"></div>
-    <div class="splash-content">
-      <div class="splash-thumbnail">
-        <img src="{{$detail->linkImgGame()}}">
-      </div>
+
+    <div class="splash" id="splash">
+        <div class="glow-background" style="background-image: url('{{ $detail->linkImgGameBG() }}');"></div>
+        
+        <div class="brand-logo">
+            <img src="/images/brand-logo.webp" alt="Logo">
+        </div>
+
+        <div class="splash-thumbnail" id="thumb-container">
+            <img src="{{$detail->linkImgGame()}}" alt="Thumbnail">
+        </div>
+
+        <div class="splash-game-title">{{ $detail->nameGame() }}</div>
+
+        <button class="play-btn" id="play-btn-el" onclick="play_game()">
+            <span>PLAY</span>
+        </button>
     </div>
-    <div class="splash-game-title">Stickman Parkour 3</div>
-  
-    <!-- <button class="btn-play" onclick="play_game()">
-  <span>Play</span>
-</button> -->
-<button class="play-btn" onclick="play_game()">
-        <span>Play</span>
-    </button>
 
-    <!-- <div class="play-wrap">
-    <button class="play-btn"  >
-        <span>Play</span>
-    </button> -->
-<!-- </div> -->
+    <iframe id="game-iframe" 
+            allow="autoplay" 
+            allowfullscreen 
+            scrolling="no" 
+            data-src="{{$detail->getLinkIframe()}}">
+    </iframe>
 
-  </div>
-  <iframe id="splash-game-content" frameborder="0" allow="autoplay" allowfullscreen="" seamless="" scrolling="no" data-src="{{$detail->getLinkIframe()}}"></iframe>
-  <script type="text/javascript">
-    function play_game() {
-      document.getElementById("splash").style.opacity = "0.8";
+    <script type="text/javascript">
+        function play_game() {
+            const splash = document.getElementById("splash");
+            const iframe = document.getElementById("game-iframe");
+            const btn = document.getElementById("play-btn-el");
+            const thumb = document.getElementById("thumb-container");
 
-      document.querySelector(".splash-content").innerHTML =
-        '<h3 style="text-align:center">Loading...</h3>';
+            // Đổi nút thành trạng thái loading
+            btn.style.display = "none";
+            thumb.innerHTML = '<div class="loading-text">LOADING...</div>';
+            
+            iframe.src = iframe.dataset.src;
+            iframe.style.display = "block";
 
-      document.getElementById("splash-game-content").src =
-        document.getElementById("splash-game-content").dataset.src;
-
-      document.getElementById("splash-game-content").onload = function() {
-        document.getElementById("splash").remove();
-      };
-    }
-    // ca_api.on_ad_closed = ()=>{
-    // 	//
-    // }
-  </script>
-
-
-
-
+            iframe.onload = function() {
+                splash.style.opacity = "0";
+                setTimeout(() => { splash.remove(); }, 400);
+            };
+        }
+    </script>
 </body>
-
 </html>
