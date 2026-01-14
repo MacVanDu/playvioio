@@ -281,7 +281,7 @@
     <!-- <button class="btn-play" onclick="play_game()">
   <span>Play</span>
 </button> -->
-<button class="play-btn">
+<button class="play-btn" onclick="play_game()">
         <span>Play</span>
     </button>
 
