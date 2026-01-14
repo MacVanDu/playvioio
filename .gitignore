@@ -5,4 +5,5 @@
 
 # Ignore sitemap files
 /public/sitemap*.xml
+/public/imgs/
 /storage/logs/
