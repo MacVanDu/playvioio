@@ -107,18 +107,7 @@ class CategoryController extends Controller
 
             $imagePath = '/imgs/c/' . $filename;
         } 
-
-        // if ($request->hasFile('imagesvg')) {
-        //     $file = $request->file('imagesvg');
-        //     $filename = $file->getClientOriginalName();
-
-        //     $file->storeAs('public/categories', $filename);
-        //     $imagePath = 'storage/categories/' . $filename;
-        // } elseif ($request->filled('imagesvg')) {
-        //     // User nhập link mới
-        //     $imagePath = $request->imagesvg;
-        // }
-
+if($imagePath){
         $category->update([
             'title'     => $request->title,
             'description'     => $request->description,
@@ -127,6 +116,16 @@ class CategoryController extends Controller
             'slug'     => $slug,
             'imagesvg' => $imagePath,
         ]);
+}else{
+        $category->update([
+            'title'     => $request->title,
+            'description'     => $request->description,
+            'description_seo'     => $request->description_seo,
+            'name'     => $request->name,
+            'slug'     => $slug,
+            'imagesvg' => $imagePath,
+        ]);
+}
 
         return redirect()
             ->route('admin.categories.index')
