@@ -123,7 +123,6 @@ if($imagePath){
             'description_seo'     => $request->description_seo,
             'name'     => $request->name,
             'slug'     => $slug,
-            'imagesvg' => $imagePath,
         ]);
 }
 
