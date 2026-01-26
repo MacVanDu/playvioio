@@ -48,10 +48,28 @@
     border-color: #ff8c00;
     color: #000;
 }
+.ar
+ {
+    border: solid #64748b;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 2px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    margin-right: 4px;
+}
 
  </style>
     <div class="info-the-game">
 
+                            <div class="upt">
+                                <a href="https://marios.games/"> Home</a>
+                                <span class="ar"></span>
+                                <a
+                                    href="{{ $detail->getTheloai()->slug() }}">{{ $detail->getTheloai()->name() }}</a>
+                                <span class="ar"></span>
+                                <span class="we">{{ $detail->name }}</span>
+                            </div>
         <div class="game-desc-preview" id="gameDesc">
 
                                     {!! $detail->description() !!}
