@@ -2,10 +2,10 @@
 <html lang="en" dir="ltr">
 
 <head>
-    @php($ver = '1.0.15')
+    @php($ver = '1.0.16')
     @yield('heads')
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="/content/themes/default/css/updated.css?v={{ $ver }}">
     <link rel="stylesheet" href="/content/themes/default/css/font.css?v={{ $ver }}">
     <link rel="preload" as="image" href="/thumbs/space-waves-thumb-2.webp" fetchpriority="high">
@@ -84,7 +84,7 @@
     @yield('body')
     @include('game.views.footer')
 
-    @php($ver = '1.0.1')
+    @php($ver = '1.0.3')
     <script src="/js/jquery.min.js?v={{ $ver }}" defer=""></script>
     <script src="/content/themes/default/js/bootstrap.bundle.min.js?v={{ $ver }}" defer=""></script>
     <script src="/content/themes/default/js/lazysizes.min.js?v={{ $ver }}" async=""></script>

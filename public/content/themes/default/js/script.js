@@ -162,16 +162,61 @@ $(function() {
 
 });
 function open_fullscreen() {
-	let game = document.getElementById("game-area");
-	if (game.requestFullscreen) {
-		game.requestFullscreen();
-	} else if (game.mozRequestFullScreen) { /* Firefox */
-		game.mozRequestFullScreen();
-	} else if (game.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-		game.webkitRequestFullscreen();
-	} else if (game.msRequestFullscreen) { /* IE/Edge */
-		game.msRequestFullscreen();
-	}
+let game = document.getElementById("game-area");
+
+    // 1. Kiểm tra xem có phải iOS (iPhone/iPod) không
+    // Vì iPhone không hỗ trợ Fullscreen API cho Element, ta bắt nó dùng CSS luôn
+    const isIPhone = /iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    if (isIPhone) {
+        // Tự động thêm CSS vào Header nếu chưa có
+        if (!document.getElementById("ios-fs-style")) {
+            let style = document.createElement("style");
+            style.id = "ios-fs-style";
+            style.innerHTML = `
+                .ios-fullscreen {
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100vw !important;
+                    height: 100vh !important;
+                    z-index: 999999 !important;
+                    border: none !important;
+                }
+                .ios-close-btn {
+                    position: fixed; top: 10px; right: 10px; z-index: 1000000;
+                    background: rgba(0,0,0,0.5); color: white; border: none;
+                    padding: 8px 15px; border-radius: 5px; font-family: sans-serif;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Áp dụng class tràn màn hình
+        game.classList.add("ios-fullscreen");
+
+        // Tạo nút đóng (vì iPhone không có phím ESC hay nút thoát mặc định)
+        let closeBtn = document.createElement("button");
+        closeBtn.innerText = "Thoát X";
+        closeBtn.className = "ios-close-btn";
+        closeBtn.onclick = function() {
+            game.classList.remove("ios-fullscreen");
+            closeBtn.remove();
+        };
+        document.body.appendChild(closeBtn);
+
+    } else {
+        // 2. Xử lý cho Android, iPad, PC (Dùng API chuẩn)
+        if (game.requestFullscreen) {
+            game.requestFullscreen();
+        } else if (game.webkitRequestFullscreen) { /* Safari/iPad */
+            game.webkitRequestFullscreen();
+        } else if (game.mozRequestFullScreen) {
+            game.mozRequestFullScreen();
+        } else if (game.msRequestFullscreen) {
+            game.msRequestFullscreen();
+        }
+    }
 };
 var can_resize = false;
 if($('iframe#game-area').length){
