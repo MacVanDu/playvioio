@@ -84,7 +84,7 @@
     @yield('body')
     @include('game.views.footer')
 
-    @php($ver = '1.0.3')
+    @php($ver = '1.0.5')
     <script src="/js/jquery.min.js?v={{ $ver }}" defer=""></script>
     <script src="/content/themes/default/js/bootstrap.bundle.min.js?v={{ $ver }}" defer=""></script>
     <script src="/content/themes/default/js/lazysizes.min.js?v={{ $ver }}" async=""></script>

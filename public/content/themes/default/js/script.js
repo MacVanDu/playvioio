@@ -197,7 +197,7 @@ let game = document.getElementById("game-area");
 
         // Tạo nút đóng (vì iPhone không có phím ESC hay nút thoát mặc định)
         let closeBtn = document.createElement("button");
-        closeBtn.innerText = "Thoát X";
+        closeBtn.innerText = "✖️";
         closeBtn.className = "ios-close-btn";
         closeBtn.onclick = function() {
             game.classList.remove("ios-fullscreen");
