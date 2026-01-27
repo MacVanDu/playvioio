@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 class SiteMapController extends Controller
 {
-    private $url = 'https://marios.games/';
+    private $url = 'https://marios.games';
     private $cacheTime = 300; // 7 ngày tính bằng giây (60*60*24*7)
 
     /**
