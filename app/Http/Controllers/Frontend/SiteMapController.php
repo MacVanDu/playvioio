@@ -20,7 +20,7 @@ class SiteMapController extends Controller
     public function sitemap()
     {
         // Cache key riêng biệt
-        $xml = Cache::remember('sitemap_index_xml', $this->cacheTime, function () {
+        $xml = Cache::remember('a_sitemap_index_xml', $this->cacheTime, function () {
             $lastmod = now()->format('Y-m-d');
             $base = $this->url;
 
@@ -51,7 +51,7 @@ XML;
      */
     public function misc()
     {
-        $xml = Cache::remember('sitemap_misc_xml', $this->cacheTime, function () {
+        $xml = Cache::remember('a_sitemap_misc_xml', $this->cacheTime, function () {
             $lastmod = now()->format('Y-m-d');
             $base = $this->url;
 
@@ -77,7 +77,7 @@ XML;
      */
     public function sitemapcategories()
     {
-        $xml = Cache::remember('sitemap_categories_xml', $this->cacheTime, function () {
+        $xml = Cache::remember('a_sitemap_categories_xml', $this->cacheTime, function () {
             $base = $this->url;
 
             // Lấy dữ liệu một lần, chỉ lấy cột cần thiết
@@ -114,7 +114,7 @@ XML;
      */
     public function sitemapgames()
     {
-        $xml = Cache::remember('sitemap_games_xml', $this->cacheTime, function () {
+        $xml = Cache::remember('a_sitemap_games_xml', $this->cacheTime, function () {
             $base = $this->url;
             $xmlItems = '';
 
