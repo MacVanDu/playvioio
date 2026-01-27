@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\HomeControllerMTLG;
+use App\Http\Controllers\Frontend\SiteMapController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -21,6 +22,13 @@ Route::controller(HomeControllerMTLG::class)->group(function () {
     Route::get('/splash/{slug}', 'splash')->name('home.splash');
     Route::get('/search', 'search')->name('home.search');
 });
+Route::controller(SiteMapController::class)->group(function () {
+    Route::get('/sitemap.xml', 'sitemap')->name('sitemap.index');
+    Route::get('/sitemaps/misc.xml', 'misc')->name('sitemap.misc');
+    Route::get('/sitemaps/categories.xml', 'sitemapcategories')->name('sitemap.sitemapcategories');
+    Route::get('/sitemaps/games.xml', 'sitemapgames')->name('sitemap.sitemapgames');
+});
+
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
