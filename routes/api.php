@@ -9,4 +9,5 @@ Route::prefix('games')->group(function () {
 });
 
 Route::get('/pagedata/{slug}', [PageController::class, 'store']);
+Route::post('/ajax', [GameChatController::class, 'ajax']);
 

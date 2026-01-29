@@ -4978,3 +4978,141 @@ label[for=nav-footer-toggle] {
 .f14 {
     font-size: 14px!important
 }
+	/*! CSS Used from: https://www.apkgosu.fun/gb/css/game.css?v=1 ; media=all */
+	@media all {
+
+		.search-container {
+			width: 500px;
+		}
+
+		@media (max-width: 800px) {
+			.search-container {
+				width: 300px;
+			}
+		}
+
+		.search-box .input-container {
+			position: relative;
+			width: 96%;
+		}
+
+		.search-box input {
+			font-family: Nunito, Arial, sans-serif;
+			background: #36224f;
+			width: 95%;
+			border-radius: 25px;
+			height: 35px;
+			padding: 5px;
+			margin-top: 2px;
+			border: 0;
+			color: #fff;
+			font-size: 18px;
+			padding-left: 20px;
+			padding-right: 0px;
+		}
+
+		.search-box ::placeholder {
+			color: #d0cce6;
+			font-family: baloo thambi, Arial, Helvetica, sans-serif;
+			opacity: .3;
+		}
+
+		.search-box button {
+			color: #fff;
+			height: 40px;
+			width: 40px;
+			border-radius: 50%;
+			background: 0;
+			justify-content: center;
+			align-items: center;
+			border: 0;
+			position: absolute;
+    top: -2px;
+    right: 25px;
+			cursor: pointer;
+			font-size: large;
+		}
+
+		.search-box button:hover {
+			background: #03030300;
+		}
+
+		.search-box input:focus {
+			outline: 0;
+			background-color: #3e285b;
+		}
+
+		::placeholder {
+			color: #fff;
+		}
+
+		.clear-button {
+			position: absolute;
+			display: none;
+    top: 5px;
+    right: 60px;
+		}
+
+		.close-button {
+			background-color: #ffffff00;
+			color: #fff;
+			border: 0;
+			cursor: pointer;
+			font-size: 16px;
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			transition: background-color .3s;
+		}
+
+		.close-button:hover {
+			background-color: #cccccc00;
+		}
+
+		.close-button:focus {
+			outline: 0;
+		}
+
+		.modal-background {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, .7);
+			z-index: -1;
+			display: none;
+		}
+	}
+/*! CSS Used from: https://www.apkgosu.fun/gb/css/game.css?v=1 ; media=all */
+
+.lists{position:relative;top:7px;right:0;z-index:999;margin-right:15px;}
+.lists ul{padding:5px;margin:0;position:absolute;top:-2px;background:#0a0911;width:100%;max-height:500px;overflow:auto;border-bottom-right-radius:10px;border-bottom-left-radius:10px;}
+.lists ::-webkit-scrollbar{width:5px;}
+.lists ::-webkit-scrollbar-track{box-shadow:inset 0 0 5px grey;border-radius:15px;}
+.lists ::-webkit-scrollbar-thumb{background:#01ffff;border-radius:10px;}
+.search-box ::placeholder{color:#d0cce6;font-family:baloo thambi, Arial, Helvetica, sans-serif;opacity:.3;}
+
+.lists ::-webkit-scrollbar{width:5px;}
+.lists ::-webkit-scrollbar-track{box-shadow:inset 0 0 5px grey;border-radius:15px;}
+.lists ::-webkit-scrollbar-thumb{background:#01ffff;border-radius:10px;}
+.lists li{list-style-type:none;font-size:15px;display:flex;}
+.lists span{margin-left:10px;}
+.lists img{width:50px;height:50px;flex-grow:0;flex-shrink:0;object-fit:cover;border-radius:50%;}
+.lists a{padding:3px;width:100%;display:flex;bkit-align-items:center;align-items:center;}
+.lists a:hover{background:#361c41;color:#fff;border-radius:40px;color:#ffe000;}
+.search-box ::placeholder{color:#d0cce6;font-family:baloo thambi, Arial, Helvetica, sans-serif;opacity:.3;}
+::placeholder{color:#fff;}
+.lists .lc a{color:#fff;}
+.r_img2{overflow:hidden;border-radius:0 0 48% 48%;}
+.c_c1{width:50px;height:50px;border-radius:50%;display:flex;justify-content:center;align-items:center;}
+.p1{background:#400b6a;background:linear-gradient(0, rgba(64, 11, 106, 1) 0, rgba(174, 49, 227, 1) 100%);}
+/* Ẩn search-container trên các màn hình nhỏ hơn 768px */
+@media screen and (max-width: 800px) {
+  .search-container {
+    display: none !important;
+  }
+}

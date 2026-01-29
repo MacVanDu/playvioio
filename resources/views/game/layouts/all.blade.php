@@ -3,6 +3,7 @@
 
 <head>
     @php($ver = '1.0.16')
+    <script src="/js/jquery.min.js?v={{ $ver }}"></script>
     @yield('heads')
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
