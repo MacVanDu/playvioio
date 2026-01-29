@@ -1,4 +1,4 @@
-<div class="py-2 bg-black mb-4 mt-4 w-100 d-none d-lg-block">
+<div class="py-2 bg-black mb-4 mt-4 w-100 d-none d-lg-block" style="background-color: #5121f0 !important;">
 	<nav class="px-md-5 px-3">
 				@foreach($datamd['category']  as $i => $c)
 					<a class="mx-2 text-white" href="{{ $c->slug()}}">
