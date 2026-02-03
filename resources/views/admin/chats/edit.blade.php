@@ -127,16 +127,9 @@ tinymce.init({
     selector: '#description',
     height: 420,
     menubar: true,
-    plugins: [
-        'advlist autolink lists link image charmap preview anchor',
-        'searchreplace visualblocks code fullscreen',
-        'insertdatetime media table help wordcount'
-    ],
-    toolbar:
-        'undo redo | bold italic underline | ' +
-        'alignleft aligncenter alignright alignjustify | ' +
-        'bullist numlist outdent indent | ' +
-        'link image table | code fullscreen',
+            plugins: 'advlist autolink lists link image charmap preview anchor pagebreak searchreplace wordcount code fullscreen insertdatetime table emoticons',
+ toolbar: 'undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | ' +
+                'bullist numlist outdent indent | link | forecolor backcolor | removeformat | code fullscreen',
     branding: false,
     promotion: false
 });
