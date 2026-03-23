@@ -2,7 +2,7 @@
 @section('heads')
 <title>{{ $detail->title }} </title>
 <meta name="description" content="{{ $detail->description_seo }}">
-<link rel="canonical" href="/">
+<link rel="canonical" href="https://marios.games/g/$detail->slug">
 @endsection
 @section('body')
 <style>
