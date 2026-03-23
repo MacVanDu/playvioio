@@ -7,36 +7,34 @@
 @section('body')
 <style>
 .pc-warning {
-    position: fixed;
-    top: 20px;
+    position: absolute;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     
+    width: 90%;
+    max-width: 400px;
+
     background: #ff3c3c;
     color: #fff;
-    
+
     font-family: 'Press Start 2P', cursive;
     font-size: 12px;
     text-align: center;
-    
-    padding: 16px 20px;
+
+    padding: 16px;
     border: 4px solid #000;
     border-radius: 8px;
-    
+
     box-shadow: 
         0 6px 0 #000,
         0 8px 12px rgba(0,0,0,0.4);
-    
-    z-index: 9999;
-    
+
+    z-index: 10;
+
     animation: bounce 1.2s infinite;
 }
 
-/* Hiệu ứng nhảy kiểu game */
-@keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-8px); }
-}
     /* khung chứa ảnh */
     .pg-game a {
         position: relative;
