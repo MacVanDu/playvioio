@@ -1,161 +1,201 @@
 @extends('game.layouts.all')
 @section('heads')
-    <title>{{ $detail->title }} </title>
-    <meta name="description" content="{{ $detail->description_seo }}">
-    <link rel="canonical" href="/">
+<title>{{ $detail->title }} </title>
+<meta name="description" content="{{ $detail->description_seo }}">
+<link rel="canonical" href="/">
 @endsection
 @section('body')
-    <style>
-        /* khung chứa ảnh */
-        .pg-game a {
-            position: relative;
-            display: inline-block;
-            border-radius: 16px;
-            overflow: hidden;
-            /* BẮT BUỘC */
-        }
+<style>
+.pc-warning {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    background: #ff3c3c;
+    color: #fff;
+    
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    text-align: center;
+    
+    padding: 16px 20px;
+    border: 4px solid #000;
+    border-radius: 8px;
+    
+    box-shadow: 
+        0 6px 0 #000,
+        0 8px 12px rgba(0,0,0,0.4);
+    
+    z-index: 9999;
+    
+    animation: bounce 1.2s infinite;
+}
 
-        /* ảnh */
-        .pg-game img {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
+/* Hiệu ứng nhảy kiểu game */
+@keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-8px); }
+}
+    /* khung chứa ảnh */
+    .pg-game a {
+        position: relative;
+        display: inline-block;
+        border-radius: 16px;
+        overflow: hidden;
+        /* BẮT BUỘC */
+    }
 
-        /* overlay tên game */
-        .pg-game a::after {
-            content: attr(data-title);
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
+    /* ảnh */
+    .pg-game img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
 
-            background: linear-gradient(to top,
-                    rgba(0, 0, 0, 0.85),
-                    rgba(0, 0, 0, 0.15));
+    /* overlay tên game */
+    .pg-game a::after {
+        content: attr(data-title);
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
 
-            color: #fff;
-            font-size: 13px;
-            font-weight: 600;
-            text-align: center;
+        background: linear-gradient(to top,
+                rgba(0, 0, 0, 0.85),
+                rgba(0, 0, 0, 0.15));
 
-            padding: 8px 6px;
-            opacity: 0;
-            transform: translateY(100%);
-            transition: all 0.25s ease;
-            z-index: 2;
-        }
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: center;
 
-        /* hover */
-        .pg-game a:hover::after {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
-    <div class="container-fluid">
+        padding: 8px 6px;
+        opacity: 0;
+        transform: translateY(100%);
+        transition: all 0.25s ease;
+        z-index: 2;
+    }
 
-        <div class="game-container">
-            <div class="content-wrapper single-game">
+    /* hover */
+    .pg-game a:hover::after {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+<div class="container-fluid">
 
-                <div class="row">
-                    <div class="col-lg-2 order-2 order-lg-1">
-                        <div class="bg-body-secondary rounded-2 p-3 px-0 scroll-wrapper">
-                            <h2 class="mb-3 fw-semibold px-3 h4">You May <span class="text-success">Like</span></h2>
-                            <div class="row px-3 pg-game-row">
-                                @foreach ($you_may_like_games as $i => $game)
-                                    <div class="col-4 col-lg-6 mb-2 rightside-img-col pg-game">
-                                        <a href="{{ $game->slugGame() }}" data-title="{{ $game->nameGame() }}"><img
-                                                src="{{ $game->linkImgGame() }}" width="auto" height="auto"
-                                                alt="{{ $game->nameGame() }}"
-                                                class="img-fluid rightside-img mx-auto d-block thumbnail-img">
-                                        </a>
-                                    </div>
-                                @endforeach
+    <div class="game-container">
+        <div class="content-wrapper single-game">
+
+            <div class="row">
+                <div class="col-lg-2 order-2 order-lg-1">
+                    <div class="bg-body-secondary rounded-2 p-3 px-0 scroll-wrapper">
+                        <h2 class="mb-3 fw-semibold px-3 h4">You May <span class="text-success">Like</span></h2>
+                        <div class="row px-3 pg-game-row">
+                            @foreach ($you_may_like_games as $i => $game)
+                            <div class="col-4 col-lg-6 mb-2 rightside-img-col pg-game">
+                                <a href="{{ $game->slugGame() }}" data-title="{{ $game->nameGame() }}"><img
+                                        src="{{ $game->linkImgGame() }}" width="auto" height="auto"
+                                        alt="{{ $game->nameGame() }}"
+                                        class="img-fluid rightside-img mx-auto d-block thumbnail-img">
+                                </a>
                             </div>
+                            @endforeach
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-lg-7 game-content order-1">
-                        <div class="game-iframe-container">
-                            <iframe class="game-iframe" id="game-area" src="{{ $detail->slugsplashPlay() }}" width="720"
-                                height="1080" frameborder="0" allowfullscreen=""></iframe>
+                <div class="col-lg-7 game-content order-1">
+                    <div class="game-iframe-container">
+
+
+                        @if($datamd['device']=="MB" && $detail->mobile == 0)
+                        <div class="pc-warning">
+                            ⚠️ This game is only available on PC.<br>
+                            Please switch to a desktop or laptop to play.
                         </div>
-                        <div class="single-info-container">
-                            <div class="header bg-body-secondary px-2">
-                                <div class="header-left">
-                                    <h1 class="single-title">{{ $detail->name }}</h1>
-                                </div>
-                                <div class="header-right">
-                                    <div class="d-flex align-items-center b-action mt-2">
-                                        <div class="rating-component stats-vote">
-                                            <div class="rating-buttons">
-                                                <div class="txt-stats d-none"></div>
-                                                <i class="icon-vote fa fa-thumbs-up" id="upvote" data-id="62">
-                                                    <img src="/images/like-icon.svg" alt="Like Icon" width="20"
-                                                        height="20" class="me-2">
-                                                </i>
-                                                <i class="icon-vote fa fa-thumbs-down" id="downvote" data-id="62">
-                                                    <img src="/images/dislike-icon.svg" alt="dislike Icon" width="20"
-                                                        height="20" class="me-2">
-                                                </i>
-                                                <div class="vote-status"></div>
-                                            </div>
+                        @else
+                        <iframe class="game-iframe" id="game-area" src="{{ $detail->slugsplashPlay() }}" width="720"
+                            height="1080" frameborder="0" allowfullscreen=""></iframe>
+                        @endif
+                    </div>
+                    <div class="single-info-container">
+                        <div class="header bg-body-secondary px-2">
+                            <div class="header-left">
+                                <h1 class="single-title">{{ $detail->name }}</h1>
+                            </div>
+                            <div class="header-right">
+                                <div class="d-flex align-items-center b-action mt-2">
+                                    <div class="rating-component stats-vote">
+                                        <div class="rating-buttons">
+                                            <div class="txt-stats d-none"></div>
+                                            <i class="icon-vote fa fa-thumbs-up" id="upvote" data-id="62">
+                                                <img src="/images/like-icon.svg" alt="Like Icon" width="20"
+                                                    height="20" class="me-2">
+                                            </i>
+                                            <i class="icon-vote fa fa-thumbs-down" id="downvote" data-id="62">
+                                                <img src="/images/dislike-icon.svg" alt="dislike Icon" width="20"
+                                                    height="20" class="me-2">
+                                            </i>
+                                            <div class="vote-status"></div>
                                         </div>
-                                        <button class="btn bg-third p-0" onclick="open_fullscreen()">
-                                            <img src="/images/fullscreen-icon.svg" width="20" height="20"
-                                                alt="Fullscreen Image" class="m-2">
-                                        </button>
-
                                     </div>
+                                    <button class="btn bg-third p-0" onclick="open_fullscreen()">
+                                        <img src="/images/fullscreen-icon.svg" width="20" height="20"
+                                            alt="Fullscreen Image" class="m-2">
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
-                        <div class="game-iframe-container" style="min-height: 400px !important;">
-                              @include('game.items.description_game')
-                                </div>
                     </div>
+                    <div class="game-iframe-container" style="min-height: 400px !important;">
+                        @include('game.items.description_game')
+                    </div>
+                </div>
 
-                    <div class="col-lg-3 order-3 pg-game-col">
-                        <div class="bg-body-secondary rounded-2 p-3 px-0 scroll-wrapper">
-                            <h2 class="mb-3 fw-semibold px-3 h4">Popular <span class="text-success">Games</span></h2>
-                            <div class="row px-3 pg-game-row">
+                <div class="col-lg-3 order-3 pg-game-col">
+                    <div class="bg-body-secondary rounded-2 p-3 px-0 scroll-wrapper">
+                        <h2 class="mb-3 fw-semibold px-3 h4">Popular <span class="text-success">Games</span></h2>
+                        <div class="row px-3 pg-game-row">
 
-                                @foreach ($popular_games as $i => $game)
-                                    @if ($i < 6)
-                                        <div class="col-4 col-lg-6 mb-2 rightside-img-col pg-game">
-                                            <a href="{{ $game->slugGame() }}" data-title="{{ $game->nameGame() }}"><img
-                                                    src="{{ $game->linkImgGame() }}" width="auto" height="auto"
-                                                    alt="{{ $game->nameGame() }}"
-                                                    class="img-fluid rightside-img mx-auto d-block thumbnail-img">
-                                            </a>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            </div>
+                            @foreach ($popular_games as $i => $game)
+                            @if ($i < 6)
+                                <div class="col-4 col-lg-6 mb-2 rightside-img-col pg-game">
+                                <a href="{{ $game->slugGame() }}" data-title="{{ $game->nameGame() }}"><img
+                                        src="{{ $game->linkImgGame() }}" width="auto" height="auto"
+                                        alt="{{ $game->nameGame() }}"
+                                        class="img-fluid rightside-img mx-auto d-block thumbnail-img">
+                                </a>
                         </div>
-                        <div class=" rounded-2 p-3 px-0 scroll-wrapper">
-                                @include('game.views.gamechat')
-                                 </div>
+                        @endif
+                        @endforeach
                     </div>
-
+                </div>
+                <div class=" rounded-2 p-3 px-0 scroll-wrapper">
+                    @include('game.views.gamechat')
                 </div>
             </div>
-        </div>
 
-        <div class="bottom-container">
-            <h3 class="my-3 fw-bold"><i class="fa fa-thumbs-up" aria-hidden="true"></i>Similar Games</h3>
-            <div class="row" id="section-similar-games">
-                @foreach ($similar_games as $i => $game)
-                    <div class="col-md-1 col-sm-3 col-4 item-grid pg-game">
-                        <a href="{{ $game->slugGame() }}" data-title="{{ $game->nameGame() }}">
-                            <div class="list-game">
-                                <div class="list-thumbnail"><img src="{{ $game->linkImgGame() }}"
-                                        class="small-thumb ls-is-cached lazyloaded" alt="{{ $game->nameGame() }}"></div>
-                            </div>
-                        </a>
-                    </div>
-                @endforeach
-            </div>
         </div>
     </div>
+</div>
+
+<div class="bottom-container">
+    <h3 class="my-3 fw-bold"><i class="fa fa-thumbs-up" aria-hidden="true"></i>Similar Games</h3>
+    <div class="row" id="section-similar-games">
+        @foreach ($similar_games as $i => $game)
+        <div class="col-md-1 col-sm-3 col-4 item-grid pg-game">
+            <a href="{{ $game->slugGame() }}" data-title="{{ $game->nameGame() }}">
+                <div class="list-game">
+                    <div class="list-thumbnail"><img src="{{ $game->linkImgGame() }}"
+                            class="small-thumb ls-is-cached lazyloaded" alt="{{ $game->nameGame() }}"></div>
+                </div>
+            </a>
+        </div>
+        @endforeach
+    </div>
+</div>
+</div>
 @endsection

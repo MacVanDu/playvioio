@@ -51,7 +51,8 @@ class GameService
     {
 
         if ($this->checkMobile($request)) {
-            return Game::where('mobile',1);
+            return Game::query();
+            // return Game::where('mobile',1);
         } else {
             return Game::query();
         }
