@@ -9,14 +9,14 @@
 <meta property="og:url" content="https://marios.games/g/{{ $detail->slug}}">
 <meta property="og:title" content="{{ $detail->title }}">
 <meta property="og:description" content="{{ $detail->description_seo }}">
-<meta property="og:image" content="{{ $detail->linkImgGame()}}">
+<meta property="og:image" content="{{ 'https://marios.games'.$detail->linkImgGame()}}">
 
 {{-- Twitter Card --}}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="https://marios.games/g/{{ $detail->slug}}">
 <meta name="twitter:title" content="{{ $detail->title }}">
 <meta name="twitter:description" content="{{ $detail->description_seo }}">
-<meta name="twitter:image" content="{{ $detail->linkImgGame()}}">
+<meta name="twitter:image" content="{{ 'https://marios.games'.$detail->linkImgGame()}}">
 @endsection
 @section('body')
 <style>
