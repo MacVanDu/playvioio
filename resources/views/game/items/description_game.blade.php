@@ -88,13 +88,5 @@
 
     </div>
 <script>
-const desc = document.getElementById('gameDesc');
-const btn  = document.getElementById('gameDescBtn');
 
-btn.addEventListener('click', () => {
-    desc.classList.toggle('expanded');
-    btn.textContent = desc.classList.contains('expanded')
-        ? 'Show less'
-        : 'View more';
-});
 </script>
