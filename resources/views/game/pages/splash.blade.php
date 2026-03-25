@@ -166,7 +166,7 @@
 <body>
 
     <div class="splash" id="splash">
-        <div class="glow-background" style="background-image: url('{{ $detail->linkImgGameBG() }}');"></div>
+        <div class="glow-background" style="background-image: url('{{ 'https://marios.games'.$detail->linkImgGameBG() }}');"></div>
         
         <div class="brand-logo">
             <img src="/images/brand-logo.webp" alt="Logo">

@@ -4475,7 +4475,7 @@ label[for=nav-footer-toggle] {
 }
 
 .contact-icon {
-    background-image: url(../images/contact-icon.svg)
+    /* background-image: url(../images/contact-icon.svg) */
 }
 
 .slider {
