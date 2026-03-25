@@ -2,7 +2,21 @@
 @section('heads')
 <title>{{ $detail->title }} </title>
 <meta name="description" content="{{ $detail->description_seo }}">
+<meta name="robots" content="index, follow">
 <link rel="canonical" href="https://marios.games/g/{{ $detail->slug}}">
+{{-- Open Graph (Facebook, Zalo) --}}
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://marios.games/g/{{ $detail->slug}}">
+<meta property="og:title" content="{{ $detail->title }}">
+<meta property="og:description" content="{{ $detail->description_seo }}">
+<meta property="og:image" content="{{ $detail->linkImgGame()}}">
+
+{{-- Twitter Card --}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://marios.games/g/{{ $detail->slug}}">
+<meta name="twitter:title" content="{{ $detail->title }}">
+<meta name="twitter:description" content="{{ $detail->description_seo }}">
+<meta name="twitter:image" content="{{ $detail->linkImgGame()}}">
 @endsection
 @section('body')
 <style>
