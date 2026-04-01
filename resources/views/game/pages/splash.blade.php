@@ -76,10 +76,10 @@
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             overflow: hidden;
-            display: flex; /* Đảm bảo căn giữa nội dung bên trong */
+            display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0,0,0,0.3); /* Thêm nền tối nhẹ cho thumb khi hiện Mario */
+            background: rgba(0,0,0,0.5); /* Nền tối hơn để nổi bật Mario */
         }
         .splash-thumbnail img {
             width: 100%;
@@ -87,25 +87,60 @@
             object-fit: cover;
         }
 
-        /* --- HIỆU ỨNG LOADING MARIO --- */
-        .mario-loader {
-            width: 64px; /* Kích thước phù hợp */
-            height: 64px;
-            /* Đây là URL ảnh Mario đang chạy (Sprite Sheet hoặc GIF) */
-            /* Để "Mario nhất", hãy dùng ảnh gif Mario pixel art */
-            background-image: url('https://i.gifer.com/2iiJ.gif'); 
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            /* Thêm hiệu ứng nhảy lên nhảy xuống nhẹ nhàng */
-            animation: mario-jump 0.8s infinite ease-in-out;
+        /* --- HIỆU ỨNG LOADING MARIO (SPRITE CHUẨN) --- */
+        .mario-loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
 
-        @keyframes mario-jump {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); } /* Nhảy lên */
+        .mario-sprite {
+            /* 1. Kích thước của MỘT khung hình Mario (ví dụ 16x16 pixel gốc) */
+            /* Chúng ta sẽ phóng to nó lên để dễ nhìn */
+            width: 64px; 
+            height: 64px;
+
+            /* 2. Đường dẫn đến file Sprite Sheet bạn đã tải về */
+            /* Hãy thay bằng đường dẫn cục bộ của bạn, ví dụ: /images/mario-run-sprites.png */
+            background-image: url('https://i.imgur.com/8N4M0h4.png'); 
+
+            background-repeat: no-repeat;
+            background-size: auto 100%; /* Chiều cao bằng 100% thẻ div, chiều rộng tự động */
+            
+            /* 3. Phóng to ảnh pixel không bị mờ (Quan trọng để ĐẸP) */
+            image-rendering: pixelated; 
+            image-rendering: crisp-edges;
+
+            /* 4. Animation chạy */
+            /* - mario-run: tên animation */
+            /* - 0.6s: Tổng thời gian một chu kỳ chạy (TĂNG số này để chạy CHẬM lại) */
+            /* - steps(3): Số khung hình trong Sprite Sheet (ảnh demo có 3 khung hình) */
+            /* - infinite: Lặp vô hạn */
+            animation: mario-run 0.6s steps(3) infinite;
         }
-        /* ---------------------------------- */
+
+        /* Keyframes để di chuyển Sprite Sheet */
+        @keyframes mario-run {
+            from { background-position: 0 0; }
+            to { background-position: -192px 0; } /* 192px = 64px (width) * 3 (khung hình) */
+        }
+
+        /* Chữ loading kiểu retro (tùy chọn) */
+        .retro-loading-text {
+            font-family: 'Courier New', Courier, monospace; /* Font chữ máy đánh chữ */
+            color: #9dfa48;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.4; }
+        }
+        /* ------------------------------------------- */
 
         /* Tiêu đề Game */
         .splash-game-title {
@@ -124,32 +159,25 @@
             cursor: pointer;
             border-radius: 30px;
             background: linear-gradient(180deg, #9dfa48 0%, #46c412 100%);
-            box-shadow: 
-                0px 4px 0px #2d7d0a,
-                0px 8px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0px 4px 0px #2d7d0a, 0px 8px 15px rgba(0, 0, 0, 0.3);
             transition: all 0.1s;
             outline: none;
         }
-
         .play-btn span {
             color: #fff;
             font-weight: 800;
             text-transform: uppercase;
             text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
         }
-
         .play-btn::before {
             content: '';
             position: absolute;
-            top: 4px;
-            left: 15%;
-            width: 25px;
-            height: 8px;
+            top: 4px; left: 15%;
+            width: 25px; height: 8px;
             background: rgba(255, 255, 255, 0.4);
             border-radius: 20px;
             filter: blur(1px);
         }
-
         .play-btn:active {
             transform: translateY(3px);
             box-shadow: 0px 1px 0px #2d7d0a;
@@ -158,10 +186,8 @@
         /* Iframe game */
         #game-iframe {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             border: none;
             display: none;
         }
@@ -169,7 +195,11 @@
         /* Mobile tối ưu */
         @media (max-width: 480px) {
             .splash-thumbnail { width: 120px; height: 120px; }
-            .mario-loader { width: 48px; height: 48px; } /* Thu nhỏ Mario trên mobile */
+            .mario-sprite { width: 48px; height: 48px; } /* Thu nhỏ Mario trên mobile */
+            @keyframes mario-run {
+                from { background-position: 0 0; }
+                to { background-position: -144px 0; } /* 144px = 48px * 3 */
+            }
             .splash-game-title { font-size: 18px; }
             .play-btn { padding: 8px 40px; font-size: 20px; }
         }
@@ -212,9 +242,13 @@
             // 1. Ẩn nút Play
             btn.style.display = "none";
             
-            // 2. Thay thumbnail bằng hình ảnh Mario đang chạy + hiệu ứng nhảy
-            // Mình sử dụng một mã HTML đơn giản để chứa class CSS đã tạo
-            thumb.innerHTML = '<div class="mario-loader"></div>';
+            // 2. Thay thumbnail bằng cấu trúc Mario Loader mới (Sprite + Text)
+            thumb.innerHTML = `
+                <div class="mario-loader-container">
+                    <div class="mario-sprite"></div>
+                    <div class="retro-loading-text">Loading...</div>
+                </div>
+            `;
             
             // 3. Tải Iframe
             iframe.src = iframe.dataset.src;
@@ -223,7 +257,7 @@
             // 4. Khi Iframe tải xong, ẩn Splash screen
             iframe.onload = function() {
                 splash.style.opacity = "0";
-                setTimeout(() => { splash.remove(); }, 1200);
+                setTimeout(() => { splash.remove(); }, 4000);
             };
         }
     </script>
