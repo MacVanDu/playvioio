@@ -98,7 +98,7 @@
             background-repeat: no-repeat;
             background-position: center;
             /* Thêm hiệu ứng nhảy lên nhảy xuống nhẹ nhàng */
-            animation: mario-jump 0.8s infinite ease-in-out;
+            animation: mario-jump 2.8s infinite ease-in-out;
         }
 
         @keyframes mario-jump {
@@ -223,7 +223,7 @@
             // 4. Khi Iframe tải xong, ẩn Splash screen
             iframe.onload = function() {
                 splash.style.opacity = "0";
-                setTimeout(() => { splash.remove(); }, 3000);
+                setTimeout(() => { splash.remove(); }, 400);
             };
         }
     </script>
