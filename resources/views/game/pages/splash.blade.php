@@ -223,7 +223,7 @@
             // 4. Khi Iframe tải xong, ẩn Splash screen
             iframe.onload = function() {
                 splash.style.opacity = "0";
-                setTimeout(() => { splash.remove(); }, 400);
+                setTimeout(() => { splash.remove(); }, 1200);
             };
         }
     </script>
