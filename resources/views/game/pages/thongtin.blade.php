@@ -210,4 +210,65 @@
     </div>
 </div>
 </div>
+
+<script>
+(function() {
+  const path = window.location.pathname;
+  const base = "https://marios.games";
+
+  if (path === "/") return;
+
+  const segments = path.split("/").filter(Boolean);
+
+  let items = [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": base + "/"
+    }
+  ];
+
+  if (segments[0] === "c") {
+    const categoryName = segments[1].replace(/-/g, " ");
+    items.push({
+      "@type": "ListItem",
+      "position": 2,
+      "name": categoryName.charAt(0).toUpperCase() + categoryName.slice(1) + " Games",
+      "item": base + "/c/" + segments[1] + "/"
+    });
+  }
+
+  if (segments[0] === "g") {
+    const gameName = document.querySelector("h1")?.innerText || document.title;
+
+    items.push({
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Mario Games",
+      "item": base + "/c/super-mario/"
+    });
+
+    items.push({
+      "@type": "ListItem",
+      "position": 3,
+      "name": gameName,
+      "item": window.location.href
+    });
+  }
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": window.location.href + "#breadcrumb",
+    "itemListElement": items
+  };
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.text = JSON.stringify(schema);
+
+  document.head.appendChild(script);
+})();
+</script>
 @endsection
