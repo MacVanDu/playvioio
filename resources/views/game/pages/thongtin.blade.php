@@ -20,34 +20,34 @@
 @endsection
 @section('body')
 <style>
-.pc-warning {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    
-    width: 90%;
-    max-width: 400px;
+    .pc-warning {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
 
-    background: #ff3c3c;
-    color: #fff;
+        width: 90%;
+        max-width: 400px;
 
-    font-family: 'Press Start 2P', cursive;
-    font-size: 12px;
-    text-align: center;
+        background: #ff3c3c;
+        color: #fff;
 
-    padding: 16px;
-    border: 4px solid #000;
-    border-radius: 8px;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 12px;
+        text-align: center;
 
-    box-shadow: 
-        0 6px 0 #000,
-        0 8px 12px rgba(0,0,0,0.4);
+        padding: 16px;
+        border: 4px solid #000;
+        border-radius: 8px;
 
-    z-index: 10;
+        box-shadow:
+            0 6px 0 #000,
+            0 8px 12px rgba(0, 0, 0, 0.4);
 
-    animation: bounce 1.2s infinite;
-}
+        z-index: 10;
+
+        animation: bounce 1.2s infinite;
+    }
 
     /* khung chứa ảnh */
     .pg-game a {
@@ -102,6 +102,9 @@
 
             <div class="row">
                 <div class="col-lg-2 order-2 order-lg-1">
+                    <div >
+                        {!! $datamd['qc_trang_game160x600'] !!}
+                    </div>
                     <div class="bg-body-secondary rounded-2 p-3 px-0 scroll-wrapper">
                         <h2 class="mb-3 fw-semibold px-3 h4">You May <span class="text-success">Like</span></h2>
                         <div class="row px-3 pg-game-row">
@@ -162,12 +165,18 @@
                             </div>
                         </div>
                     </div>
+                    <div  class="game-iframe-container">
+                        {!! $datamd['qc_trang_game728x90'] !!}
+                    </div>
                     <div class="game-iframe-container" style="min-height: 400px !important;">
                         @include('game.items.description_game')
                     </div>
                 </div>
 
                 <div class="col-lg-3 order-3 pg-game-col">
+                    <div >
+                        {!! $datamd['qc_trang_game300x600'] !!}
+                    </div>
                     <div class="bg-body-secondary rounded-2 p-3 px-0 scroll-wrapper">
                         <h2 class="mb-3 fw-semibold px-3 h4">Popular <span class="text-success">Games</span></h2>
                         <div class="row px-3 pg-game-row">

@@ -13,7 +13,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 @section('body')
 <div class="container" role="main">
 	<div class="game-container" id="home-game-container">
+<div class="col-12 mb-4">
 
+    {!! $datamd['qc_trang_chu'] !!}
+</div>
 		<div class="col-12 mb-4">
 			<div class="slider first position-relative">
 				<ul class="slider__track py-1 mb-0">

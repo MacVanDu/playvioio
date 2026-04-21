@@ -152,6 +152,11 @@ class HomeControllerMTLG extends Controller
         $fb_link = Setting::getValue('fb_link', '#', false);
         $x_link = Setting::getValue('x_link', '#', false);
         $r_link = Setting::getValue('r_link', '#', false);
+        $head_qc = Setting::getValue('head_qc', '', false);
+        $qc_trang_chu = Setting::getValue('qc_trang_chu', '', false);
+        $qc_trang_game728x90 = Setting::getValue('qc_trang_game728x90', '', false);
+        $qc_trang_game300x600 = Setting::getValue('qc_trang_game300x600', '', false);
+        $qc_trang_game160x600 = Setting::getValue('qc_trang_game160x600', '', false);
         $device = $this->detectDevice($request);
         return [
             'anh_nen' => $anh_nen,
@@ -159,6 +164,11 @@ class HomeControllerMTLG extends Controller
             'x_link' => $x_link,
             'fb_link' => $fb_link,
             'device' => $device,
+            'head_qc' => $head_qc,
+            'qc_trang_chu' => $qc_trang_chu,
+            'qc_trang_game728x90' => $qc_trang_game728x90,
+            'qc_trang_game300x600' => $qc_trang_game300x600,
+            'qc_trang_game160x600' => $qc_trang_game160x600,
             'category' => Category::orderBy('id', 'DESC')
                 ->limit(10)
                 ->get(),
