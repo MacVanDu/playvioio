@@ -165,7 +165,7 @@
                             </div>
                         </div>
                     </div>
-                    <div  class="game-iframe-container">
+                    <div class="game-ad-container">
                         {!! $datamd['qc_trang_game728x90'] !!}
                     </div>
                     <div class="game-iframe-container" style="min-height: 400px !important;">

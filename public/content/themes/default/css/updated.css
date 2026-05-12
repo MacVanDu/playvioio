@@ -465,6 +465,14 @@ li {
     min-height: 500px
 }
 
+.game-ad-container {
+    width: 100%;
+    max-width: 728px;
+    height: 90px;
+    margin: 0 auto 20px;
+    overflow: hidden
+}
+
 .game-iframe {
     position: absolute;
     top: 0;
@@ -4591,6 +4599,12 @@ label[for=nav-footer-toggle] {
 
     .game-play-container {
         height: auto
+    }
+
+    .game-ad-container {
+        max-width: 100%;
+        height: auto;
+        min-height: 90px
     }
 
     .slider.first:nth-child(3n+1) .slider__track>*:nth-child(3n+1) {

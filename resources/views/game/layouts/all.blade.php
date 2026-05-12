@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 
 <head>
-    @php($ver = '1.0.21')
+    @php($ver = '1.0.22')
     <script src="/js/jquery.min.js?v={{ $ver }}"></script>
     @yield('heads')
     <meta charset="utf-8">
