@@ -32,11 +32,11 @@ class Game extends Model
     function linkImgGame()
     {
         $image = $this->image;
-        return $image;
+        return $this->webpImage($image);
     }
     function linkImgGameBG()
     {
-        $image = $this->image;
+        $image = $this->webpImage($this->image);
         return 'background-image: url('.$image.');';
     }
     function nameGame()
@@ -74,6 +74,28 @@ class Game extends Model
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
+    function webpImage($image)
+    {
+        if (!$image) {
+            return $image;
+        }
+
+        $path = parse_url($image, PHP_URL_PATH);
+
+        if (!$path || !preg_match('/\.(jpe?g|png)$/i', $path)) {
+            return $image;
+        }
+
+        $webpPath = preg_replace('/\.(jpe?g|png)$/i', '.webp', $path);
+        $publicPath = public_path(ltrim($webpPath, '/'));
+
+        if (is_file($publicPath)) {
+            return $webpPath;
+        }
+
+        return $image;
     }
     function description_h()
     {
