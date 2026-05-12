@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Process\Process;
 
@@ -29,6 +30,7 @@ class ImageOptimizerController extends Controller
         $data = $request->validate([
             'quality' => 'nullable|integer|min:40|max:95',
             'overwrite' => 'nullable|boolean',
+            'delete_original' => 'nullable|boolean',
         ]);
 
         $engine = $this->availableEngine();
@@ -39,9 +41,12 @@ class ImageOptimizerController extends Controller
 
         $quality = $data['quality'] ?? 75;
         $overwrite = $request->boolean('overwrite');
+        $deleteOriginal = $request->boolean('delete_original');
         $results = [
             'created' => 0,
             'skipped' => 0,
+            'deleted' => 0,
+            'updated' => 0,
             'failed' => 0,
             'before' => 0,
             'after' => 0,
@@ -52,6 +57,10 @@ class ImageOptimizerController extends Controller
             $webpPath = preg_replace('/\.(jpe?g|png)$/i', '.webp', $file->getPathname());
 
             if (!$overwrite && File::exists($webpPath)) {
+                if ($deleteOriginal) {
+                    $this->replaceOriginal($file->getPathname(), $webpPath, $results);
+                }
+
                 $results['skipped']++;
                 continue;
             }
@@ -68,6 +77,10 @@ class ImageOptimizerController extends Controller
 
             $results['created']++;
             $results['after'] += File::size($webpPath);
+
+            if ($deleteOriginal) {
+                $this->replaceOriginal($file->getPathname(), $webpPath, $results);
+            }
         }
 
         return back()->with('success', 'Đã nén ảnh xong.')->with('results', $results);
@@ -244,5 +257,45 @@ class ImageOptimizerController extends Controller
         }
 
         return true;
+    }
+
+    private function replaceOriginal(string $sourcePath, string $webpPath, array &$results): void
+    {
+        if (!File::exists($webpPath) || !File::exists($sourcePath)) {
+            return;
+        }
+
+        $oldUrl = $this->publicUrl($sourcePath);
+        $newUrl = $this->publicUrl($webpPath);
+
+        if ($oldUrl && $newUrl) {
+            $results['updated'] += $this->updateReferences($oldUrl, $newUrl);
+        }
+
+        File::delete($sourcePath);
+        $results['deleted']++;
+    }
+
+    private function updateReferences(string $oldUrl, string $newUrl): int
+    {
+        $updated = 0;
+
+        $updated += DB::table('games')->where('image', $oldUrl)->update(['image' => $newUrl]);
+        $updated += DB::table('categories')->where('imagesvg', $oldUrl)->update(['imagesvg' => $newUrl]);
+        $updated += DB::table('settings')->where('value', $oldUrl)->update(['value' => $newUrl]);
+
+        return $updated;
+    }
+
+    private function publicUrl(string $path): ?string
+    {
+        $publicPath = str_replace('\\', '/', public_path());
+        $normalizedPath = str_replace('\\', '/', $path);
+
+        if (!str_starts_with($normalizedPath, $publicPath)) {
+            return null;
+        }
+
+        return '/' . ltrim(substr($normalizedPath, strlen($publicPath)), '/');
     }
 }

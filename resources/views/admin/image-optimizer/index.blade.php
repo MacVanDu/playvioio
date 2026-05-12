@@ -62,9 +62,10 @@
                 <div class="row g-3">
                     <div class="col-md-2"><div class="text-secondary small">Tạo WebP</div><div class="fs-4">{{ $results['created'] }}</div></div>
                     <div class="col-md-2"><div class="text-secondary small">Bỏ qua</div><div class="fs-4">{{ $results['skipped'] }}</div></div>
+                    <div class="col-md-2"><div class="text-secondary small">Đã xóa gốc</div><div class="fs-4">{{ $results['deleted'] ?? 0 }}</div></div>
+                    <div class="col-md-2"><div class="text-secondary small">Cập nhật DB</div><div class="fs-4">{{ $results['updated'] ?? 0 }}</div></div>
                     <div class="col-md-2"><div class="text-secondary small">Lỗi</div><div class="fs-4">{{ $results['failed'] }}</div></div>
-                    <div class="col-md-3"><div class="text-secondary small">Dung lượng gốc</div><div class="fs-4">{{ number_format($results['before'] / 1024, 1) }} KB</div></div>
-                    <div class="col-md-3"><div class="text-secondary small">Dung lượng WebP</div><div class="fs-4">{{ number_format($results['after'] / 1024, 1) }} KB</div></div>
+                    <div class="col-md-2"><div class="text-secondary small">WebP mới</div><div class="fs-4">{{ number_format($results['after'] / 1024, 1) }} KB</div></div>
                 </div>
 
                 @if(!empty($results['errors']))
@@ -90,7 +91,7 @@
                         <label class="form-label">Chất lượng WebP</label>
                         <input type="number" min="40" max="95" name="quality" value="75" class="form-control bg-dark text-white border-secondary">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="overwrite" value="1" id="overwrite">
                             <label class="form-check-label" for="overwrite">
@@ -98,7 +99,15 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col-md-5 text-md-end">
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="delete_original" value="1" id="delete_original" checked>
+                            <label class="form-check-label" for="delete_original">
+                                Xóa ảnh gốc sau khi nén thành công
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-md-end">
                         <button class="btn btn-gradient" type="submit" @disabled(!$imageEngine)>
                             Chạy nén ảnh
                         </button>
