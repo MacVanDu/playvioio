@@ -122,7 +122,7 @@
                 </div>
 
                 <div class="col-lg-7 game-content order-1">
-                    <div class="game-iframe-container">
+                    <div class="game-iframe-container game-play-container">
 
 
                         @if($datamd['device']=="MB" && $detail->mobile == 0)

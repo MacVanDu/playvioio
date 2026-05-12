@@ -460,6 +460,11 @@ li {
     min-height: 600px
 }
 
+.game-play-container {
+    height: min(68vh, 720px);
+    min-height: 500px
+}
+
 .game-iframe {
     position: absolute;
     top: 0;
@@ -4582,6 +4587,10 @@ label[for=nav-footer-toggle] {
 
     .game-iframe-container {
         min-height: 415px
+    }
+
+    .game-play-container {
+        height: auto
     }
 
     .slider.first:nth-child(3n+1) .slider__track>*:nth-child(3n+1) {
