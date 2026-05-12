@@ -20,7 +20,7 @@ class ImageOptimizerController extends Controller
         return view('admin.image-optimizer.index', [
             'stats' => $this->stats(),
             'folders' => $this->folders,
-            'ffmpegAvailable' => $this->ffmpegAvailable(),
+            'imageEngine' => $this->availableEngine(),
         ]);
     }
 
@@ -31,8 +31,10 @@ class ImageOptimizerController extends Controller
             'overwrite' => 'nullable|boolean',
         ]);
 
-        if (!$this->ffmpegAvailable()) {
-            return back()->with('error', 'Không tìm thấy ffmpeg trên server.');
+        $engine = $this->availableEngine();
+
+        if (!$engine) {
+            return back()->with('error', 'Server cần có ffmpeg, Imagick hoặc PHP GD để nén ảnh WebP.');
         }
 
         $quality = $data['quality'] ?? 75;
@@ -56,26 +58,11 @@ class ImageOptimizerController extends Controller
 
             $results['before'] += $file->getSize();
 
-            $process = new Process([
-                'ffmpeg',
-                '-hide_banner',
-                '-loglevel',
-                'error',
-                '-y',
-                '-i',
-                $file->getPathname(),
-                '-q:v',
-                (string) $quality,
-                '-compression_level',
-                '6',
-                $webpPath,
-            ]);
-            $process->setTimeout(120);
-            $process->run();
+            $error = null;
 
-            if (!$process->isSuccessful() || !File::exists($webpPath)) {
+            if (!$this->convertToWebp($file->getPathname(), $webpPath, $quality, $engine, $error)) {
                 $results['failed']++;
-                $results['errors'][] = $file->getFilename() . ': ' . trim($process->getErrorOutput());
+                $results['errors'][] = $file->getFilename() . ': ' . $error;
                 continue;
             }
 
@@ -144,5 +131,118 @@ class ImageOptimizerController extends Controller
         $process->run();
 
         return $process->isSuccessful();
+    }
+
+    private function availableEngine(): ?string
+    {
+        if ($this->ffmpegAvailable()) {
+            return 'ffmpeg';
+        }
+
+        if (extension_loaded('imagick') && class_exists(\Imagick::class)) {
+            return 'imagick';
+        }
+
+        if (function_exists('imagewebp') && function_exists('imagecreatefromjpeg') && function_exists('imagecreatefrompng')) {
+            return 'gd';
+        }
+
+        return null;
+    }
+
+    private function convertToWebp(string $sourcePath, string $webpPath, int $quality, string $engine, ?string &$error): bool
+    {
+        if ($engine === 'ffmpeg') {
+            return $this->convertWithFfmpeg($sourcePath, $webpPath, $quality, $error);
+        }
+
+        if ($engine === 'imagick') {
+            return $this->convertWithImagick($sourcePath, $webpPath, $quality, $error);
+        }
+
+        return $this->convertWithGd($sourcePath, $webpPath, $quality, $error);
+    }
+
+    private function convertWithFfmpeg(string $sourcePath, string $webpPath, int $quality, ?string &$error): bool
+    {
+        $process = new Process([
+            'ffmpeg',
+            '-hide_banner',
+            '-loglevel',
+            'error',
+            '-y',
+            '-i',
+            $sourcePath,
+            '-q:v',
+            (string) $quality,
+            '-compression_level',
+            '6',
+            $webpPath,
+        ]);
+        $process->setTimeout(120);
+        $process->run();
+
+        if (!$process->isSuccessful() || !File::exists($webpPath)) {
+            $error = trim($process->getErrorOutput()) ?: 'ffmpeg convert failed';
+            return false;
+        }
+
+        return true;
+    }
+
+    private function convertWithImagick(string $sourcePath, string $webpPath, int $quality, ?string &$error): bool
+    {
+        try {
+            $image = new \Imagick($sourcePath);
+            $image->setImageFormat('webp');
+            $image->setImageCompressionQuality($quality);
+            $image->writeImage($webpPath);
+            $image->clear();
+            $image->destroy();
+        } catch (\Throwable $e) {
+            $error = $e->getMessage();
+            return false;
+        }
+
+        if (!File::exists($webpPath)) {
+            $error = 'Imagick did not create WebP file';
+            return false;
+        }
+
+        return true;
+    }
+
+    private function convertWithGd(string $sourcePath, string $webpPath, int $quality, ?string &$error): bool
+    {
+        $extension = strtolower(pathinfo($sourcePath, PATHINFO_EXTENSION));
+
+        if (in_array($extension, ['jpg', 'jpeg'], true)) {
+            $image = @imagecreatefromjpeg($sourcePath);
+        } elseif ($extension === 'png') {
+            $image = @imagecreatefrompng($sourcePath);
+
+            if ($image) {
+                imagepalettetotruecolor($image);
+                imagealphablending($image, true);
+                imagesavealpha($image, true);
+            }
+        } else {
+            $image = false;
+        }
+
+        if (!$image) {
+            $error = 'GD cannot read image';
+            return false;
+        }
+
+        $success = imagewebp($image, $webpPath, $quality);
+        imagedestroy($image);
+
+        if (!$success || !File::exists($webpPath)) {
+            $error = 'GD convert failed';
+            return false;
+        }
+
+        return true;
     }
 }

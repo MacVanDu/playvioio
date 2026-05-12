@@ -19,9 +19,13 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    @if(!$ffmpegAvailable)
+    @if(!$imageEngine)
         <div class="alert alert-warning">
-            Server chưa có ffmpeg, chức năng nén ảnh chưa chạy được.
+            Server cần có ffmpeg, Imagick hoặc PHP GD để nén ảnh WebP.
+        </div>
+    @else
+        <div class="alert alert-info">
+            Engine đang dùng: <strong>{{ strtoupper($imageEngine) }}</strong>
         </div>
     @endif
 
@@ -95,7 +99,7 @@
                         </div>
                     </div>
                     <div class="col-md-5 text-md-end">
-                        <button class="btn btn-gradient" type="submit" @disabled(!$ffmpegAvailable)>
+                        <button class="btn btn-gradient" type="submit" @disabled(!$imageEngine)>
                             Chạy nén ảnh
                         </button>
                     </div>
