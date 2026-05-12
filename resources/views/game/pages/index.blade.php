@@ -72,11 +72,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 				</button>
 			</div>
 
-			<div class="slider__buttons end-0 align-items-center carousel-control-next h-100">
-				<button class="btn btn-slider-arrow p-0 ms-auto slider-next" aria-label="next">
-					<span class="next-btn-icon m-0 p-5"></span>
-				</button>
-			</div>
 		</div>
 	</div>
 
@@ -172,32 +167,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		const track = slider.querySelector(".slider__track");
 		const prev = slider.querySelector(".slider-prev");
 		const next = slider.querySelector(".slider-next");
-		if (track) {
+		if (track && prev) {
 			prev.addEventListener("click", () => {
-				next.removeAttribute("disabled");
+				next?.removeAttribute("disabled");
 				track.scrollTo({
 					left: track.scrollLeft - track.firstElementChild.offsetWidth,
 					behavior: "smooth"
 				});
 			});
+		}
+		if (track && next) {
 			next.addEventListener("click", () => {
-				prev.removeAttribute("disabled");
+				prev?.removeAttribute("disabled");
 				track.scrollTo({
 					left: track.scrollLeft + track.firstElementChild.offsetWidth,
 					behavior: "smooth"
 				});
 			});
+		}
+		if (track) {
 			track.addEventListener("scroll", () => {
 				const trackScrollWidth = track.scrollWidth;
 				const trackOuterWidth = track.clientWidth;
-				prev.removeAttribute("disabled");
-				next.removeAttribute("disabled");
+				prev?.removeAttribute("disabled");
+				next?.removeAttribute("disabled");
 				if (track.scrollLeft <= 0) {
-					prev.setAttribute("disabled", "");
+					prev?.setAttribute("disabled", "");
 				}
 				let scrollPos = Math.ceil(track.scrollLeft);
 				if (scrollPos >= trackScrollWidth - trackOuterWidth) {
-					next.setAttribute("disabled", "");
+					next?.setAttribute("disabled", "");
 				}
 			});
 		}

@@ -13,7 +13,4 @@
 		    <div class="slider__buttons start-0 align-items-center carousel-control-prev h-100">
 		        <button class="btn btn-slider-arrow p-0 me-auto slider-prev" disabled="" aria-label="previous button"><span class="previous-btn-icon m-0 p-5"></span></button>
 		    </div>
-		    <div class="slider__buttons end-0 align-items-center carousel-control-next h-100">
-		        <button class="btn btn-slider-arrow p-0 ms-auto slider-next" aria-label="Next Button"><span class="next-btn-icon m-0 p-5"></span></button>
-		    </div>
 		</div>
