@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="/content/themes/default/css/updated.css?v={{ $ver }}">
     <link rel="stylesheet" href="/content/themes/default/css/font.css?v={{ $ver }}">
-    <link rel="preload" as="image" href="/thumbs/space-waves-thumb-2.webp" fetchpriority="high">
     <link href="/favicon.ico?v={{ $ver }}" rel="shortcut icon" type="image/x-icon">
     <style>
         .slide a {
