@@ -129,6 +129,13 @@ class HomeControllerMTLG extends Controller
         }
         $length = count($data_games);
         $thongBao = 'Search results: ' . $request->name;
+        $suggested_games = $length === 0
+            ? $this->gameService->get_game_table_p($request)
+                ->orderBy('trend', 'DESC')
+                ->orderBy('id', 'DESC')
+                ->limit(12)
+                ->get()
+            : collect();
 
 
         return view('game.pages.timkiem', compact(
@@ -137,6 +144,7 @@ class HomeControllerMTLG extends Controller
             'names',
             'datamd',
             'data_games',
+            'suggested_games',
         ))->render();
     }
     public function notFoundPage($request)
