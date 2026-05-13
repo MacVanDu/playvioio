@@ -12,7 +12,7 @@
 						<div class="slide">
 							<a href="{{  $game->slugGame() }}" data-title="{{ $game->nameGame() }}">
 								<img src="{{ $game->linkImgGame() }}"
-									alt="{{ $game->nameGame() }}" class="img-fluid small-thumb thumbnail-img m-1" width="160" height="160"></a>
+									alt="{{ $game->nameGame() }}" class="img-fluid small-thumb thumbnail-img m-1" width="213" height="213"></a>
 						</div>
 					</li>
 					@endforeach

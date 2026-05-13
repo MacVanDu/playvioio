@@ -4546,6 +4546,17 @@ label[for=nav-footer-toggle] {
     color: var(--bs-body-bg)!important
 }
 
+.slider.single-line {
+    --slide-width: 213px;
+    --slide-min-width: 213px
+}
+
+.slider.single-line .thumbnail-img {
+    width: 213px;
+    height: 213px;
+    object-fit: cover
+}
+
 .slider.first:nth-child(3n+1) .slider__track>*:nth-child(3n+1) {
     flex: 0 0 20%
 }
