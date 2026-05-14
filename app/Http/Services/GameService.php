@@ -110,13 +110,39 @@ class GameService
             ->whereNotIn('id', $excludeIds)
             ->limit(10)
             ->get();
-        $categories = Category::orderBy('id', 'DESC')
-            ->limit(5)
-            ->get();
+        $categories = $this->homeCategories();
         return [
             'game_dau' => $game_dau,
             'game_new' => $game_new,
             'categories_home' => $categories,
         ];
+    }
+
+    private function homeCategories()
+    {
+        $categories = Category::orderBy('id', 'DESC')
+            ->limit(10)
+            ->get();
+
+        $contraIndex = $categories->search(function ($category) {
+            return str_contains(strtolower($category->slug ?? ''), 'contra')
+                || str_contains(strtolower($category->name ?? ''), 'contra');
+        });
+
+        $superMarioIndex = $categories->search(function ($category) {
+            $slug = strtolower($category->slug ?? '');
+            $name = strtolower($category->name ?? '');
+
+            return str_contains($slug, 'super-mario')
+                || str_contains($name, 'super mario');
+        });
+
+        if ($contraIndex !== false && $superMarioIndex !== false) {
+            $items = $categories->values()->all();
+            [$items[$contraIndex], $items[$superMarioIndex]] = [$items[$superMarioIndex], $items[$contraIndex]];
+            $categories = collect($items);
+        }
+
+        return $categories->take(5)->values();
     }
 }

@@ -466,11 +466,21 @@ li {
 }
 
 .game-ad-container {
-    width: 100%;
-    max-width: 728px;
-    height: 90px;
+    width: min(100%, 728px);
+    aspect-ratio: 728/90;
     margin: 0 auto 20px;
     overflow: hidden
+}
+
+.game-ad-container > *,
+.game-ad-container iframe,
+.game-ad-container ins,
+.game-ad-container .mgbox {
+    width: 100%!important;
+    max-width: 728px!important;
+    height: 100%!important;
+    max-height: 90px!important;
+    overflow: hidden!important
 }
 
 .game-iframe {
@@ -4614,8 +4624,7 @@ label[for=nav-footer-toggle] {
 
     .game-ad-container {
         max-width: 100%;
-        height: auto;
-        min-height: 90px
+        min-height: 0
     }
 
     .slider.first:nth-child(3n+1) .slider__track>*:nth-child(3n+1) {
