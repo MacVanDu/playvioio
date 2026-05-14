@@ -7,6 +7,21 @@
     @yield('heads')
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    @php
+        $path = '/' . ltrim(request()->path(), '/');
+        $parts = explode('/', trim($path, '/'));
+        $locales = array_filter(config('locales.supported'), fn($code) => $code !== config('locales.default'));
+        if (isset($parts[0]) && in_array($parts[0], $locales, true)) {
+            array_shift($parts);
+            $path = '/' . implode('/', $parts);
+        }
+        $path = $path === '/' ? '' : $path;
+    @endphp
+    <link rel="alternate" hreflang="en" href="{{ url($path ?: '/') }}">
+    @foreach($locales as $localeCode)
+        <link rel="alternate" hreflang="{{ $localeCode }}" href="{{ url('/' . $localeCode . $path) }}">
+    @endforeach
+    <link rel="alternate" hreflang="x-default" href="{{ url($path ?: '/') }}">
     <link rel="stylesheet" href="/content/themes/default/css/updated.css?v={{ $ver }}">
     <link rel="stylesheet" href="/content/themes/default/css/font.css?v={{ $ver }}">
     <link href="/favicon.ico?v={{ $ver }}" rel="shortcut icon" type="image/x-icon">

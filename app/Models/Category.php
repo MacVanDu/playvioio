@@ -23,7 +23,7 @@ class Category extends Model
 
     public function slug()
     {
-        return '/c/' . $this->slug;
+        return $this->localePrefix() . '/c/' . $this->slug;
     }
 
     public function name()
@@ -46,5 +46,13 @@ class Category extends Model
         } else {
         return Game::where('category_id', $this->id)->orderBy('id', 'DESC')->limit(10)->get();
         }
+    }
+
+    private function localePrefix(): string
+    {
+        $locale = request()->route('locale');
+        $default = config('locales.default');
+
+        return $locale && $locale !== $default ? '/' . $locale : '';
     }
 }

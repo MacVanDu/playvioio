@@ -2,7 +2,7 @@
 @section('heads')
 <title>{{ $category->title}}</title>
 <meta name="description" content="{{ $category->description_seo }}">
-<link rel="canonical" href="https://marios.games/">
+<link rel="canonical" href="{{ url(($localePrefix ?: '') . '/c/' . $category->slug) }}">
 @endsection
 @section('body')
 <style>
@@ -53,7 +53,7 @@
 <div class="container">
     <div class="game-container-archive">
         <div class="content-wrapper">
-            <h3 class="item-title">{{ $category->name() }} Games</h3>
+            <h3 class="item-title">{{ $category->name() }} {{ __('messages.games') }}</h3>
             <div class="game-container-category">
                 <div class="row">
 

@@ -151,7 +151,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	</div>
 
 	<div class="col-12 mb-4">
-		<h2 class="my-3 fw-bold">Recommended this <span class="text-success">week</span></h2>
+		<h2 class="my-3 fw-bold">{{ __('messages.recommended_this_week') }} <span class="text-success">{{ __('messages.week') }}</span></h2>
 		@include('game.items.slider', ['datagames' => $game_new])
 	</div>
 	    @include('game.items.container_home')

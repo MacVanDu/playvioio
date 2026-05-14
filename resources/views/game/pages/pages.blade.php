@@ -1,7 +1,7 @@
 @extends('game.layouts.all')
 @section('heads')
 <title>{{ $detail->title }} | Play on Marios.games</title>
-<link rel="canonical" href="https://marios.games/">
+<link rel="canonical" href="{{ url(($localePrefix ?: '') . '/page/' . $detail->slug) }}">
 @endsection
 @section('body')
 <div class="container">

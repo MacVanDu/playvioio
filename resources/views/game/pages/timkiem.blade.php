@@ -1,7 +1,7 @@
 @extends('game.layouts.all')
 @section('heads')
 <title>{{ $names }} | Play on Marios.games</title>
-<link rel="canonical" href="https://marios.games/">
+<link rel="canonical" href="{{ url(($localePrefix ?: '') . '/search') }}">
 @endsection
 @section('body')
 <style>
@@ -139,19 +139,18 @@
             @else
                 <div class="no-results-wrap">
                     <div class="no-results-icon">?</div>
-                    <h1 class="no-results-title">No games found</h1>
+                    <h1 class="no-results-title">{{ __('messages.no_games_found') }}</h1>
                     <p class="no-results-text">
-                        We could not find a game matching "<strong>{{ $names }}</strong>". Try a shorter keyword,
-                        check the spelling, or jump back to the game library.
+                        {!! __('messages.no_results_text', ['query' => '<strong>' . e($names) . '</strong>']) !!}
                     </p>
                     <div class="no-results-actions">
-                        <a class="no-results-btn primary" href="/">Back to home</a>
-                        <a class="no-results-btn secondary" href="/search?name=mario">Search Mario</a>
+                        <a class="no-results-btn primary" href="{{ $localePrefix ?: '/' }}">{{ __('messages.back_to_home') }}</a>
+                        <a class="no-results-btn secondary" href="{{ $localePrefix }}/search?name=mario">{{ __('messages.search_mario') }}</a>
                     </div>
                 </div>
 
                 @if(isset($suggested_games) && $suggested_games->count())
-                    <h3 class="suggested-title">Try these games instead</h3>
+                    <h3 class="suggested-title">{{ __('messages.try_these_games') }}</h3>
                     <div class="game-container-category">
                         <div class="row">
                             @foreach($suggested_games as $game)

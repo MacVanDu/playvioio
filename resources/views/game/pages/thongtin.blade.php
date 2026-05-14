@@ -3,17 +3,17 @@
 <title>{{ $detail->title }} </title>
 <meta name="description" content="{{ $detail->description_seo }}">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://marios.games/g/{{ $detail->slug}}">
+<link rel="canonical" href="{{ url(($localePrefix ?: '') . '/g/' . $detail->slug) }}">
 {{-- Open Graph (Facebook, Zalo) --}}
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://marios.games/g/{{ $detail->slug}}">
+<meta property="og:url" content="{{ url(($localePrefix ?: '') . '/g/' . $detail->slug) }}">
 <meta property="og:title" content="{{ $detail->title }}">
 <meta property="og:description" content="{{ $detail->description_seo }}">
 <meta property="og:image" content="{{ 'https://marios.games'.$detail->linkImgGame()}}">
 
 {{-- Twitter Card --}}
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="https://marios.games/g/{{ $detail->slug}}">
+<meta name="twitter:url" content="{{ url(($localePrefix ?: '') . '/g/' . $detail->slug) }}">
 <meta name="twitter:title" content="{{ $detail->title }}">
 <meta name="twitter:description" content="{{ $detail->description_seo }}">
 <meta name="twitter:image" content="{{ 'https://marios.games'.$detail->linkImgGame()}}">
@@ -106,7 +106,7 @@
                         {!! $datamd['qc_trang_game160x600'] !!}
                     </div>
                     <div class="bg-body-secondary rounded-2 p-3 px-0 scroll-wrapper">
-                        <h2 class="mb-3 fw-semibold px-3 h4">You May <span class="text-success">Like</span></h2>
+                        <h2 class="mb-3 fw-semibold px-3 h4">{{ __('messages.you_may_like') }} <span class="text-success">{{ __('messages.like') }}</span></h2>
                         <div class="row px-3 pg-game-row">
                             @foreach ($you_may_like_games as $i => $game)
                             <div class="col-4 col-lg-6 mb-2 rightside-img-col pg-game">
@@ -178,7 +178,7 @@
                         {!! $datamd['qc_trang_game300x600'] !!}
                     </div>
                     <div class="bg-body-secondary rounded-2 p-3 px-0 scroll-wrapper">
-                        <h2 class="mb-3 fw-semibold px-3 h4">Popular <span class="text-success">Games</span></h2>
+                        <h2 class="mb-3 fw-semibold px-3 h4">{{ __('messages.popular') }} <span class="text-success">{{ __('messages.games') }}</span></h2>
                         <div class="row px-3 pg-game-row">
 
                             @foreach ($popular_games as $i => $game)
@@ -204,7 +204,7 @@
 </div>
 
 <div class="bottom-container">
-    <h3 class="my-3 fw-bold"><i class="fa fa-thumbs-up" aria-hidden="true"></i>Similar Games</h3>
+    <h3 class="my-3 fw-bold"><i class="fa fa-thumbs-up" aria-hidden="true"></i>{{ __('messages.similar_games') }}</h3>
     <div class="row" id="section-similar-games">
         @foreach ($similar_games as $i => $game)
         <div class="col-md-1 col-sm-3 col-4 item-grid pg-game">

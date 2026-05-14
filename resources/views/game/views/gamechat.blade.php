@@ -90,7 +90,7 @@
                   
 <div class="game-chat" id="game-chat" data-game-id="{{ $detail->id }}">
 
-    <div class="chat-header">💬 Chat</div>
+    <div class="chat-header">💬 {{ __('messages.chat') }}</div>
 
     <div class="chat-messages" id="chat-messages">
         @forelse ($chats as $chat)
@@ -99,14 +99,14 @@
                 <span>{{ $chat->message }}</span>
             </div>
         @empty
-            <div class="chat-empty">No message received.</div>
+            <div class="chat-empty">{{ __('messages.no_message') }}</div>
         @endforelse
     </div>
 
     <div class="chat-input">
-        <input id="chat-username" placeholder="Your name">
-        <input id="chat-text" placeholder="Enter content...">
-        <button id="chat-send">Send</button>
+        <input id="chat-username" placeholder="{{ __('messages.your_name') }}">
+        <input id="chat-text" placeholder="{{ __('messages.enter_content') }}">
+        <button id="chat-send">{{ __('messages.send') }}</button>
     </div>
 </div>
 <script>

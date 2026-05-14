@@ -23,11 +23,11 @@ class Game extends Model
 
     function slugGame()
     {
-        return '/g/' . $this->slug;
+        return $this->localePrefix() . '/g/' . $this->slug;
     }
     function slugsplashPlay()
     {
-        return '/splash/' . $this->slug;
+        return $this->localePrefix() . '/splash/' . $this->slug;
     }
     function linkImgGame()
     {
@@ -112,6 +112,14 @@ class Game extends Model
 
     // 4. Giới hạn ký tự (SEO ~150–160)
     return Str::limit($plainText, 160, '...');
+    }
+
+    private function localePrefix(): string
+    {
+        $locale = request()->route('locale');
+        $default = config('locales.default');
+
+        return $locale && $locale !== $default ? '/' . $locale : '';
     }
 }
    

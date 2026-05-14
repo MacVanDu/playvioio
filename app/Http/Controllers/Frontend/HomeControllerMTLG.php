@@ -128,7 +128,7 @@ class HomeControllerMTLG extends Controller
             $data_games = $this->gameService->get_game_theo_tu_khoa($request, $request->name);
         }
         $length = count($data_games);
-        $thongBao = 'Search results: ' . $request->name;
+        $thongBao = __('messages.search_results', ['query' => $request->name]);
         $suggested_games = $length === 0
             ? $this->gameService->get_game_table_p($request)
                 ->orderBy('trend', 'DESC')

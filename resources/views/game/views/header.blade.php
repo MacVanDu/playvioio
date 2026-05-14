@@ -7,16 +7,16 @@
 		<div class="modal-background" id="modalBackground"></div>
 		<div class="side-header" style="display: block;"></div>
 		<div class="container-fluid">
-			<a class="navbar-brand logo-center site-logo" href="/">
+			<a class="navbar-brand logo-center site-logo" href="{{ $localePrefix ?: '/' }}">
 				<img src="/images/site-logo.webp" alt="Marios.games Logo" width="190" height="55">
 			</a>
 			<div class="search-container">
 				<div class="modal-background" id="modalBackground"></div>
 				<div class="search-box">
-					<form method="get" action="/search" onsubmit="return validateSearchForm();">
+					<form method="get" action="{{ $localePrefix }}/search" onsubmit="return validateSearchForm();">
 						<div class="input-container">
 							<input type="text" name="name" aria-label="Name" id="name" autocomplete="off" value=""
-								placeholder="What are you playing today?" oninput="toggleClearButton()"
+								placeholder="{{ __('messages.search_placeholder') }}" oninput="toggleClearButton()"
 								onfocus="showTransparentBackground()">
 							<button aria-label="search" type="submit">
 					<img src="/images/search-icon.svg?v=1" width="20" height="20" alt="search icon ">
@@ -33,6 +33,27 @@
 				data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
 				<img src="/images/search-icon.svg?v=1" width="25" height="25" alt="search icon ">
 			</button>
+			<div class="dropdown me-2">
+				<button class="btn btn-secondary dropdown-toggle rounded-5 px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					{{ strtoupper($currentLocale ?? 'en') }}
+				</button>
+				<ul class="dropdown-menu dropdown-menu-end">
+					@php
+						$currentPath = '/' . ltrim(request()->path(), '/');
+						$localeCodes = array_filter(config('locales.supported'), fn($code) => $code !== config('locales.default'));
+						$segments = explode('/', trim($currentPath, '/'));
+						if (isset($segments[0]) && in_array($segments[0], $localeCodes, true)) {
+							array_shift($segments);
+							$currentPath = '/' . implode('/', $segments);
+						}
+						$currentPath = $currentPath === '/' ? '' : $currentPath;
+					@endphp
+					@foreach(config('locales.supported_text') as $code => $label)
+						@php($href = $code === '' ? url($currentPath ?: '/') : url('/' . $code . $currentPath))
+						<li><a class="dropdown-item" href="{{ $href }}">{{ $label }}</a></li>
+					@endforeach
+				</ul>
+			</div>
 			<button class="btn btn-secondary p-0 rounded-5 me-md-3 order-md-0" data-bs-toggle="offcanvas"
 				data-bs-target="#offcanvasmenu" aria-controls="offcanvasmenu">
 				<img src="/images/nav-toggle-icon-close.svg?v=1" width="40" height="40"

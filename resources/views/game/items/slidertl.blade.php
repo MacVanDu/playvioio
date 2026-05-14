@@ -2,8 +2,8 @@
 
 		<div class="col-12 mb-4">
 			<div class="header-wrapper">
-				<h3 class="my-3 fw-bold">{{ $data->name() }} <span class="text-error">Games</span></h3>
-				<a class="header-wrapper-link" href="{{ $data->slug() }}">View more ›</a>
+				<h3 class="my-3 fw-bold">{{ $data->name() }} <span class="text-error">{{ __('messages.games') }}</span></h3>
+				<a class="header-wrapper-link" href="{{ $data->slug() }}">{{ __('messages.view_more') }} ›</a>
 			</div>
 			<div class="slider single-line">
 				<ul class="slider__track py-1 mb-0">

@@ -63,7 +63,7 @@
     <div class="info-the-game">
 
                             <div class="upt">
-                                <a href="https://marios.games/"> Home</a>
+                                <a href="{{ $localePrefix ?: '/' }}"> {{ __('messages.home') }}</a>
                                 <span class="ar"></span>
                                 <a
                                     href="{{ $detail->getTheloai()->slug() }}">{{ $detail->getTheloai()->name() }}</a>
@@ -75,7 +75,7 @@
                                     {!! $detail->description() !!}
 
         <br><br>
-        <b>Categories</b>
+        <b>{{ __('messages.categories') }}</b>
         <p class="cat-list">
                                         <a href="{{ $detail->getTheloai()->slug() }}"
                                             class="cat-link">{{ $detail->getTheloai()->name() }}</a>
@@ -83,7 +83,7 @@
         </div>
 
         <button class="game-desc-toggle" id="gameDescBtn">
-            View more
+            {{ __('messages.view_more') }}
         </button>
 
     </div>
