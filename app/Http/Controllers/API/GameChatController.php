@@ -63,11 +63,11 @@ class GameChatController extends Controller
     foreach ($games as $game) {
         $html .= '
             <li class="lc">
-                <a href="'.$game->slugGame().'" title="'.$game->name.'">
+                <a href="'.$game->slugGame().'" title="'.$game->nameGame().'">
                     <div class="c_c1 p1">
-                        <img class="lazyload r_img2" src="'.$game->image.'">
+                        <img class="lazyload r_img2" src="'.$game->linkImgGame().'">
                     </div>
-                    <span>'.$game->name.'</span>
+                    <span>'.$game->nameGame().'</span>
                 </a>
             </li>';
     }

@@ -2,11 +2,11 @@
 <meta name="viewport"
   content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, width=device-width, height=device-height">
 <meta name="robots" content="max-image-preview:large">
-<title>{{$category->names()}} Play on AkpgosuGames</title>
+<title>{{ $category->titleText() }}</title>
 <link rel="manifest" href="/manifest">
 <meta http-equiv="Accept-CH" content="DPR">
 <meta name="description"
-  content="Play top {{$category->names()}} for free on AkpgosuGames — no installation required. 🎮 Try right now!">
+  content="{{ $category->seoDescription() }}">
 
 @if($datamd['locale'] == 'en')
   <link rel="canonical" href="https://www.apkgosu.fun/c/{{$category->slug}}">
@@ -41,9 +41,9 @@
   content="https://img.apkgosu.fun/images/favicons/touch-icon.png?metadata=none&amp;quality=60&amp;width=144&amp;height=144&amp;fit=crop&amp;format=png">
 
 <meta property="og:url" content="https://www.apkgosu.fun/c/{{$category->slug}}">
-<meta property="og:title" content="{{$category->names()}} Play on AkpgosuGames">
+<meta property="og:title" content="{{ $category->titleText() }}">
 <meta property="og:description"
-  content="Play top {{$category->names()}} for free on AkpgosuGames — no installation required. 🎮 Try right now!">
+  content="{{ $category->seoDescription() }}">
 <meta property="og:locale" content="en_US">
 @if($category->imgseo)
   <meta property="og:image" content="{{ $category->imgseo }}">
@@ -53,9 +53,9 @@
 
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://www.apkgosu.fun/c/{{$category->slug}}">
-<meta property="twitter:title" content="{{$category->names()}} Play on AkpgosuGames">
+<meta property="twitter:title" content="{{ $category->titleText() }}">
 <meta property="twitter:description"
-  content="Play top {{$category->names()}} for free on AkpgosuGames — no installation required. 🎮 Try right now!">
+  content="{{ $category->seoDescription() }}">
 @if($category->imgseo)
   <meta property="twitter:image" content="{{ $category->imgseo }}">
 @endif

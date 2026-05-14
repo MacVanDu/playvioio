@@ -33,7 +33,7 @@
       <div class="bg-body-secondary rounded-4 p-3 px-xl-5">
 
         <div id="content-wrapper" class="content-collapsed">
-		{!! $category->description!!}
+		{!! $category->descriptionText() !!}
         </div>
 
         <div class="text-center mt-3">

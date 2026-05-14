@@ -2,7 +2,7 @@
 <meta name="viewport"
   content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, width=device-width, height=device-height">
 <meta name="robots" content="max-image-preview:large">
-<title>{{$detail->name}} 🕹️ Play on AkpgosuGames</title>
+<title>{{ $detail->titleText() }} | Play on Marios.games</title>
 <link rel="manifest" href="/manifest">
 <meta http-equiv="Accept-CH" content="DPR">
 <meta name="theme-color" content="#15002f">

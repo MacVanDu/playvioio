@@ -7,6 +7,8 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Support\GoogleTranslate;
+use Illuminate\Support\Facades\DB;
 
 
 class Game extends Model
@@ -109,7 +111,11 @@ class Game extends Model
     {
         $translation = $this->currentTranslation();
 
-        return $translation && !empty($translation->{$field}) ? $translation->{$field} : null;
+        if ($translation && !empty($translation->{$field})) {
+            return $translation->{$field};
+        }
+
+        return $this->translateMissingField($field);
     }
     function currentTranslation()
     {
@@ -132,6 +138,34 @@ class Game extends Model
     public function translations()
     {
         return $this->hasMany(GameTranslation::class, 'game_id', 'id');
+    }
+    private function translateMissingField(string $field): ?string
+    {
+        $locale = $this->currentLocale();
+
+        if ($locale === config('locales.default', 'en')) {
+            return null;
+        }
+
+        if (!\Illuminate\Support\Facades\Schema::hasTable('game_translations')) {
+            return null;
+        }
+
+        $translated = GoogleTranslate::translate($this->{$field} ?? null, $locale);
+        if (!$translated) {
+            return null;
+        }
+
+        DB::table('game_translations')->updateOrInsert(
+            ['game_id' => $this->id, 'locale' => $locale],
+            [
+                $field => $translated,
+                'updated_at' => now(),
+                'created_at' => now(),
+            ]
+        );
+
+        return $translated;
     }
     function description_h()
     {

@@ -68,7 +68,7 @@
                                 <a
                                     href="{{ $detail->getTheloai()->slug() }}">{{ $detail->getTheloai()->name() }}</a>
                                 <span class="ar"></span>
-                                <span class="we">{{ $detail->name }}</span>
+                                <span class="we">{{ $detail->nameGame() }}</span>
                             </div>
         <div class="game-desc-preview" id="gameDesc">
 

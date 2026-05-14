@@ -7,8 +7,8 @@ use App\Models\Game;
 use App\Models\Pages;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
+use App\Support\GoogleTranslate;
 
 class TranslateSiteContent extends Command
 {
@@ -20,15 +20,7 @@ class TranslateSiteContent extends Command
 
     protected $description = 'Translate game, category, and page content into locale translation tables using Google Translate.';
 
-    private array $googleLocales = [
-        'de' => 'de',
-        'fr' => 'fr',
-        'pt' => 'pt',
-        'jp' => 'ja',
-        'kr' => 'ko',
-        'be' => 'nl',
-        'vn' => 'vi',
-    ];
+    private array $googleLocales = ['de', 'fr', 'pt', 'jp', 'kr', 'be', 'vn'];
 
     public function handle(): int
     {
@@ -80,7 +72,7 @@ class TranslateSiteContent extends Command
             }
         }
 
-        $supported = array_keys($this->googleLocales);
+        $supported = $this->googleLocales;
         $locales = $requested ?: $supported;
 
         return array_values(array_intersect($locales, $supported));
@@ -195,35 +187,6 @@ class TranslateSiteContent extends Command
             return null;
         }
 
-        $target = $this->googleLocales[$locale] ?? $locale;
-        $chunks = mb_str_split($text, 3500, 'UTF-8');
-        $translated = [];
-
-        foreach ($chunks as $chunk) {
-            $response = Http::timeout(30)
-                ->retry(2, 500)
-                ->get('https://translate.googleapis.com/translate_a/single', [
-                    'client' => 'gtx',
-                    'sl' => 'en',
-                    'tl' => $target,
-                    'dt' => 't',
-                    'q' => $chunk,
-                ]);
-
-            if (!$response->ok()) {
-                throw new \RuntimeException("Google Translate failed for locale {$locale}.");
-            }
-
-            $payload = $response->json();
-            $translated[] = collect($payload[0] ?? [])
-                ->map(function ($part) {
-                    return $part[0] ?? '';
-                })
-                ->implode('');
-
-            usleep(150000);
-        }
-
-        return trim(implode('', $translated));
+        return GoogleTranslate::translate($text, $locale);
     }
 }
