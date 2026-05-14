@@ -5,22 +5,17 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Game;
-use Illuminate\Http\Response;
+use App\Models\Pages;
 use Illuminate\Support\Facades\Cache;
-use Carbon\Carbon;
 
 class SiteMapController extends Controller
 {
-    private $url = 'https://marios.games';
-    private $cacheTime = 300; // 7 ngày tính bằng giây (60*60*24*7)
+    private string $url = 'https://marios.games';
+    private int $cacheTime = 86400;
 
-    /**
-     * Sitemap Index: Danh sách các sitemap con
-     */
     public function sitemap()
     {
-        // Cache key riêng biệt
-        $xml = Cache::remember('a_sitemap_index_xml', $this->cacheTime, function () {
+        $xml = Cache::remember('a_sitemap_index_xml_v2', $this->cacheTime, function () {
             $lastmod = now()->format('Y-m-d');
             $base = $this->url;
 
@@ -46,104 +41,114 @@ XML;
         return response($xml, 200, ['Content-Type' => 'application/xml']);
     }
 
-    /**
-     * Misc Sitemap: Các trang tĩnh (Trang chủ, Giới thiệu, v.v.)
-     */
     public function misc()
     {
-        $xml = Cache::remember('a_sitemap_misc_xml', $this->cacheTime, function () {
+        $xml = Cache::remember('a_sitemap_misc_xml_v2', $this->cacheTime, function () {
             $lastmod = now()->format('Y-m-d');
-            $base = $this->url;
+            $items = $this->urlEntry('', $lastmod, 'daily', '1.0');
 
-            // LƯU Ý: Đây là các link cụ thể nên dùng thẻ <urlset> và <url>, không dùng <sitemapindex>
-            return <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url>
-        <loc>{$base}</loc>
-        <lastmod>{$lastmod}</lastmod>
-        <changefreq>daily</changefreq>
-        <priority>1.0</priority>
-    </url>
-</urlset>
-XML;
+            Pages::select('slug')->whereNotNull('slug')->orderBy('id')->get()->each(function ($page) use (&$items, $lastmod) {
+                $items .= $this->urlEntry('/page/' . $page->slug, $lastmod, 'monthly', '0.6');
+            });
+
+            return $this->urlSet($items);
         });
 
         return response($xml, 200, ['Content-Type' => 'application/xml']);
     }
 
-    /**
-     * Categories Sitemap
-     */
     public function sitemapcategories()
     {
-        $xml = Cache::remember('a_sitemap_categories_xml', $this->cacheTime, function () {
-            $base = $this->url;
+        $xml = Cache::remember('a_sitemap_categories_xml_v2', $this->cacheTime, function () {
+            $items = '';
 
-            // Lấy dữ liệu một lần, chỉ lấy cột cần thiết
-            $categories = Category::select('slug', 'updated_at')
+            Category::select('slug', 'updated_at')
                 ->whereNotNull('slug')
-                ->get();
+                ->orderBy('id')
+                ->get()
+                ->each(function ($cat) use (&$items) {
+                    $lastmod = $cat->updated_at ? $cat->updated_at->format('Y-m-d') : now()->format('Y-m-d');
+                    $items .= $this->urlEntry('/c/' . $cat->slug, $lastmod, 'weekly', '0.8');
+                });
 
-            $xmlItems = '';
-            foreach ($categories as $cat) {
-                // Sử dụng updated_at thực tế nếu có, nếu không thì dùng now()
-                $lastMod = $cat->updated_at ? $cat->updated_at->format('Y-m-d') : now()->format('Y-m-d');
-
-                $xmlItems .= "
-    <url>
-        <loc>{$base}/c/{$cat->slug}</loc>
-        <lastmod>{$lastMod}</lastmod>
-        <changefreq>weekly</changefreq>
-    </url>";
-            }
-
-            return <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-{$xmlItems}
-</urlset>
-XML;
+            return $this->urlSet($items);
         });
 
         return response($xml, 200, ['Content-Type' => 'application/xml']);
     }
 
-    /**
-     * Games Sitemap
-     */
     public function sitemapgames()
     {
-        $xml = Cache::remember('a_sitemap_games_xml', $this->cacheTime, function () {
-            $base = $this->url;
-            $xmlItems = '';
+        $xml = Cache::remember('a_sitemap_games_xml_v2', $this->cacheTime, function () {
+            $items = '';
 
-            // Dùng cursor() thay vì chunk() để tiết kiệm bộ nhớ khi loop qua dữ liệu lớn
-            // để nối chuỗi string
-            $games = Game::select('slug', 'updated_at')
-                ->whereNotNull('slug')
-                ->orderBy('id', 'DESC')
-                ->cursor();
-
-            foreach ($games as $game) {
-                $lastMod = $game->updated_at ? $game->updated_at->format('Y-m-d') : now()->format('Y-m-d');
-
-                $xmlItems .= "
-    <url>
-        <loc>{$base}/g/{$game->slug}</loc>
-        <lastmod>{$lastMod}</lastmod>
-        <changefreq>daily</changefreq>
-    </url>";
+            foreach (Game::select('slug', 'updated_at')->whereNotNull('slug')->orderBy('id', 'DESC')->cursor() as $game) {
+                $lastmod = $game->updated_at ? $game->updated_at->format('Y-m-d') : now()->format('Y-m-d');
+                $items .= $this->urlEntry('/g/' . $game->slug, $lastmod, 'weekly', '0.9');
             }
 
-            return <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-{$xmlItems}
-</urlset>
-XML;
+            return $this->urlSet($items);
         });
 
         return response($xml, 200, ['Content-Type' => 'application/xml']);
+    }
+
+    private function urlSet(string $items): string
+    {
+        return <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+{$items}
+</urlset>
+XML;
+    }
+
+    private function urlEntry(string $path, string $lastmod, string $changefreq, string $priority): string
+    {
+        $loc = $this->escape($this->localizedUrl('', $path));
+        $alternates = $this->alternateLinks($path);
+
+        return "
+    <url>
+        <loc>{$loc}</loc>
+{$alternates}
+        <lastmod>{$lastmod}</lastmod>
+        <changefreq>{$changefreq}</changefreq>
+        <priority>{$priority}</priority>
+    </url>";
+    }
+
+    private function alternateLinks(string $path): string
+    {
+        $links = '';
+
+        foreach ($this->localeCodes() as $locale) {
+            $hreflang = $locale === '' ? 'en' : $locale;
+            $href = $this->escape($this->localizedUrl($locale, $path));
+            $links .= "        <xhtml:link rel=\"alternate\" hreflang=\"{$hreflang}\" href=\"{$href}\" />\n";
+        }
+
+        $xDefault = $this->escape($this->localizedUrl('', $path));
+        $links .= "        <xhtml:link rel=\"alternate\" hreflang=\"x-default\" href=\"{$xDefault}\" />\n";
+
+        return rtrim($links);
+    }
+
+    private function localizedUrl(string $locale, string $path): string
+    {
+        $path = '/' . ltrim($path, '/');
+        $path = $path === '/' ? '' : $path;
+
+        return $locale === '' ? $this->url . $path : $this->url . '/' . $locale . $path;
+    }
+
+    private function localeCodes(): array
+    {
+        return array_keys(config('locales.supported_text', ['' => 'English']));
+    }
+
+    private function escape(string $value): string
+    {
+        return htmlspecialchars($value, ENT_XML1 | ENT_COMPAT, 'UTF-8');
     }
 }

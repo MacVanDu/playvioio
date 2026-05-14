@@ -40,3 +40,15 @@ CREATE TABLE IF NOT EXISTS `page_translations` (
   UNIQUE KEY `page_translations_page_locale_unique` (`page_id`, `locale`),
   KEY `page_translations_locale_index` (`locale`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `setting_translations` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `setting_key` VARCHAR(255) NOT NULL,
+  `locale` VARCHAR(10) NOT NULL,
+  `value` LONGTEXT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `setting_translations_key_locale_unique` (`setting_key`, `locale`),
+  KEY `setting_translations_locale_index` (`locale`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

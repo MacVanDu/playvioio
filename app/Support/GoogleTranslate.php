@@ -4,6 +4,7 @@ namespace App\Support;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class GoogleTranslate
 {
@@ -29,6 +30,7 @@ class GoogleTranslate
             return null;
         }
 
+        return Cache::remember('google_translate_' . $locale . '_' . md5($text), 86400 * 30, function () use ($text, $locale, $target) {
         try {
             $chunks = mb_str_split($text, 3500, 'UTF-8');
             $translated = [];
@@ -67,5 +69,6 @@ class GoogleTranslate
 
             return null;
         }
+        });
     }
 }

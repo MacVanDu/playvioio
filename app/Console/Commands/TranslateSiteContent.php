@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Category;
 use App\Models\Game;
 use App\Models\Pages;
+use App\Models\Setting;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,7 @@ class TranslateSiteContent extends Command
 {
     protected $signature = 'site:translate-content
         {--locale=* : Locale to translate, for example vn or jp. Repeat or comma-separate for multiple locales.}
-        {--type=all : all, games, categories, or pages}
+        {--type=all : all, games, categories, pages, or settings}
         {--limit=50 : Number of rows per type. Use 0 for all rows.}
         {--force : Re-translate rows that already have translated content}';
 
@@ -29,8 +30,8 @@ class TranslateSiteContent extends Command
         $limit = max(0, (int) $this->option('limit'));
         $force = (bool) $this->option('force');
 
-        if (!in_array($type, ['all', 'games', 'categories', 'pages'], true)) {
-            $this->error('Invalid --type. Use all, games, categories, or pages.');
+        if (!in_array($type, ['all', 'games', 'categories', 'pages', 'settings'], true)) {
+            $this->error('Invalid --type. Use all, games, categories, pages, or settings.');
             return self::FAILURE;
         }
 
@@ -52,6 +53,10 @@ class TranslateSiteContent extends Command
 
             if ($type === 'all' || $type === 'pages') {
                 $this->translatePages($locale, $limit, $force);
+            }
+
+            if ($type === 'all' || $type === 'settings') {
+                $this->translateSettings($locale, $force);
             }
         }
 
@@ -82,7 +87,8 @@ class TranslateSiteContent extends Command
     {
         return Schema::hasTable('game_translations')
             && Schema::hasTable('category_translations')
-            && Schema::hasTable('page_translations');
+            && Schema::hasTable('page_translations')
+            && Schema::hasTable('setting_translations');
     }
 
     private function translateGames(string $locale, int $limit, bool $force): void
@@ -167,7 +173,34 @@ class TranslateSiteContent extends Command
         }
     }
 
-    private function hasCompleteTranslation(string $table, string $key, int $id, string $locale, array $fields): bool
+    private function translateSettings(string $locale, bool $force): void
+    {
+        $keys = ['tile_trang_chu', 'description_trang_chu', 'container_home'];
+
+        foreach ($keys as $key) {
+            $setting = Setting::where('key', $key)->first();
+            if (!$setting) {
+                continue;
+            }
+
+            if (!$force && $this->hasCompleteTranslation('setting_translations', 'setting_key', $key, $locale, ['value'])) {
+                continue;
+            }
+
+            DB::table('setting_translations')->updateOrInsert(
+                ['setting_key' => $key, 'locale' => $locale],
+                [
+                    'value' => $this->translateText((string) $setting->value, $locale),
+                    'updated_at' => now(),
+                    'created_at' => now(),
+                ]
+            );
+
+            $this->line("Setting {$key}");
+        }
+    }
+
+    private function hasCompleteTranslation(string $table, string $key, int|string $id, string $locale, array $fields): bool
     {
         $query = DB::table($table)
             ->where($key, $id)

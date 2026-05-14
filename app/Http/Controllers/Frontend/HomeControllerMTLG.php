@@ -23,9 +23,9 @@ class HomeControllerMTLG extends Controller
     {
         $datamd = $this->data_mac_dinh($request);
         $games = $this->gameService->get_game_xuat_hien_trang_chu($request);
-        $container_home = Setting::getValue('container_home', '', false);
-        $tile_trang_chu = Setting::getValue('tile_trang_chu', '', false);
-        $description_trang_chu = Setting::getValue('description_trang_chu', '', false);
+        $container_home = Setting::getTranslatedValue('container_home', '', false);
+        $tile_trang_chu = Setting::getTranslatedValue('tile_trang_chu', '', false);
+        $description_trang_chu = Setting::getTranslatedValue('description_trang_chu', '', false);
         $ma_head_trang_chu = Setting::getValue('ma_head_trang_chu', '', false);
         return view(
             'game.pages.index',
