@@ -27,21 +27,24 @@ $frontendRoutes = function () {
 
 $frontendRoutes();
 
-Route::prefix('{locale}')
-    ->whereIn('locale', array_values(array_diff(config('locales.supported'), [config('locales.default')])))
-    ->middleware('setlocale')
-    ->name('localized.')
-    ->controller(HomeControllerMTLG::class)
-    ->group(function () {
-        Route::get('/', 'localizedIndex')->name('home.index');
-        Route::get('/page/{slug}', 'localizedPages')->name('home.pages');
-        Route::get('/c/{slug}/{page?}', 'localizedCategory')
-            ->where('page', '[0-9]+')
-            ->name('home.category');
-        Route::get('/g/{slug}', 'localizedDetail')->name('home.detail');
-        Route::get('/splash/{slug}', 'localizedSplash')->name('home.splash');
-        Route::get('/search', 'localizedSearch')->name('home.search');
-    });
+$localizedPrefixes = ['de', 'fr', 'pt', 'jp', 'kr', 'be', 'vn'];
+
+foreach ($localizedPrefixes as $localePrefix) {
+    Route::prefix($localePrefix)
+        ->middleware('setlocale')
+        ->name('localized.' . $localePrefix . '.')
+        ->controller(HomeControllerMTLG::class)
+        ->group(function () {
+            Route::get('/', 'localizedIndex')->name('home.index');
+            Route::get('/page/{slug}', 'localizedPages')->name('home.pages');
+            Route::get('/c/{slug}/{page?}', 'localizedCategory')
+                ->where('page', '[0-9]+')
+                ->name('home.category');
+            Route::get('/g/{slug}', 'localizedDetail')->name('home.detail');
+            Route::get('/splash/{slug}', 'localizedSplash')->name('home.splash');
+            Route::get('/search', 'localizedSearch')->name('home.search');
+        });
+}
 
 Route::controller(SiteMapController::class)->group(function () {
     Route::get('/sitemap.xml', 'sitemap')->name('sitemap.index');

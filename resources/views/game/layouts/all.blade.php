@@ -3,6 +3,10 @@
 
 <head>
     @php($ver = '1.0.25')
+    @php
+        $currentLocale = $currentLocale ?? request()->route('locale') ?? config('locales.default', 'en');
+        $localePrefix = $localePrefix ?? ($currentLocale === config('locales.default', 'en') ? '' : '/' . $currentLocale);
+    @endphp
     <script src="/js/jquery.min.js?v={{ $ver }}"></script>
     @yield('heads')
     <meta charset="utf-8">

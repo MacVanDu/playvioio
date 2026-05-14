@@ -39,7 +39,7 @@ class HomeControllerMTLG extends Controller
         )->render();
     }
 
-    public function localizedIndex($locale, Request $request)
+    public function localizedIndex(Request $request)
     {
         return $this->index($request);
     }
@@ -56,7 +56,7 @@ class HomeControllerMTLG extends Controller
         ));
     }
 
-    public function localizedPages($locale, $slug, Request $request)
+    public function localizedPages($slug, Request $request)
     {
         return $this->pages($slug, $request);
     }
@@ -87,7 +87,7 @@ class HomeControllerMTLG extends Controller
         ));
     }
 
-    public function localizedCategory(Request $request, $locale, $slug, $page = 1)
+    public function localizedCategory(Request $request, $slug, $page = 1)
     {
         return $this->category($request, $slug, $page);
     }
@@ -118,7 +118,7 @@ class HomeControllerMTLG extends Controller
         );
     }
 
-    public function localizedDetail($locale, $slug, Request $request)
+    public function localizedDetail($slug, Request $request)
     {
         return $this->detail($slug, $request);
     }
@@ -136,7 +136,7 @@ class HomeControllerMTLG extends Controller
         )->render();
     }
 
-    public function localizedSplash($locale, $slug, Request $request)
+    public function localizedSplash($slug, Request $request)
     {
         return $this->splash($slug, $request);
     }
@@ -173,7 +173,7 @@ class HomeControllerMTLG extends Controller
         ))->render();
     }
 
-    public function localizedSearch($locale, Request $request)
+    public function localizedSearch(Request $request)
     {
         return $this->search($request);
     }

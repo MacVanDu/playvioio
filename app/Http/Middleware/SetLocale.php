@@ -11,10 +11,10 @@ class SetLocale
 {
     public function handle($request, Closure $next)
     {
-        $supported = config('locales.supported');
-        $default = config('locales.default');
+        $supported = config('locales.supported', ['en', 'de', 'fr', 'pt', 'jp', 'kr', 'be', 'vn']);
+        $default = config('locales.default', 'en');
 
-        $locale = $request->route('locale') ?? $default;
+        $locale = $request->route('locale') ?? $request->segment(1) ?? $default;
 
         // Nếu locale không hợp lệ thì dùng tiếng Anh
         if (!in_array($locale, $supported)) {
