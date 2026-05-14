@@ -38,6 +38,11 @@ class HomeControllerMTLG extends Controller
             ), $games)
         )->render();
     }
+
+    public function localizedIndex($locale, Request $request)
+    {
+        return $this->index($request);
+    }
     public function pages($slug, Request $request)
     {
         $detail = Pages::where('slug', $slug)->first();
@@ -49,6 +54,11 @@ class HomeControllerMTLG extends Controller
             'datamd',
             'detail',
         ));
+    }
+
+    public function localizedPages($locale, $slug, Request $request)
+    {
+        return $this->pages($slug, $request);
     }
     public function category(Request $request, $slug, $page = 1)
     {
@@ -76,6 +86,11 @@ class HomeControllerMTLG extends Controller
             'slug',
         ));
     }
+
+    public function localizedCategory(Request $request, $locale, $slug, $page = 1)
+    {
+        return $this->category($request, $slug, $page);
+    }
     public function detail($slug, Request $request)
     {
 
@@ -102,6 +117,11 @@ class HomeControllerMTLG extends Controller
             )
         );
     }
+
+    public function localizedDetail($locale, $slug, Request $request)
+    {
+        return $this->detail($slug, $request);
+    }
     public function splash($slug, Request $request)
     {
 
@@ -114,6 +134,11 @@ class HomeControllerMTLG extends Controller
             'game.pages.splash',
             compact('detail')
         )->render();
+    }
+
+    public function localizedSplash($locale, $slug, Request $request)
+    {
+        return $this->splash($slug, $request);
     }
     public function search(Request $request)
     {
@@ -146,6 +171,11 @@ class HomeControllerMTLG extends Controller
             'data_games',
             'suggested_games',
         ))->render();
+    }
+
+    public function localizedSearch($locale, Request $request)
+    {
+        return $this->search($request);
     }
     public function notFoundPage($request)
     {

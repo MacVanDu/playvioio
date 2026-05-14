@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\HomeControllerMTLG;
 use App\Http\Controllers\Frontend\SiteMapController;
@@ -32,30 +31,16 @@ Route::prefix('{locale}')
     ->whereIn('locale', array_values(array_diff(config('locales.supported'), [config('locales.default')])))
     ->middleware('setlocale')
     ->name('localized.')
+    ->controller(HomeControllerMTLG::class)
     ->group(function () {
-        Route::get('/', function (Request $request) {
-            return app(HomeControllerMTLG::class)->index($request);
-        })->name('home.index');
-
-        Route::get('/page/{slug}', function (Request $request, string $locale, string $slug) {
-            return app(HomeControllerMTLG::class)->pages($slug, $request);
-        })->name('home.pages');
-
-        Route::get('/c/{slug}/{page?}', function (Request $request, string $locale, string $slug, int $page = 1) {
-            return app(HomeControllerMTLG::class)->category($request, $slug, $page);
-        })->where('page', '[0-9]+')->name('home.category');
-
-        Route::get('/g/{slug}', function (Request $request, string $locale, string $slug) {
-            return app(HomeControllerMTLG::class)->detail($slug, $request);
-        })->name('home.detail');
-
-        Route::get('/splash/{slug}', function (Request $request, string $locale, string $slug) {
-            return app(HomeControllerMTLG::class)->splash($slug, $request);
-        })->name('home.splash');
-
-        Route::get('/search', function (Request $request) {
-            return app(HomeControllerMTLG::class)->search($request);
-        })->name('home.search');
+        Route::get('/', 'localizedIndex')->name('home.index');
+        Route::get('/page/{slug}', 'localizedPages')->name('home.pages');
+        Route::get('/c/{slug}/{page?}', 'localizedCategory')
+            ->where('page', '[0-9]+')
+            ->name('home.category');
+        Route::get('/g/{slug}', 'localizedDetail')->name('home.detail');
+        Route::get('/splash/{slug}', 'localizedSplash')->name('home.splash');
+        Route::get('/search', 'localizedSearch')->name('home.search');
     });
 
 Route::controller(SiteMapController::class)->group(function () {
@@ -66,7 +51,7 @@ Route::controller(SiteMapController::class)->group(function () {
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::get('/', [AuthController::class, 'showLoginForm'])->name('login.form');
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

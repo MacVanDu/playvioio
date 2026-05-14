@@ -40,7 +40,9 @@
 				<ul class="dropdown-menu dropdown-menu-end">
 					@php
 						$currentPath = '/' . ltrim(request()->path(), '/');
-						$localeCodes = array_filter(config('locales.supported'), fn($code) => $code !== config('locales.default'));
+						$localeCodes = array_filter(config('locales.supported'), function ($code) {
+							return $code !== config('locales.default');
+						});
 						$segments = explode('/', trim($currentPath, '/'));
 						if (isset($segments[0]) && in_array($segments[0], $localeCodes, true)) {
 							array_shift($segments);

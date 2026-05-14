@@ -10,7 +10,9 @@
     @php
         $path = '/' . ltrim(request()->path(), '/');
         $parts = explode('/', trim($path, '/'));
-        $locales = array_filter(config('locales.supported'), fn($code) => $code !== config('locales.default'));
+        $locales = array_filter(config('locales.supported'), function ($code) {
+            return $code !== config('locales.default');
+        });
         if (isset($parts[0]) && in_array($parts[0], $locales, true)) {
             array_shift($parts);
             $path = '/' . implode('/', $parts);
