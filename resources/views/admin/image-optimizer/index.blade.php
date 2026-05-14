@@ -55,7 +55,9 @@
     </div>
 
     @if(session('results'))
-        @php($results = session('results'))
+        @php
+            $results = session('results');
+        @endphp
         <div class="card bg-dark border-secondary text-white mb-4">
             <div class="card-body">
                 <h5 class="fw-bold mb-3">Kết quả lần chạy vừa rồi</h5>

@@ -51,7 +51,9 @@
 						$currentPath = $currentPath === '/' ? '' : $currentPath;
 					@endphp
 					@foreach(config('locales.supported_text') as $code => $label)
-						@php($href = $code === '' ? url($currentPath ?: '/') : url('/' . $code . $currentPath))
+						@php
+							$href = $code === '' ? url($currentPath ?: '/') : url('/' . $code . $currentPath);
+						@endphp
 						<li><a class="dropdown-item" href="{{ $href }}">{{ $label }}</a></li>
 					@endforeach
 				</ul>

@@ -2,8 +2,8 @@
 <html lang="en" dir="ltr">
 
 <head>
-    @php($ver = '1.0.25')
     @php
+        $ver = '1.0.25';
         $currentLocale = $currentLocale ?? request()->route('locale') ?? config('locales.default', 'en');
         $localePrefix = $localePrefix ?? ($currentLocale === config('locales.default', 'en') ? '' : '/' . $currentLocale);
     @endphp
@@ -107,7 +107,9 @@
     @yield('body')
     @include('game.views.footer')
 
-    @php($ver = '1.0.7')
+    @php
+        $ver = '1.0.7';
+    @endphp
     <script src="/js/jquery.min.js?v={{ $ver }}" defer=""></script>
     <script src="/content/themes/default/js/bootstrap.bundle.min.js?v={{ $ver }}" defer=""></script>
     <script src="/content/themes/default/js/lazysizes.min.js?v={{ $ver }}" async=""></script>
