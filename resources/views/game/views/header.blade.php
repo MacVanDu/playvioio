@@ -33,31 +33,6 @@
 				data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
 				<img src="/images/search-icon.svg?v=1" width="25" height="25" alt="search icon ">
 			</button>
-			<div class="dropdown me-2">
-				<button class="btn btn-secondary dropdown-toggle rounded-5 px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-					{{ strtoupper($currentLocale ?? 'en') }}
-				</button>
-				<ul class="dropdown-menu dropdown-menu-end">
-					@php
-						$currentPath = '/' . ltrim(request()->path(), '/');
-						$localeCodes = array_filter(config('locales.supported'), function ($code) {
-							return $code !== config('locales.default');
-						});
-						$segments = explode('/', trim($currentPath, '/'));
-						if (isset($segments[0]) && in_array($segments[0], $localeCodes, true)) {
-							array_shift($segments);
-							$currentPath = '/' . implode('/', $segments);
-						}
-						$currentPath = $currentPath === '/' ? '' : $currentPath;
-					@endphp
-					@foreach(config('locales.supported_text') as $code => $label)
-						@php
-							$href = $code === '' ? url($currentPath ?: '/') : url('/' . $code . $currentPath);
-						@endphp
-						<li><a class="dropdown-item" href="{{ $href }}">{{ $label }}</a></li>
-					@endforeach
-				</ul>
-			</div>
 			<button class="btn btn-secondary p-0 rounded-5 me-md-3 order-md-0" data-bs-toggle="offcanvas"
 				data-bs-target="#offcanvasmenu" aria-controls="offcanvasmenu">
 				<img src="/images/nav-toggle-icon-close.svg?v=1" width="40" height="40"
