@@ -4,8 +4,12 @@
 <head>
     @php
         $ver = '1.0.25';
-        $currentLocale = $currentLocale ?? request()->route('locale') ?? config('locales.default', 'en');
-        $localePrefix = $localePrefix ?? ($currentLocale === config('locales.default', 'en') ? '' : '/' . $currentLocale);
+        $supportedLocaleCodes = config('locales.supported', ['en', 'de', 'fr', 'pt', 'jp', 'kr', 'be', 'vn']);
+        $defaultLocale = config('locales.default', 'en');
+        $urlLocale = request()->route('locale') ?? request()->segment(1);
+        $currentLocale = in_array($urlLocale, $supportedLocaleCodes, true) ? $urlLocale : $defaultLocale;
+        app()->setLocale($currentLocale);
+        $localePrefix = $currentLocale === $defaultLocale ? '' : '/' . $currentLocale;
     @endphp
     <script src="/js/jquery.min.js?v={{ $ver }}"></script>
     @yield('heads')

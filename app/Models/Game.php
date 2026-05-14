@@ -41,7 +41,7 @@ class Game extends Model
     }
     function nameGame()
     {
-        return '' . $this->name;
+        return '' . ($this->translated('name') ?? $this->name);
     }
     function getLinkIframe()
     {
@@ -61,14 +61,22 @@ class Game extends Model
     }
     public function name_schema()
     {
-        return $this->name . ' ';
+        return ($this->translated('name') ?? $this->name) . ' ';
     }
 
     function description()
     {
-        $description = str_replace('https://ant.games', '', $this->description);
+        $description = str_replace('https://ant.games', '', $this->translated('description') ?? $this->description);
 
         return $description;
+    }
+    function titleText()
+    {
+        return $this->translated('title') ?? $this->title;
+    }
+    function seoDescription()
+    {
+        return $this->translated('description_seo') ?? $this->description_seo;
     }
     //======================================================
     public function category()
@@ -97,9 +105,37 @@ class Game extends Model
 
         return $image;
     }
+    function translated($field)
+    {
+        $translation = $this->currentTranslation();
+
+        return $translation && !empty($translation->{$field}) ? $translation->{$field} : null;
+    }
+    function currentTranslation()
+    {
+        $locale = $this->currentLocale();
+
+        if ($locale === config('locales.default', 'en')) {
+            return null;
+        }
+
+        if (!\Illuminate\Support\Facades\Schema::hasTable('game_translations')) {
+            return null;
+        }
+
+        if (!$this->relationLoaded('translations')) {
+            $this->loadMissing('translations');
+        }
+
+        return $this->translations->firstWhere('locale', $locale);
+    }
+    public function translations()
+    {
+        return $this->hasMany(GameTranslation::class, 'game_id', 'id');
+    }
     function description_h()
     {
-        $rawHtml = $this->description ?? '';
+        $rawHtml = $this->translated('description') ?? $this->description ?? '';
 
     // 1. Decode HTML entities (&nbsp; &aacute; ...)
     $decoded = html_entity_decode($rawHtml, ENT_QUOTES | ENT_HTML5, 'UTF-8');
@@ -116,10 +152,16 @@ class Game extends Model
 
     private function localePrefix(): string
     {
-        $locale = request()->route('locale');
+        $locale = $this->currentLocale();
         $default = config('locales.default');
 
         return $locale && $locale !== $default ? '/' . $locale : '';
+    }
+    private function currentLocale(): string
+    {
+        $locale = request()->route('locale') ?? request()->segment(1);
+
+        return in_array($locale, config('locales.supported', []), true) ? $locale : config('locales.default', 'en');
     }
 }
    

@@ -188,7 +188,7 @@
             <img src="{{$detail->linkImgGame()}}" alt="Thumbnail">
         </div>
 
-        <div class="splash-game-title">{{ $detail->nameGame() }}</div>
+            <div class="splash-game-title">{{ $detail->nameGame() }}</div>
 
         <button class="play-btn" id="play-btn-el" onclick="play_game()">
             <span>PLAY</span>

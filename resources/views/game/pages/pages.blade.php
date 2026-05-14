@@ -1,6 +1,6 @@
 @extends('game.layouts.all')
 @section('heads')
-<title>{{ $detail->title }} | Play on Marios.games</title>
+<title>{{ $detail->titleText() }} | Play on Marios.games</title>
 <link rel="canonical" href="{{ url(($localePrefix ?: '') . '/page/' . $detail->slug) }}">
 @endsection
 @section('body')
@@ -9,9 +9,9 @@
 		<div class="row">
 			<div class="col-md-2"></div>
 			<div class="col-md-8">
-				<h1 class="singlepage-title">{{ $detail->title }}</h1>
+				<h1 class="singlepage-title">{{ $detail->titleText() }}</h1>
 				<div class="page-content">
-					{!! $detail->contents!!}
+					{!! $detail->contentsText() !!}
 				</div>
 			</div>
 			<div class="col-md-2"></div>

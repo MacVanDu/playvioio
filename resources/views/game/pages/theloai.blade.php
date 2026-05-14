@@ -1,7 +1,7 @@
 @extends('game.layouts.all')
 @section('heads')
-<title>{{ $category->title}}</title>
-<meta name="description" content="{{ $category->description_seo }}">
+<title>{{ $category->titleText() }}</title>
+<meta name="description" content="{{ $category->seoDescription() }}">
 <link rel="canonical" href="{{ url(($localePrefix ?: '') . '/c/' . $category->slug) }}">
 @endsection
 @section('body')

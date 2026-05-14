@@ -1,21 +1,21 @@
 @extends('game.layouts.all')
 @section('heads')
-<title>{{ $detail->title }} </title>
-<meta name="description" content="{{ $detail->description_seo }}">
+<title>{{ $detail->titleText() }} </title>
+<meta name="description" content="{{ $detail->seoDescription() }}">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="{{ url(($localePrefix ?: '') . '/g/' . $detail->slug) }}">
 {{-- Open Graph (Facebook, Zalo) --}}
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ url(($localePrefix ?: '') . '/g/' . $detail->slug) }}">
-<meta property="og:title" content="{{ $detail->title }}">
-<meta property="og:description" content="{{ $detail->description_seo }}">
+<meta property="og:title" content="{{ $detail->titleText() }}">
+<meta property="og:description" content="{{ $detail->seoDescription() }}">
 <meta property="og:image" content="{{ 'https://marios.games'.$detail->linkImgGame()}}">
 
 {{-- Twitter Card --}}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="{{ url(($localePrefix ?: '') . '/g/' . $detail->slug) }}">
-<meta name="twitter:title" content="{{ $detail->title }}">
-<meta name="twitter:description" content="{{ $detail->description_seo }}">
+<meta name="twitter:title" content="{{ $detail->titleText() }}">
+<meta name="twitter:description" content="{{ $detail->seoDescription() }}">
 <meta name="twitter:image" content="{{ 'https://marios.games'.$detail->linkImgGame()}}">
 @endsection
 @section('body')
@@ -138,7 +138,7 @@
                     <div class="single-info-container">
                         <div class="header bg-body-secondary px-2">
                             <div class="header-left">
-                                <h1 class="single-title">{{ $detail->name }}</h1>
+                                <h1 class="single-title">{{ $detail->nameGame() }}</h1>
                             </div>
                             <div class="header-right">
                                 <div class="d-flex align-items-center b-action mt-2">

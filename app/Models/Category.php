@@ -28,7 +28,7 @@ class Category extends Model
 
     public function name()
     {
-        return $this->name;
+        return $this->translated('name') ?? $this->name;
     }
 
     public function img()
@@ -47,12 +47,58 @@ class Category extends Model
         return Game::where('category_id', $this->id)->orderBy('id', 'DESC')->limit(10)->get();
         }
     }
+    public function titleText()
+    {
+        return $this->translated('title') ?? $this->title;
+    }
+    public function seoDescription()
+    {
+        return $this->translated('description_seo') ?? $this->description_seo;
+    }
+    public function descriptionText()
+    {
+        return $this->translated('description') ?? $this->description;
+    }
+    public function translated($field)
+    {
+        $translation = $this->currentTranslation();
+
+        return $translation && !empty($translation->{$field}) ? $translation->{$field} : null;
+    }
+    public function currentTranslation()
+    {
+        $locale = $this->currentLocale();
+
+        if ($locale === config('locales.default', 'en')) {
+            return null;
+        }
+
+        if (!\Illuminate\Support\Facades\Schema::hasTable('category_translations')) {
+            return null;
+        }
+
+        if (!$this->relationLoaded('translations')) {
+            $this->loadMissing('translations');
+        }
+
+        return $this->translations->firstWhere('locale', $locale);
+    }
+    public function translations()
+    {
+        return $this->hasMany(CategoryTranslation::class, 'category_id', 'id');
+    }
 
     private function localePrefix(): string
     {
-        $locale = request()->route('locale');
+        $locale = $this->currentLocale();
         $default = config('locales.default');
 
         return $locale && $locale !== $default ? '/' . $locale : '';
+    }
+    private function currentLocale(): string
+    {
+        $locale = request()->route('locale') ?? request()->segment(1);
+
+        return in_array($locale, config('locales.supported', []), true) ? $locale : config('locales.default', 'en');
     }
 }
