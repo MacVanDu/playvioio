@@ -3,6 +3,42 @@
 <title>{{ $tile_trang_chu }}</title>
 <meta name="description" content="{{ $description_trang_chu }}">
   {!! $ma_head_trang_chu !!}
+@php
+	$homeUrl = url($localePrefix ?: '/');
+	$schemaGames = collect($game_dau)
+		->merge($game_new)
+		->unique('id')
+		->values();
+
+	$schemas = [
+		[
+			'@type' => 'BreadcrumbList',
+			'@id' => $homeUrl . '#breadcrumb',
+			'itemListElement' => [
+				[
+					'@type' => 'ListItem',
+					'position' => 1,
+					'name' => __('messages.home'),
+					'item' => $homeUrl,
+				],
+			],
+		],
+		[
+			'@type' => 'ItemList',
+			'@id' => $homeUrl . '#game-list',
+			'name' => $tile_trang_chu,
+			'itemListElement' => $schemaGames->map(function ($game, $index) {
+				return [
+					'@type' => 'ListItem',
+					'position' => $index + 1,
+					'url' => url($game->slugGame()),
+					'name' => $game->nameGame(),
+				];
+			})->all(),
+		],
+	];
+@endphp
+@include('game.partials.schema', ['schemas' => $schemas])
 @endsection
 @section('bobys')
 <!-- Google Tag Manager (noscript) -->

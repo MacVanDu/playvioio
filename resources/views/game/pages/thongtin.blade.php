@@ -17,6 +17,103 @@
 <meta name="twitter:title" content="{{ $detail->titleText() }}">
 <meta name="twitter:description" content="{{ $detail->seoDescription() }}">
 <meta name="twitter:image" content="{{ 'https://marios.games'.$detail->linkImgGame()}}">
+@php
+    $gameUrl = url(($localePrefix ?: '') . '/g/' . $detail->slug);
+    $category = $detail->getTheloai();
+    $categoryUrl = $category ? url($category->slug()) : url($localePrefix ?: '/');
+    $gameImage = $detail->linkImgGame();
+    if ($gameImage && !\Illuminate\Support\Str::startsWith($gameImage, ['http://', 'https://'])) {
+        $gameImage = url($gameImage);
+    }
+
+    $schemas = [
+        [
+            '@type' => 'BreadcrumbList',
+            '@id' => $gameUrl . '#breadcrumb',
+            'itemListElement' => array_values(array_filter([
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => __('messages.home'),
+                    'item' => url($localePrefix ?: '/'),
+                ],
+                $category ? [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => $category->name() . ' ' . __('messages.games'),
+                    'item' => $categoryUrl,
+                ] : null,
+                [
+                    '@type' => 'ListItem',
+                    'position' => $category ? 3 : 2,
+                    'name' => $detail->nameGame(),
+                    'item' => $gameUrl,
+                ],
+            ])),
+        ],
+        [
+            '@type' => 'VideoGame',
+            '@id' => $gameUrl . '#videogame',
+            'name' => $detail->nameGame(),
+            'url' => $gameUrl,
+            'image' => $gameImage,
+            'description' => $detail->seoDescription() ?: $detail->description_h(),
+            'applicationCategory' => 'Game',
+            'gamePlatform' => ['Web browser'],
+            'operatingSystem' => 'Any',
+            'genre' => $category ? $category->name() : null,
+            'playMode' => 'SinglePlayer',
+        ],
+        [
+            '@type' => 'ItemList',
+            '@id' => $gameUrl . '#similar-games',
+            'name' => __('messages.similar_games'),
+            'itemListElement' => collect($similar_games)->values()->map(function ($game, $index) {
+                return [
+                    '@type' => 'ListItem',
+                    'position' => $index + 1,
+                    'url' => url($game->slugGame()),
+                    'name' => $game->nameGame(),
+                ];
+            })->all(),
+        ],
+    ];
+
+    $faqItems = [];
+    $descriptionHtml = $detail->description();
+    preg_match_all('/<strong>\s*Q:\s*<\/strong>\s*(.*?)\s*<br\s*\/?>\s*<strong>\s*A:\s*<\/strong>\s*(.*?)(?=<\/p>|<br\s*\/?>\s*<strong>\s*Q:|$)/is', $descriptionHtml, $faqMatches, PREG_SET_ORDER);
+
+    foreach ($faqMatches as $match) {
+        $question = trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags($match[1]), ENT_QUOTES | ENT_HTML5, 'UTF-8')));
+        $answer = trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags($match[2]), ENT_QUOTES | ENT_HTML5, 'UTF-8')));
+
+        if ($question !== '' && $answer !== '') {
+            $faqItems[] = [
+                '@type' => 'Question',
+                'name' => $question,
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => $answer,
+                ],
+            ];
+        }
+    }
+
+    if (!empty($faqItems)) {
+        $schemas[] = [
+            '@type' => 'FAQPage',
+            '@id' => $gameUrl . '#faq',
+            'mainEntity' => $faqItems,
+        ];
+    }
+
+    $schemas = collect($schemas)->map(function ($schema) {
+        return array_filter($schema, function ($value) {
+            return $value !== null && $value !== '';
+        });
+    })->all();
+@endphp
+@include('game.partials.schema', ['schemas' => $schemas])
 @endsection
 @section('body')
 <style>

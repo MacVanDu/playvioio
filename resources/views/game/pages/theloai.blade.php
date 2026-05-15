@@ -3,6 +3,44 @@
 <title>{{ $category->titleText() }}</title>
 <meta name="description" content="{{ $category->seoDescription() }}">
 <link rel="canonical" href="{{ url(($localePrefix ?: '') . '/c/' . $category->slug) }}">
+@php
+    $categoryUrl = url(($localePrefix ?: '') . '/c/' . $category->slug);
+    $pageGames = collect($data_games->items())->values();
+    $schemas = [
+        [
+            '@type' => 'BreadcrumbList',
+            '@id' => $categoryUrl . '#breadcrumb',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => __('messages.home'),
+                    'item' => url($localePrefix ?: '/'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => $category->name() . ' ' . __('messages.games'),
+                    'item' => $categoryUrl,
+                ],
+            ],
+        ],
+        [
+            '@type' => 'ItemList',
+            '@id' => $categoryUrl . '#game-list',
+            'name' => $category->name() . ' ' . __('messages.games'),
+            'itemListElement' => $pageGames->map(function ($game, $index) {
+                return [
+                    '@type' => 'ListItem',
+                    'position' => $index + 1,
+                    'url' => url($game->slugGame()),
+                    'name' => $game->nameGame(),
+                ];
+            })->all(),
+        ],
+    ];
+@endphp
+@include('game.partials.schema', ['schemas' => $schemas])
 @endsection
 @section('body')
 <style>
