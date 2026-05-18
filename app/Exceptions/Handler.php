@@ -7,6 +7,7 @@ use Throwable;
 use App\Models\Category;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Session\TokenMismatchException;
 
 class Handler extends ExceptionHandler
 {
@@ -84,8 +85,9 @@ class Handler extends ExceptionHandler
     }
     public function render($request, Throwable $exception)
     {
-        // dd($exception);
-        // return parent::render($request, $exception);
+        if ($exception instanceof TokenMismatchException && $request->is('admin/*')) {
+            return redirect()->route('admin.login')->with('error', 'Phien dang nhap da het han, vui long thu lai.');
+        }
         
         // $datamd = $this->data_mac_dinh($request);
     return response()->view('game.pages.404', [], 404);

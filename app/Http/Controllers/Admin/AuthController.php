@@ -8,33 +8,38 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Hiển thị form đăng nhập
     public function showLoginForm()
     {
         return view('admin.auth.login');
     }
 
-    // Xử lý đăng nhập
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             if (Auth::user()->is_admin) {
+                $request->session()->regenerate();
+
                 return redirect()->route('admin.dashboard');
-            } else {
-                Auth::logout();
-                return back()->with('error', 'Tài khoản này không có quyền quản trị.');
             }
+
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return back()->with('error', 'Tai khoan nay khong co quyen quan tri.');
         }
 
-        return back()->with('error', 'Email hoặc mật khẩu không đúng.');
+        return back()->with('error', 'Email hoac mat khau khong dung.');
     }
 
-    // Đăng xuất
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('admin.login');
     }
 }
