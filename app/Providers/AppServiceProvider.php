@@ -21,7 +21,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $rootUrl = rtrim((string) config('app.url', 'https://marios.games'), '/');
+        if (str_contains($rootUrl, 'localhost')) {
+            $rootUrl = 'https://marios.games';
+        }
+        $rootUrl = preg_replace('#/public$#', '', $rootUrl);
+
+        URL::forceRootUrl($rootUrl ?: 'https://marios.games');
+
         if (app()->environment('production')) {
             URL::forceScheme('https');
         }

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="{{ $currentLocale ?? 'en' }}">
 <head>
     <meta charset="utf-8">
-    <title>Stickman Parkour 3</title>
+    <title>{{ $detail->nameGame() }}</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="{{ url(($localePrefix ?? '') . '/g/' . $detail->slug) }}">
     <style>
         @font-face {
             font-family: 'Readex Pro';

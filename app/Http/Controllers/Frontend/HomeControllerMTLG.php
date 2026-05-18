@@ -130,10 +130,10 @@ class HomeControllerMTLG extends Controller
             return $this->notFoundPage($request);
         }
 
-        return view(
+        return response(view(
             'game.pages.splash',
             compact('detail')
-        )->render();
+        )->render())->header('X-Robots-Tag', 'noindex, nofollow');
     }
 
     public function localizedSplash($slug, Request $request)

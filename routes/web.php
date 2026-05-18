@@ -25,6 +25,10 @@ $frontendRoutes = function () {
     });
 };
 
+Route::get('/public/{path?}', function ($path = '') {
+    return redirect('/' . ltrim($path, '/'), 301);
+})->where('path', '.*');
+
 $frontendRoutes();
 
 $localizedPrefixes = ['de', 'fr', 'pt', 'jp', 'kr', 'be', 'vn'];
