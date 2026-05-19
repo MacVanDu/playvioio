@@ -338,7 +338,7 @@
 
 
         <footer>
-            © {{ date('Y') }} - Admin Dashboard by Apkgosu
+            © {{ date('Y') }} - Admin Dashboard by 
         </footer>
     </div>
 
