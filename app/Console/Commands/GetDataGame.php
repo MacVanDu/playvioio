@@ -280,8 +280,8 @@ class GetDataGame extends Command
             // 1️⃣ Gửi request giả lập trình duyệt
             $response = Http::withHeaders([
                 'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:131.0) Gecko/20100101 Firefox/131.0',
-                'Referer' => 'https://www.apkgosu.fun',
-                'Origin' => 'https://www.apkgosu.fun',
+                'Referer' => 'https://marios.games',
+                'Origin' => 'https://marios.games',
                 'Sec-Fetch-Dest' => 'iframe',
             ])
                 ->withOptions([

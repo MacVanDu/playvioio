@@ -32,7 +32,7 @@ class SendBingIndex extends Command
     }
     public function handle()
     {
-        $siteUrl = "https://www.apkgosu.fun"; // thay domain thật
+        $siteUrl = "https://marios.games"; // thay domain thật
         $apiKey  = "c60809f21f03495aaaa1f376256b973c"; // nếu dùng Bing API, thay bằng key của bạn
         $endpoint = "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlbatch?apikey=$apiKey";
 

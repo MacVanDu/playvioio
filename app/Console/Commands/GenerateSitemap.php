@@ -28,7 +28,7 @@ class GenerateSitemap extends Command
      */
     public function handle()
     {
-        $base = 'https://www.apkgosu.fun';
+        $base = 'https://marios.games';
 
         $this->info('🚀 Bắt đầu tạo sitemap cho web game...');
 
