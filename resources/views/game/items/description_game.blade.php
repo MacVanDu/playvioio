@@ -88,5 +88,17 @@
 
     </div>
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const desc = document.getElementById('gameDesc');
+    const btn = document.getElementById('gameDescBtn');
 
+    if (!desc || !btn) {
+        return;
+    }
+
+    btn.addEventListener('click', function () {
+        desc.classList.toggle('expanded');
+        btn.textContent = desc.classList.contains('expanded') ? '{{ __('messages.show_less') }}' : '{{ __('messages.view_more') }}';
+    });
+});
 </script>

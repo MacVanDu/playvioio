@@ -35,8 +35,3 @@
 <meta property="twitter:title" content="Free Online Games on ApkgosuGames | Play Now!" >
 <meta property="twitter:description" content="Play free online games at ApkGosuGame — new high-quality games daily" >
 <meta property="twitter:image" content="https://img.apkgosu.fun/images/apkgosu/share.png?metadata=none&amp;width=1200&amp;height=630&amp;fit=crop" >
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FG8T82YHV0"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-FG8T82YHV0');
-</script>

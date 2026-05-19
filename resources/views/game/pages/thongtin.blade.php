@@ -115,6 +115,48 @@
 @endphp
 @include('game.partials.schema', ['schemas' => $schemas])
 @endsection
+
+@section('scripts')
+<script>
+function open_fullscreen() {
+    const game = document.getElementById('game-area');
+    if (!game) {
+        return;
+    }
+
+    const isIPhone = /iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (isIPhone) {
+        if (!document.getElementById('ios-fs-style')) {
+            const style = document.createElement('style');
+            style.id = 'ios-fs-style';
+            style.innerHTML = '.ios-fullscreen{position:fixed!important;top:0!important;left:0!important;width:100vw!important;height:100vh!important;z-index:999999!important;border:0!important}.ios-close-btn{position:fixed;top:10px;right:10px;z-index:1000000;background:rgba(0,0,0,.55);color:#fff;border:0;padding:8px 15px;border-radius:5px;font-family:sans-serif}';
+            document.head.appendChild(style);
+        }
+
+        game.classList.add('ios-fullscreen');
+        const closeBtn = document.createElement('button');
+        closeBtn.innerText = 'X';
+        closeBtn.className = 'ios-close-btn';
+        closeBtn.onclick = function () {
+            game.classList.remove('ios-fullscreen');
+            closeBtn.remove();
+        };
+        document.body.appendChild(closeBtn);
+        return;
+    }
+
+    if (game.requestFullscreen) {
+        game.requestFullscreen();
+    } else if (game.webkitRequestFullscreen) {
+        game.webkitRequestFullscreen();
+    } else if (game.mozRequestFullScreen) {
+        game.mozRequestFullScreen();
+    } else if (game.msRequestFullscreen) {
+        game.msRequestFullscreen();
+    }
+}
+</script>
+@endsection
 @section('body')
 <style>
     .pc-warning {

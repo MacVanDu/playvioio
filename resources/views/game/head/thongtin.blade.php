@@ -23,12 +23,3 @@
 <meta name="msapplication-TileImage" content="https://img.apkgosu.fun/images/favicons/touch-icon.png?metadata=none&amp;quality=60&amp;width=144&amp;height=144&amp;fit=crop&amp;format=png">
 
 {!! $data_seo!!}
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FG8T82YHV0"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-FG8T82YHV0');
-</script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1364144378211052"
-    crossorigin="anonymous"></script>
-    <meta name="ahrefs-site-verification" content="f26ccee12df34fe0eab6541426d0eca9a0f8496c1e2b4103e171f8c20590f48a">
-<script src="https://analytics.ahrefs.com/analytics.js" data-key="VOGuBnIvy8PrEhjC2cW9NQ" async></script>

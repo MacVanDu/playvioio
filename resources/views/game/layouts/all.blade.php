@@ -121,7 +121,6 @@
     <script src="/content/themes/default/js/script.js?v={{ $ver }}" defer=""></script>
     <script src="/content/themes/default/js/custom.js?v={{ $ver }}" defer=""></script>
     <script src="/js/stats.js?v={{ $ver }}" defer=""></script>
-    <script src="/js/game.js?v={{ $ver }}" defer=""></script>
     @yield('scripts')
 </body>
 
