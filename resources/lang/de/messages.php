@@ -4,6 +4,7 @@ return [
     'search_placeholder' => 'Was spielst du heute?',
     'games' => 'Spiele',
     'view_more' => 'Mehr anzeigen',
+    'show_less' => 'Weniger anzeigen',
     'recommended_this_week' => 'Empfohlen diese',
     'week' => 'Woche',
     'you_may_like' => 'Das könnte dir',

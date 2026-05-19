@@ -4,6 +4,7 @@ return [
     'search_placeholder' => 'Waar speel je vandaag mee?',
     'games' => 'Spellen',
     'view_more' => 'Meer bekijken',
+    'show_less' => 'Minder bekijken',
     'recommended_this_week' => 'Aanbevolen deze',
     'week' => 'week',
     'you_may_like' => 'Misschien vind je dit',

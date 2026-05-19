@@ -4,6 +4,7 @@ return [
     'search_placeholder' => '오늘은 어떤 게임을 할까요?',
     'games' => '게임',
     'view_more' => '더 보기',
+    'show_less' => '접기',
     'recommended_this_week' => '이번 주 추천',
     'week' => '',
     'you_may_like' => '추천',

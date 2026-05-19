@@ -4,6 +4,7 @@ return [
     'search_placeholder' => 'Hôm nay bạn muốn chơi gì?',
     'games' => 'Trò chơi',
     'view_more' => 'Xem thêm',
+    'show_less' => 'Thu gọn',
     'recommended_this_week' => 'Đề xuất trong',
     'week' => 'tuần',
     'you_may_like' => 'Có thể bạn',

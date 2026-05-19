@@ -4,6 +4,7 @@ return [
     'search_placeholder' => '今日は何をプレイしますか？',
     'games' => 'ゲーム',
     'view_more' => 'もっと見る',
+    'show_less' => '表示を減らす',
     'recommended_this_week' => '今週のおすすめ',
     'week' => '',
     'you_may_like' => 'おすすめ',
