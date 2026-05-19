@@ -7,20 +7,6 @@
 <meta http-equiv="Accept-CH" content="DPR">
 <meta name="description"
   content="Play free online games at ApkGosuGame — new high-quality games daily">
-  
-    @if($datamd['locale']=='en')
-<link rel="canonical" href="https://www.apkgosu.fun/">
-    @else
-<link rel="canonical" href="https://www.apkgosu.fun/{{ $datamd['locale'] }}">
-    @endif
- @foreach($datamd['languages'] as $i => $l)
-    @if($l=='en')
-   <link rel="alternate" href="https://www.apkgosu.fun/" hreflang="en" >
-    @else
-   <link rel="alternate" href="https://www.apkgosu.fun/{{ $l }}" hreflang="{{ $l }}" >
-    @endif
-    @endforeach
-<link rel="alternate" href="https://www.apkgosu.fun/" hreflang="x-default">
 <meta name="theme-color" content="#15002f">
 <meta name="HandheldFriendly" content="true">
 <meta name="mobile-web-app-capable" content="yes">

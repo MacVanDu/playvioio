@@ -8,20 +8,6 @@
 <meta name="description"
   content="{{ $category->seoDescription() }}">
 
-@if($datamd['locale'] == 'en')
-  <link rel="canonical" href="https://www.apkgosu.fun/c/{{$category->slug}}">
-@else
-  <link rel="canonical" href="https://www.apkgosu.fun/{{ $datamd['locale'] }}/c/{{$category->slug}}">
-@endif
-@foreach($datamd['languages'] as $i => $l)
-  @if($l == 'en')
-    <link rel="alternate" href="https://www.apkgosu.fun/c/{{$category->slug}}" hreflang="en">
-  @else
-    <link rel="alternate" href="https://www.apkgosu.fun/{{ $l }}/c/{{$category->slug}}" hreflang="{{ $l }}">
-  @endif
-@endforeach
-<link rel="alternate" href="https://www.apkgosu.fun/c/{{$category->slug}}" hreflang="x-default">
-
 <meta name="theme-color" content="#15002f">
 <meta name="HandheldFriendly" content="true">
 <meta name="mobile-web-app-capable" content="yes">

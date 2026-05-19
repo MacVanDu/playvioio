@@ -22,21 +22,6 @@
 <meta name="msapplication-TileColor" content="#70B431">
 <meta name="msapplication-TileImage" content="https://img.apkgosu.fun/images/favicons/touch-icon.png?metadata=none&amp;quality=60&amp;width=144&amp;height=144&amp;fit=crop&amp;format=png">
 
-
-@if($datamd['locale'] == 'en')
-  <link rel="canonical" href="https://www.apkgosu.fun/g/{{$detail->slug}}">
-@else
-  <link rel="canonical" href="https://www.apkgosu.fun/{{ $datamd['locale'] }}/g/{{$detail->slug}}">
-@endif
-@foreach($datamd['languages'] as $i => $l)
-  @if($l == 'en')
-    <link rel="alternate" href="https://www.apkgosu.fun/g/{{$detail->slug}}" hreflang="en">
-  @else
-    <link rel="alternate" href="https://www.apkgosu.fun/{{ $l }}/g/{{$detail->slug}}" hreflang="{{ $l }}">
-  @endif
-@endforeach
-<link rel="alternate" href="https://www.apkgosu.fun/g/{{$detail->slug}}" hreflang="x-default">
-
 {!! $data_seo!!}
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FG8T82YHV0"></script>
 <script>
