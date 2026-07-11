@@ -7,13 +7,15 @@
 			</div>
 			<div class="slider single-line">
 				<ul class="slider__track py-1 mb-0">
-					@foreach($data->games10($datamd['device'] ) as $i => $game)
-					<li>
-						<div class="slide">
-							<a href="{{  $game->slugGame() }}" data-title="{{ $game->nameGame() }}">
-								<img src="{{ $game->linkImgGame() }}"
-									alt="{{ $game->nameGame() }}" class="img-fluid small-thumb thumbnail-img m-1" width="213" height="213"></a>
-						</div>
+					@foreach($data->games10($datamd['device'], 20)->chunk(2) as $gamePair)
+					<li class="d-flex flex-column">
+						@foreach($gamePair as $game)
+							<div class="slide mb-1">
+								<a href="{{  $game->slugGame() }}" data-title="{{ $game->nameGame() }}">
+									<img src="{{ $game->linkImgGame() }}"
+										alt="{{ $game->nameGame() }}" class="img-fluid small-thumb thumbnail-img m-1" width="213" height="213"></a>
+							</div>
+						@endforeach
 					</li>
 					@endforeach
 				</ul>
