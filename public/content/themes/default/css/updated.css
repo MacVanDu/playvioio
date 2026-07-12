@@ -4569,7 +4569,23 @@ label[for=nav-footer-toggle] {
 
 .slider.home-trend {
     --slide-width: 10%;
-    --slide-min-width: 10rem
+    --slide-min-width: 10rem;
+    padding-bottom: .75rem
+}
+
+.slider.home-trend .slider__track {
+    align-items: flex-start;
+    padding-bottom: .75rem
+}
+
+.slider.home-trend .slide {
+    aspect-ratio: auto;
+    height: auto;
+    justify-content: center
+}
+
+.slider.home-trend .slide a {
+    display: block
 }
 
 .slider.home-trend .thumbnail-img {
