@@ -180,6 +180,19 @@
 		const track = slider.querySelector(".slider__track");
 		const prev = slider.querySelector(".slider-prev");
 		const next = slider.querySelector(".slider-next");
+		const scrollNext = () => {
+			if (!track?.firstElementChild) {
+				return;
+			}
+
+			const maxScrollLeft = track.scrollWidth - track.clientWidth;
+			const nextLeft = track.scrollLeft + track.firstElementChild.offsetWidth;
+			track.scrollTo({
+				left: nextLeft >= maxScrollLeft ? 0 : nextLeft,
+				behavior: "smooth"
+			});
+		};
+
 		if (track && prev) {
 			prev.addEventListener("click", () => {
 				next?.removeAttribute("disabled");
@@ -192,10 +205,7 @@
 		if (track && next) {
 			next.addEventListener("click", () => {
 				prev?.removeAttribute("disabled");
-				track.scrollTo({
-					left: track.scrollLeft + track.firstElementChild.offsetWidth,
-					behavior: "smooth"
-				});
+				scrollNext();
 			});
 		}
 		if (track) {
@@ -212,6 +222,21 @@
 					next?.setAttribute("disabled", "");
 				}
 			});
+		}
+
+		if (track && slider.classList.contains("home-trend")) {
+			let trendAutoSlide = setInterval(scrollNext, 3000);
+
+			const pauseAutoSlide = () => clearInterval(trendAutoSlide);
+			const resumeAutoSlide = () => {
+				clearInterval(trendAutoSlide);
+				trendAutoSlide = setInterval(scrollNext, 3000);
+			};
+
+			slider.addEventListener("mouseenter", pauseAutoSlide);
+			slider.addEventListener("mouseleave", resumeAutoSlide);
+			slider.addEventListener("touchstart", pauseAutoSlide, { passive: true });
+			slider.addEventListener("touchend", resumeAutoSlide);
 		}
 	});
 </script>
