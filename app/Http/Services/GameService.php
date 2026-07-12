@@ -170,6 +170,22 @@ class GameService
             $categories = collect($items);
         }
 
+        $donkeyKong = $categories->first(function ($category) {
+            $slug = strtolower($category->slug ?? '');
+            $name = strtolower($category->name ?? '');
+
+            return str_contains($slug, 'donkey-kong')
+                || str_contains($name, 'donkey kong');
+        });
+
+        if ($donkeyKong) {
+            return $categories
+                ->reject(fn ($category) => $category->id === $donkeyKong->id)
+                ->take(5)
+                ->push($donkeyKong)
+                ->values();
+        }
+
         return $categories->take(6)->values();
     }
 }
