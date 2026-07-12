@@ -106,8 +106,10 @@ class GameService
             ->get();
         $excludeIds = $game_dau->pluck('id')->toArray();
 
+        $weeklySeed = (int) sprintf('%u', crc32(now()->format('o-W')));
         $game_new = $this->get_game_table( $request)
             ->whereNotIn('id', $excludeIds)
+            ->orderByRaw('RAND(?)', [$weeklySeed])
             ->limit(10)
             ->get();
         $categories = $this->homeCategories();
