@@ -102,7 +102,7 @@ class GameService
     {
         $game_dau = $this->get_game_table( $request)
             ->orderBy('trend', 'DESC')
-            ->limit(15)
+            ->limit(30)
             ->get();
         $excludeIds = $game_dau->pluck('id')->toArray();
 

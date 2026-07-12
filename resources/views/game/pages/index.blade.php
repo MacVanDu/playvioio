@@ -51,57 +51,37 @@
     {!! $datamd['qc_trang_chu'] !!}
 </div>
 		<div class="col-12 mb-4">
-			<div class="slider first position-relative">
+			<div class="slider home-trend position-relative">
 				<ul class="slider__track py-1 mb-0">
 
-					@foreach($game_dau as $i => $game)
-
-					{{-- GAME LỚN --}}
-					@if($i % 6 == 0)
-					<li class="d-flex flex-column">
-						<div class="slide">
-							<a href="{{  $game->slugGame() }}" data-title="{{ $game->nameGame() }}">
-								<img
-									src="{{ $game->linkImgGame() }}"
-									alt="{{ $game->nameGame() }}"
-									class="img-fluid thumbnail-img m-1 rounded-2"
-									width="390"
-									height="390">
-							</a>
-						</div>
-					</li>
-					@endif
-
-					{{-- 2 CỘT GAME NHỎ --}}
-					@if($i % 6 == 1 || $i % 6 == 3)
-					<li class="d-flex flex-column">
-						@endif
-
-						@if($i % 6 >= 1 && $i % 6 <= 4)
-							<div class="slide mb-1">
-							<a href="{{  $game->slugGame() }}" data-title="{{ $game->nameGame() }}">
-								<img
-									src="{{ $game->linkImgGame() }}"
-									alt="{{ $game->nameGame() }}"
-									class="img-fluid small-thumb thumbnail-img m-1 rounded-2"
-									width="160"
-									height="160">
-							</a>
-			</div>
-			@endif
-
-			@if($i % 6 == 2 || $i % 6 == 4)
-			</li>
-			@endif
-
-			@endforeach
+                    @foreach($game_dau->chunk(2) as $gamePair)
+                    <li class="d-flex flex-column">
+                        @foreach($gamePair as $game)
+                            <div class="slide mb-1">
+                                <a href="{{  $game->slugGame() }}" data-title="{{ $game->nameGame() }}">
+                                    <img
+                                        src="{{ $game->linkImgGame() }}"
+                                        alt="{{ $game->nameGame() }}"
+                                        class="img-fluid small-thumb thumbnail-img m-1 rounded-2"
+                                        width="160"
+                                        height="160">
+                                </a>
+                            </div>
+                        @endforeach
+                    </li>
+                    @endforeach
 
 			</ul>
 
 			{{-- BUTTONS --}}
-			<div class="slider__buttons start-0 align-items-center carousel-control-prev h-100">
+			<div class="slider__buttons slider__buttons-prev start-0 align-items-center carousel-control-prev h-100">
 				<button class="btn btn-slider-arrow p-0 me-auto slider-prev" disabled aria-label="previous">
 					<span class="previous-btn-icon m-0 p-5"></span>
+				</button>
+			</div>
+			<div class="slider__buttons slider__buttons-next end-0 align-items-center carousel-control-next h-100">
+				<button class="btn btn-slider-arrow p-0 ms-auto slider-next" aria-label="next">
+					<span class="next-btn-icon m-0 p-5"></span>
 				</button>
 			</div>
 

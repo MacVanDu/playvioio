@@ -4567,6 +4567,21 @@ label[for=nav-footer-toggle] {
     object-fit: cover
 }
 
+.slider.home-trend {
+    --slide-width: 10%;
+    --slide-min-width: 10rem
+}
+
+.slider.home-trend .thumbnail-img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover
+}
+
+.slider.home-trend .slider__buttons-next {
+    left: auto
+}
+
 .slider.category-featured .slider__track>*:nth-child(3n+1) {
     flex: 0 0 20%
 }
