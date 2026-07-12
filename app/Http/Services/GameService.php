@@ -124,6 +124,14 @@ class GameService
             ->limit(10)
             ->get();
 
+        $twoPlayerMario = Category::where('slug', '2-player-mario')->first();
+        if ($twoPlayerMario) {
+            $categories = $categories
+                ->prepend($twoPlayerMario)
+                ->unique('id')
+                ->values();
+        }
+
         $contraIndex = $categories->search(function ($category) {
             return str_contains(strtolower($category->slug ?? ''), 'contra')
                 || str_contains(strtolower($category->name ?? ''), 'contra');
@@ -143,6 +151,25 @@ class GameService
             $categories = collect($items);
         }
 
-        return $categories->take(5)->values();
+        $superMario = $categories->first(function ($category) {
+            $slug = strtolower($category->slug ?? '');
+            $name = strtolower($category->name ?? '');
+
+            return str_contains($slug, 'super-mario')
+                || str_contains($name, 'super mario');
+        });
+
+        if ($twoPlayerMario && $superMario) {
+            $categories = $categories
+                ->reject(fn ($category) => $category->id === $twoPlayerMario->id)
+                ->values();
+
+            $superMarioIndex = $categories->search(fn ($category) => $category->id === $superMario->id);
+            $items = $categories->values()->all();
+            array_splice($items, $superMarioIndex + 1, 0, [$twoPlayerMario]);
+            $categories = collect($items);
+        }
+
+        return $categories->take(6)->values();
     }
 }
