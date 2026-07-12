@@ -4731,22 +4731,22 @@ label[for=nav-footer-toggle] {
     }
 
     .btn-slider-arrow {
-        height: 50%
+        height: 44px
     }
 
     .btn-slider-arrow {
-        width: 75%
+        width: 44px
     }
 
     .next-btn-icon {
-        background-size: unset!important;
-        padding: 30px!important;
+        background-size: contain!important;
+        padding: 18px!important;
         margin: 0!important
     }
 
     .previous-btn-icon {
-        background-size: unset!important;
-        padding: 30px!important;
+        background-size: contain!important;
+        padding: 18px!important;
         margin: 0!important
     }
 
@@ -4762,9 +4762,12 @@ label[for=nav-footer-toggle] {
 }
 
 .btn-slider-arrow {
-    background: rgb(0 0 0 / .5);
-    height: 98%;
-    border-radius: 15px!important
+    background: rgb(0 0 0 / .18);
+    width: 52px;
+    height: 52px;
+    border: 0;
+    border-radius: 999px!important;
+    box-shadow: none
 }
 
 .btn-slider-arrow .next-btn-icon {
@@ -4772,7 +4775,8 @@ label[for=nav-footer-toggle] {
     background-image: url(../images/next-icon-hover.svg?v=2);
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover
+    background-size: contain;
+    padding: 20px!important
 }
 
 .next-btn-icon:hover,.next-btn-icon:active {
@@ -4784,7 +4788,8 @@ label[for=nav-footer-toggle] {
     background-image: url(../images/previous-icon.svg?v=1);
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover
+    background-size: contain;
+    padding: 20px!important
 }
 
 .previous-btn-icon:hover,.previous-btn-icon:active {
