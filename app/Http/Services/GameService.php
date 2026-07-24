@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Models\Game;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class GameService
 {
@@ -70,48 +71,65 @@ class GameService
     }
     public function get_infor_game(Request $request,$slug)
     {
-        return $this->get_game_table($request)
-            ->where('slug', $slug)->first();
+        $device = $this->detectDevice($request);
+
+        return Cache::remember("game:by-slug:{$slug}:{$device}:v2", 1800, function () use ($request, $slug) {
+            return $this->get_game_table($request)
+                ->where('slug', $slug)->first();
+        });
     }
     public function get_game_trang_choi(Request $request,$id): array
     {
+        $device = $this->detectDevice($request);
 
-        $similar_games =  $this->get_game_table($request)->where('category_id', $id)->orderBy('id', 'DESC')->limit(24)->get();
+        return Cache::remember("game-page:blocks:{$id}:{$device}:v2", 1800, function () use ($request, $id) {
+            $similar_games =  $this->get_game_table($request)->where('category_id', $id)->orderBy('id', 'DESC')->limit(24)->get();
 
-        $excludeIds = $similar_games->pluck('id')->toArray();
+            $excludeIds = $similar_games->pluck('id')->toArray();
 
-        $you_may_like_games = $this->get_game_table($request)
-            ->orderBy('id', 'DESC')
-            ->whereNotIn('id', $excludeIds)
-            ->limit(12)
-            ->get();
+            $you_may_like_games = $this->get_game_table($request)
+                ->orderBy('id', 'DESC')
+                ->whereNotIn('id', $excludeIds)
+                ->limit(12)
+                ->get();
 
-        $excludeIds = array_merge($excludeIds, $you_may_like_games->pluck('id')->toArray());
-        $popular_games = $this->get_game_table($request)
-            ->orderBy('id', 'DESC')
-            ->whereNotIn('id', $excludeIds)
-            ->limit(12)
-            ->get();
-        return [
-            'similar_games' => $similar_games,
-            'you_may_like_games' => $you_may_like_games,
-            'popular_games' => $popular_games,
-        ];
+            $excludeIds = array_merge($excludeIds, $you_may_like_games->pluck('id')->toArray());
+            $popular_games = $this->get_game_table($request)
+                ->orderBy('id', 'DESC')
+                ->whereNotIn('id', $excludeIds)
+                ->limit(12)
+                ->get();
+            return [
+                'similar_games' => $similar_games,
+                'you_may_like_games' => $you_may_like_games,
+                'popular_games' => $popular_games,
+            ];
+        });
     }
     public function get_game_xuat_hien_trang_chu(Request $request): array
     {
-        $game_dau = $this->get_game_table( $request)
-            ->orderBy('trend', 'DESC')
-            ->limit(30)
-            ->get();
+        $device = $this->detectDevice($request);
+        $locale = app()->getLocale();
+        $week = now()->format('o-W');
+
+        $game_dau = Cache::remember("home:trend:{$device}:{$locale}:v3", 1800, function () use ($request) {
+            return $this->get_game_table($request)
+                ->orderBy('trend', 'DESC')
+                ->limit(30)
+                ->get();
+        });
+
         $excludeIds = $game_dau->pluck('id')->toArray();
 
         $weeklySeed = (int) sprintf('%u', crc32(now()->format('o-W')));
-        $game_new = $this->get_game_table( $request)
-            ->whereNotIn('id', $excludeIds)
-            ->orderByRaw('RAND(?)', [$weeklySeed])
-            ->limit(10)
-            ->get();
+        $game_new = Cache::remember("home:recommended:{$device}:{$locale}:{$week}:v2", 3600, function () use ($request, $excludeIds, $weeklySeed) {
+            return $this->get_game_table($request)
+                ->whereNotIn('id', $excludeIds)
+                ->orderByRaw('RAND(?)', [$weeklySeed])
+                ->limit(10)
+                ->get();
+        });
+
         $categories = $this->homeCategories();
         return [
             'game_dau' => $game_dau,
@@ -122,45 +140,49 @@ class GameService
 
     private function homeCategories()
     {
-        $categories = Category::orderBy('id', 'DESC')
-            ->limit(10)
-            ->get();
+        $locale = app()->getLocale();
 
-        $contraIndex = $categories->search(function ($category) {
-            return str_contains(strtolower($category->slug ?? ''), 'contra')
-                || str_contains(strtolower($category->name ?? ''), 'contra');
+        return Cache::remember("home:categories:{$locale}:v3", 1800, function () {
+            $categories = Category::orderBy('id', 'DESC')
+                ->limit(10)
+                ->get();
+
+            $contraIndex = $categories->search(function ($category) {
+                return str_contains(strtolower($category->slug ?? ''), 'contra')
+                    || str_contains(strtolower($category->name ?? ''), 'contra');
+            });
+
+            $superMarioIndex = $categories->search(function ($category) {
+                $slug = strtolower($category->slug ?? '');
+                $name = strtolower($category->name ?? '');
+
+                return str_contains($slug, 'super-mario')
+                    || str_contains($name, 'super mario');
+            });
+
+            if ($contraIndex !== false && $superMarioIndex !== false) {
+                $items = $categories->values()->all();
+                [$items[$contraIndex], $items[$superMarioIndex]] = [$items[$superMarioIndex], $items[$contraIndex]];
+                $categories = collect($items);
+            }
+
+            $donkeyKong = $categories->first(function ($category) {
+                $slug = strtolower($category->slug ?? '');
+                $name = strtolower($category->name ?? '');
+
+                return str_contains($slug, 'donkey-kong')
+                    || str_contains($name, 'donkey kong');
+            });
+
+            if ($donkeyKong) {
+                return $categories
+                    ->reject(fn ($category) => $category->id === $donkeyKong->id)
+                    ->take(5)
+                    ->push($donkeyKong)
+                    ->values();
+            }
+
+            return $categories->take(6)->values();
         });
-
-        $superMarioIndex = $categories->search(function ($category) {
-            $slug = strtolower($category->slug ?? '');
-            $name = strtolower($category->name ?? '');
-
-            return str_contains($slug, 'super-mario')
-                || str_contains($name, 'super mario');
-        });
-
-        if ($contraIndex !== false && $superMarioIndex !== false) {
-            $items = $categories->values()->all();
-            [$items[$contraIndex], $items[$superMarioIndex]] = [$items[$superMarioIndex], $items[$contraIndex]];
-            $categories = collect($items);
-        }
-
-        $donkeyKong = $categories->first(function ($category) {
-            $slug = strtolower($category->slug ?? '');
-            $name = strtolower($category->name ?? '');
-
-            return str_contains($slug, 'donkey-kong')
-                || str_contains($name, 'donkey kong');
-        });
-
-        if ($donkeyKong) {
-            return $categories
-                ->reject(fn ($category) => $category->id === $donkeyKong->id)
-                ->take(5)
-                ->push($donkeyKong)
-                ->values();
-        }
-
-        return $categories->take(6)->values();
     }
 }

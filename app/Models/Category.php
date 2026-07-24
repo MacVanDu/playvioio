@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use App\Support\GoogleTranslate;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class Category extends Model
 {
@@ -43,11 +44,13 @@ class Category extends Model
     }
     public function games10($device, $limit = 10)
     {
-        if ($device === 'MB') {
-            return Game::where('category_id', $this->id)->where('mobile', '1')->orderBy('id', 'DESC')->limit($limit)->get();
-        } else {
-            return Game::where('category_id', $this->id)->orderBy('id', 'DESC')->limit($limit)->get();
-        }
+        return Cache::remember("category:{$this->id}:games:{$device}:{$limit}:v2", 1800, function () use ($device, $limit) {
+            if ($device === 'MB') {
+                return Game::where('category_id', $this->id)->where('mobile', '1')->orderBy('id', 'DESC')->limit($limit)->get();
+            } else {
+                return Game::where('category_id', $this->id)->orderBy('id', 'DESC')->limit($limit)->get();
+            }
+        });
     }
     public function titleText()
     {

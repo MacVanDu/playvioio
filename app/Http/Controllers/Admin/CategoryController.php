@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Game;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -64,6 +65,7 @@ class CategoryController extends Controller
             'slug'     => $slug,
             'imagesvg' => $imagePath,
         ]);
+        Cache::flush();
 
         return redirect()
             ->route('admin.categories.index')
@@ -118,6 +120,7 @@ if($imagePath){
             'slug'     => $slug,
             'imagesvg' => $imagePath,
         ]);
+        Cache::flush();
 }else{
         $category->update([
             'title'     => $request->title,
@@ -126,6 +129,7 @@ if($imagePath){
             'name'     => $request->name,
             'slug'     => $slug,
         ]);
+        Cache::flush();
 }
 
         return redirect()
@@ -145,6 +149,8 @@ if($imagePath){
 
             $category->delete();
         });
+
+        Cache::flush();
 
         return redirect()
             ->route('admin.categories.index')

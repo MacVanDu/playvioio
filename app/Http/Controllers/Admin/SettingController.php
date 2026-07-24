@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
@@ -50,6 +51,7 @@ class SettingController extends Controller
             'value' => $value,
             'note'  => $request->note,
         ]);
+        Cache::flush();
 
         return redirect()
             ->route('admin.settings.index')
@@ -85,6 +87,7 @@ class SettingController extends Controller
             'value' => $value,
             'note'  => $request->note,
         ]);
+        Cache::flush();
 
         return redirect()
             ->route('admin.settings.index')
@@ -100,6 +103,7 @@ class SettingController extends Controller
         }
 
         $setting->delete();
+        Cache::flush();
 
         return redirect()
             ->route('admin.settings.index')

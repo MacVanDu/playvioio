@@ -34,6 +34,7 @@ class PagessController extends Controller
     }
 // dd($data);
     Pages::create($data);
+    Cache::flush();
 
     return redirect()->route('admin.pages.index')
         ->with('success', 'Đã thêm trang');
@@ -52,6 +53,7 @@ class PagessController extends Controller
         ]);
 
         $page->update($data);
+        Cache::flush();
 
         return redirect()->route('admin.pages.index')
             ->with('success', 'Đã cập nhật trang');
@@ -60,6 +62,7 @@ class PagessController extends Controller
     public function destroy(Pages $page)
     {
         $page->delete();
+        Cache::flush();
 
         return back()->with('success', 'Đã xoá trang');
     }

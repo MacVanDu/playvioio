@@ -97,8 +97,7 @@ class GameController extends Controller
 
         Game::create($request->except('image_file'));
 
-        Cache::forget("homepage_games_d_7d");
-        Cache::forget("homepage_games_mb");
+        Cache::flush();
 
         return redirect()
             ->route('admin.games.index')
@@ -138,8 +137,7 @@ $data = $request->except(['slug', 'image_file']);
         // Cập nhật tất cả fields
         $game->update($data);
 
-        Cache::forget("page_game_tt_3_h3_{$game->slug}_10");
-        Cache::forget("page_game_tt_3_h3_{$game->slug}_36");
+        Cache::flush();
         return redirect()
             ->route('admin.games.index')
             ->with('success', 'Cập nhật game thành công!');
@@ -148,6 +146,7 @@ $data = $request->except(['slug', 'image_file']);
     public function destroy(Game $game)
     {
         $game->delete();
+        Cache::flush();
         return redirect()->route('admin.games.index')->with('success', 'Đã xoá game!');
     }
 
@@ -156,6 +155,7 @@ $data = $request->except(['slug', 'image_file']);
         $game = Game::findOrFail($id);
         $game->trend = $request->trend;
         $game->save();
+        Cache::flush();
 
         return response()->json(['success' => true]);
     }
@@ -164,6 +164,7 @@ $data = $request->except(['slug', 'image_file']);
         $game = Game::findOrFail($id);
         $game->mobile = $request->mobile;
         $game->save();
+        Cache::flush();
 
         return response()->json(['success' => true]);
     }

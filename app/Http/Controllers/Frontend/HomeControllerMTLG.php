@@ -9,6 +9,7 @@ use App\Models\Pages;
 use App\Models\GameChat;
 use App\Models\Category;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Cache;
 
 class HomeControllerMTLG extends Controller
 {
@@ -64,19 +65,23 @@ class HomeControllerMTLG extends Controller
     {
         $datamd = $this->data_mac_dinh($request);
 
-        $category = Category::where('slug', $slug)->first();
+        $category = Cache::remember("category:by-slug:{$slug}:v2", 1800, function () use ($slug) {
+            return Category::where('slug', $slug)->first();
+        });
         if (!$category) {
             return $this->notFoundPage($request);
         }
 
         $perPage = 20;
 
-
-
-        $gamesQuery = $this->gameService->get_game_table_p($request)->where('category_id', $category->id)
-            ->orderBy('id', 'DESC');
-
-        $data_games = $gamesQuery->paginate($perPage, ['*'], 'page', $page);
+        $device = $this->detectDevice($request);
+        $locale = app()->getLocale();
+        $data_games = Cache::remember("category:{$category->id}:page:{$page}:{$device}:{$locale}:v2", 1800, function () use ($request, $category, $perPage, $page) {
+            return $this->gameService->get_game_table_p($request)
+                ->where('category_id', $category->id)
+                ->orderBy('id', 'DESC')
+                ->paginate($perPage, ['*'], 'page', $page);
+        });
 
 
         return view('game.pages.theloai', compact(
@@ -186,31 +191,26 @@ class HomeControllerMTLG extends Controller
     }
     public function data_mac_dinh(Request $request)
     {
-        $anh_nen = Setting::getValue('anh_nen', '/images/bg2.png', false);
-        $fb_link = Setting::getValue('fb_link', '#', false);
-        $x_link = Setting::getValue('x_link', '#', false);
-        $r_link = Setting::getValue('r_link', '#', false);
-        $head_qc = Setting::getValue('head_qc', '', false);
-        $qc_trang_chu = Setting::getValue('qc_trang_chu', '', false);
-        $qc_trang_game728x90 = Setting::getValue('qc_trang_game728x90', '', false);
-        $qc_trang_game300x600 = Setting::getValue('qc_trang_game300x600', '', false);
-        $qc_trang_game160x600 = Setting::getValue('qc_trang_game160x600', '', false);
         $device = $this->detectDevice($request);
-        return [
-            'anh_nen' => $anh_nen,
-            'r_link' => $r_link,
-            'x_link' => $x_link,
-            'fb_link' => $fb_link,
-            'device' => $device,
-            'head_qc' => $head_qc,
-            'qc_trang_chu' => $qc_trang_chu,
-            'qc_trang_game728x90' => $qc_trang_game728x90,
-            'qc_trang_game300x600' => $qc_trang_game300x600,
-            'qc_trang_game160x600' => $qc_trang_game160x600,
-            'category' => Category::orderBy('id', 'DESC')
-                ->limit(10)
-                ->get(),
-        ];
+        $locale = app()->getLocale();
+
+        return Cache::remember("frontend:default-data:{$locale}:{$device}:v3", 1800, function () use ($device) {
+            return [
+                'anh_nen' => Setting::getValue('anh_nen', '/images/bg2.png', false),
+                'r_link' => Setting::getValue('r_link', '#', false),
+                'x_link' => Setting::getValue('x_link', '#', false),
+                'fb_link' => Setting::getValue('fb_link', '#', false),
+                'device' => $device,
+                'head_qc' => Setting::getValue('head_qc', '', false),
+                'qc_trang_chu' => Setting::getValue('qc_trang_chu', '', false),
+                'qc_trang_game728x90' => Setting::getValue('qc_trang_game728x90', '', false),
+                'qc_trang_game300x600' => Setting::getValue('qc_trang_game300x600', '', false),
+                'qc_trang_game160x600' => Setting::getValue('qc_trang_game160x600', '', false),
+                'category' => Category::orderBy('id', 'DESC')
+                    ->limit(10)
+                    ->get(),
+            ];
+        });
     }
 
     //=======================

@@ -13,13 +13,16 @@ use App\Http\Controllers\Admin\PagessController;
 use App\Http\Controllers\Admin\SettingController;
 
 $frontendRoutes = function () {
-    Route::controller(HomeControllerMTLG::class)->middleware('setlocale')->group(function () {
+    Route::controller(HomeControllerMTLG::class)->middleware(['setlocale', 'public.cache:600,3600'])->group(function () {
         Route::get('/', 'index')->name('home.index');
         Route::get('/page/{slug}', 'pages')->name('home.pages');
         Route::get('/c/{slug}/{page?}', 'category')
             ->where('page', '[0-9]+')
             ->name('home.category');
         Route::get('/g/{slug}', 'detail')->name('home.detail');
+    });
+
+    Route::controller(HomeControllerMTLG::class)->middleware('setlocale')->group(function () {
         Route::get('/splash/{slug}', 'splash')->name('home.splash');
         Route::get('/search', 'search')->name('home.search');
     });
@@ -39,18 +42,21 @@ foreach ($localizedPrefixes as $localePrefix) {
         ->name('localized.' . $localePrefix . '.')
         ->controller(HomeControllerMTLG::class)
         ->group(function () {
-            Route::get('/', 'localizedIndex')->name('home.index');
-            Route::get('/page/{slug}', 'localizedPages')->name('home.pages');
-            Route::get('/c/{slug}/{page?}', 'localizedCategory')
+            Route::middleware('public.cache:600,3600')->group(function () {
+                Route::get('/', 'localizedIndex')->name('home.index');
+                Route::get('/page/{slug}', 'localizedPages')->name('home.pages');
+                Route::get('/c/{slug}/{page?}', 'localizedCategory')
                 ->where('page', '[0-9]+')
                 ->name('home.category');
-            Route::get('/g/{slug}', 'localizedDetail')->name('home.detail');
+                Route::get('/g/{slug}', 'localizedDetail')->name('home.detail');
+            });
+
             Route::get('/splash/{slug}', 'localizedSplash')->name('home.splash');
             Route::get('/search', 'localizedSearch')->name('home.search');
         });
 }
 
-Route::controller(SiteMapController::class)->group(function () {
+Route::controller(SiteMapController::class)->middleware('public.cache:86400,86400')->group(function () {
     Route::get('/sitemap.xml', 'sitemap')->name('sitemap.index');
     Route::get('/sitemaps/misc.xml', 'misc')->name('sitemap.misc');
     Route::get('/sitemaps/categories.xml', 'sitemapcategories')->name('sitemap.sitemapcategories');
