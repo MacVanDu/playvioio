@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Game;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -133,7 +135,16 @@ if($imagePath){
 
     public function destroy(Category $category)
     {
-        $category->delete();
+        DB::transaction(function () use ($category) {
+            if ($category->slug === '2-player-mario') {
+                $fanMadeMario = Category::where('slug', 'fan-made-mario')->firstOrFail();
+
+                Game::where('category_id', $category->id)
+                    ->update(['category_id' => $fanMadeMario->id]);
+            }
+
+            $category->delete();
+        });
 
         return redirect()
             ->route('admin.categories.index')
